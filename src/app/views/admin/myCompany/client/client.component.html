@@ -1,0 +1,46 @@
+
+<button mat-raised-button color="primary" *ngIf="loginService.isAdmin" (click)="openClientModal(null)">add client</button>
+<button mat-raised-button color="primary"  *ngIf="loginService.isAdmin" (click)="addMeAsClient('code2')">add me as client</button>
+<select mat-raised-button color="primary" (change)="addExistClient($event)" >
+  <option value="">-select client-</option>
+  <option  *ngFor="let i of clients$|async"  value="{{i.id}}" >{{i.name}}
+</select>
+
+
+
+<div *ngIf="clients | async as clients">
+    <table>
+      <thead>
+        <tr>
+          <th>name</th>
+          <th> code </th>
+          <th>nature</th>
+          <th>phone</th>
+          <th>address</th>
+          <th>credit</th>
+          <th>email</th>
+          <th  *ngIf="loginService.isAdmin">Actions</th> 
+        </tr> 
+      </thead>
+      <tbody *ngIf="clients.length > 0 " >
+         <tr *ngFor="let client of clients; index as i"> 
+            <td>{{client.name}}</td>
+            <td>{{client.code}}</td>
+            <td>{{client.nature}}</td>
+            <td>{{client.phone}}</td>
+            <td>{{client.address}}</td>
+            <td>{{client.credit}}</td>
+            <td  *ngIf="loginService.isAdmin">{{client.email}}</td>
+            <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteClientServer( client.name,client.id)">delete</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;" (click)="updateClientServer(client)">update</mat-icon>
+  
+  
+            </td>
+           
+          </tr>
+      </tbody>
+    </table>
+    
+  
+  </div>
+  

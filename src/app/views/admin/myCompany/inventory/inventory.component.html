@@ -1,0 +1,32 @@
+
+<div *ngIf="inventories | async as inventories">
+    <table>
+      <thead>
+        <tr>
+          <th>libelle_article</th>
+          <th> code_article </th>
+          <th>stock</th>
+          <th>out</th>
+          <th>in</th>
+          <th>best client</th>
+          <th>article cost</th>
+          <th>article selling</th>
+        </tr>
+      </thead>  
+      <tbody >
+         <tr *ngFor="let inventory of inventories; index as i"> 
+            <td>{{inventory.libelle_article}}</td>
+            <td>{{inventory.articleCode}}</td>
+            <td [ngStyle]="{'background-color': inventory.current_quantity < 15 ? 'red' : ''}">{{inventory.current_quantity}}</td>
+            <td>{{inventory.out_quantity}}</td>
+            <td>{{inventory.in_quantity}}</td>
+            <td>{{inventory.bestClient}}</td>
+            <td>{{inventory.articleCost}}</td>
+            <td>{{inventory.articleSelling}}</td>           
+          </tr>
+      </tbody>
+    </table>
+    
+  
+  </div>
+  

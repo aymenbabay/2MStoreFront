@@ -1,0 +1,23 @@
+tr{
+    border: solid 2px;
+}
+
+th{
+    background-color: gray;
+}
+
+td{
+    background-color: azure;
+}
+td:hover{
+    cursor: pointer;
+}
+td,th{
+    border: solid gray 0.1px;
+    padding: 2px;
+    text-align: center;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+}

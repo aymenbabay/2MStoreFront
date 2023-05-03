@@ -1,0 +1,43 @@
+
+<button mat-raised-button color="primary"  *ngIf="loginService.isAdmin" (click)="openProviderModal(null)">add provider</button>
+<button mat-raised-button color="primary"  *ngIf="loginService.isAdmin" (click)="addMeAsProvider('code1')">add me as provider</button>
+<select mat-raised-button color="primary"  *ngIf="loginService.isAdmin" (change)="addExistProvider($event)" >
+  <option value="">-select provider-</option>
+  <option  *ngFor="let i of providers$|async"  value="{{i.id}}" >{{i.name}}
+</select>
+<div *ngIf="providers$ | async as providers">
+    <table>
+      <thead>
+        <tr>
+          <th>name</th>
+          <th> code </th>
+          <th>nature</th>
+          <th>credit</th>
+          <th>mvt</th>
+          <th>phone</th>
+          <th>address</th>
+          <th  *ngIf="loginService.isAdmin">Actions</th> 
+        </tr>
+      </thead>
+      <tbody *ngIf="providers.length > 0 " >
+         <tr *ngFor="let provider of providers; index as i"> 
+           <td>{{provider.name}}</td>
+           <td>{{provider.code}}</td>
+           <td>{{provider.nature}}</td>
+           <td>{{provider.credit}}</td>
+           <td>{{provider.mvt}}</td>
+           <td>{{provider.phone}}</td>
+           <td>{{provider.address}}</td>
+            <td  *ngIf="loginService.isAdmin"> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteProviderServer( provider.name,provider.id)">delete</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;" (click)="updateProviderServer(provider)">update</mat-icon>
+  
+  
+            </td>
+           
+          </tr>
+      </tbody>
+    </table>
+    
+  
+  </div>
+  

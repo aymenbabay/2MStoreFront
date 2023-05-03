@@ -1,0 +1,51 @@
+.container{
+    margin: 0;
+    padding: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 300px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+input{
+    width: 80%;
+    border-radius: 10px;
+    height: 30px;
+    padding: 10px;
+}
+
+label{
+    margin:10px auto auto 11%;
+    align-self: flex-start;
+}
+
+.button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    width: 100%;
+    padding: 2px;
+}
+
+.submit{
+    width: 40%;
+    border-radius: 10px;
+    background-color: green;
+}
+
+.cancel{
+    width: 40%;
+    border-radius: 10px;
+    background-color: red;
+    margin-left: 10%;
+}

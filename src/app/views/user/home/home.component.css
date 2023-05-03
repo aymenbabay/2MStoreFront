@@ -1,0 +1,25 @@
+.container{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100vh;
+
+}
+
+.fa-solid{
+    height: 5px;
+    width: 5px;
+}
+.nev_bar{
+    height: 10%;
+    width: 100%;
+    background-color: blueviolet;
+}
+
+.content{
+    height: auto;
+    width: 100%;
+    background-color: black;
+}

@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="company" *ngIf="company$">
+       
+        <img src="http://localhost:8080/werehouse/image/{{company$.logo}}/company" alt="download">
+</div>
+    <div class="btn">
+        <button mat-raised-button color="primary" routerLink="/my-company/article">article</button>
+        <button mat-raised-button color="primary" routerLink="/my-company/client">client</button>
+        <button mat-raised-button color="primary" routerLink="/my-company/provider">provider</button>
+        <button mat-raised-button color="primary" routerLink="/my-company/category" *ngIf="isAdmin">category</button>
+        <button mat-raised-button color="primary" routerLink="/my-company/sous-category"
+            *ngIf="isAdmin">sous_category</button>
+        <button mat-raised-button color="primary" routerLink="/my-company/invoice">invoice</button>
+        <button mat-raised-button color="primary" routerLink="/my-company/worker" *ngIf="isAdmin">worker</button>
+        <button mat-raised-button color="primary" routerLink="/my-company/inventory" *ngIf="isAdmin">inventory</button>
+    </div>
+   
+</div>

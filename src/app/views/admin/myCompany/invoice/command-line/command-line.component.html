@@ -1,0 +1,71 @@
+<div class="container">
+    <div class="facture" *ngIf="(facture$|async) as facture$">
+        <h1>Facture N°: {{facture$.code}}</h1>
+        <p>date: {{facture$.createdDate|date: 'dd/MM/yyyy'}}</p>
+        <mat-icon color="accent" style="font-size: 24px;" (click)="addLine(null)">add</mat-icon>
+        <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$.id,'pdf-save-client',facture$.client.id)">save</mat-icon>
+        <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$.id,'pdf-save',facture$.client.id)">save pdf</mat-icon>
+        <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$.id,'save-client',facture$.client.id)">send</mat-icon>
+    </div>
+    <div class="company" *ngIf="(company$|async) as company$">
+        <div class="left-mycompany">
+            <p>ste: {{company$.name | uppercase}}</p>
+            <p>phone: {{company$.phone}}</p>
+            <p>address: {{company$.address| uppercase}}</p>
+        </div>
+        <div class="right-mycompany">
+            <p>{{company$.logo}}</p>
+            <p>secteur: {{company$.indestrySector | uppercase}}</p>
+            <p>email: {{company$.email | uppercase}}</p>
+        </div>
+    </div>
+    <div class="client" *ngIf="(facture$|async) as facture$">
+        <h2>Client:</h2>
+        <p> name: {{facture$.client.name}}</p>
+        <p> address: {{facture$.client.address}}</p>
+        <p> phone: {{facture$.client.phone}}</p>
+    </div>
+    <div>
+        <table>
+            <thead>
+              <tr>
+                <th> code </th>
+                <th>libelle</th>
+                <th>qte</th>
+                <th>unit</th>
+                <th>tva</th> 
+                <th>prix unit</th>
+                <th>tot tva</th>
+                <th>prix tot  article</th>
+                <th>Actions</th> 
+              </tr>
+            </thead>
+            <tbody *ngIf="commandLine$.length > 0 " >
+               <tr *ngFor="let line of commandLine$; index as i"> 
+                 <td>{{line.codeArticle}}</td>
+                  <td>{{line.libelleArticle}}</td>
+                  <td>{{line.quantity}}</td>
+                  <td>{{line.unit}}</td>
+                  <td>{{line.tva/100|percent}}</td>
+                  <td>{{line.prixArticleUnit|currency: ' DT '}}</td>
+                  <td>{{line.totTva|currency: ' DT '}}</td>
+                  <td>{{line.prixArticleTot|currency: ' DT '}}</td>
+                  <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteLineServer( line.codeArticle,line.id)">delete</mat-icon>
+                    <mat-icon color="accent" style="font-size: 24px;" (click)="updateLineServer(line)">update</mat-icon>
+        
+        
+                  </td>
+                  
+                </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="total" *ngIf="total">
+        <p>total tva: {{total.tottva|currency: ' DT '}}</p>
+        <p>total price: {{total.totprice| currency: ' DT ' }}</p>
+        <p>total general: {{total.totgeneral|currency: ' DT '}}</p>
+    </div>
+
+
+
+</div>

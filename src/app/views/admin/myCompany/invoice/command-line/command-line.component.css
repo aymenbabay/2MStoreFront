@@ -1,0 +1,73 @@
+
+.container{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.facture{
+align-self: center;
+margin: 1px;
+}
+
+.facture p {
+    margin: 1px;
+}
+
+.client{
+    margin: 0 2%;
+}
+
+.client p{
+    margin: 1px;
+}
+.company{
+    order: -1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2px 5% ;
+}
+
+.company p{
+    margin: 1px;
+}
+
+h1,h2{
+margin: 2px;
+}
+
+.total{
+    margin-right: 4%;
+    align-self: flex-end;
+}
+
+p{
+    font-weight:bold;
+}
+tr{
+    border: solid 2px;
+}
+
+th{
+    background-color: gray;
+}
+
+td{
+    background-color: azure;
+}
+td:hover{
+    cursor: pointer;
+}
+td,th{
+    border: solid gray 0.1px;
+    padding: 2px;
+    text-align: center;
+}
+table{
+    width: 96%;
+    border-collapse: collapse;
+   margin-left: 2%;
+}
+

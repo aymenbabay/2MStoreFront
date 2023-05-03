@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="icon_register">
+        <div class="icon" routerLink="guest" >
+        </div>
+        <h1 >Register</h1>
+    </div>
+    <form class="form" [formGroup]="registerForm">
+        <input formControlName="userName" type="text" name="user" autofocus [class]="usernam" (blur)="checkUserName()"
+            placeholder="type your user name">
+        <p *ngIf="registerForm.controls['userName'].errors?.['required'] && registerForm.controls['userName'].touched ">
+            username is required.</p>
+        <p *ngIf=" usernam!='usernam'">This username is already exist.</p>
+        <p *ngIf="registerForm.controls['userName'].errors?.['minlength']">min length is 5 caracters.</p>
+        <input formControlName="email" type="email" placeholder="type your email">
+        <p *ngIf="registerForm.controls['email'].errors?.['email']">Please enter a valid email.</p>
+        <input formControlName="phone" type="tel" placeholder="type your phone">
+        <p *ngIf="registerForm.controls['phone'].errors?.['pattern']">Phone number must be in the format xx xxx xxx.</p>
+        <input type="text" formControlName="address" placeholder="type your address">
+        <input formControlName="password" type="password" (keyup)="checkRePassword()" placeholder="type your password">
+        <p *ngIf="registerForm.controls['password'].errors?.['required'] && registerForm.controls['password'].touched">
+            Please enter your password.</p>
+        <p *ngIf="registerForm.controls['password'].errors?.['minlength']">min length is 8 caracters.</p>
+        <input formControlName="repassword" type="password" (keyup)="checkRePassword()"
+            placeholder="re-type your password">
+        <p
+            *ngIf="registerForm.controls['repassword'].errors?.['required']  && registerForm.controls['repassword'].touched">
+            Please re-enter the same password.</p>
+        <button class="button_submit" type="submit" *ngIf="checkpassword && usernam!='username'"
+            (click)="register()">sign up</button>
+    </form>
+</div>

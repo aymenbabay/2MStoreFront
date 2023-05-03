@@ -1,0 +1,137 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 4px;
+}
+
+tr {
+    border: solid 2px;
+}
+
+th {
+    background-color: gray;
+}
+
+td {
+    background-color: azure;
+}
+
+td:hover {
+    cursor: pointer;
+}
+
+td,
+th {
+    border: solid gray 0.1px;
+    padding: 2px;
+    text-align: center;
+}
+
+.button {
+    margin: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+img {
+    width: 70px;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+   
+}
+
+.article {
+    width: 250px;
+    margin-bottom: 5px;
+    border: solid gray 0.1px;
+    border-radius: 10px;
+    box-shadow: 0 14px 18px rgba(37, 17, 214, 0.4);
+}
+
+.articlei {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+p {
+    margin: 4px;
+}
+
+.image {
+    height: 100%;
+    width: 100%;
+}
+
+.img {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+
+.information {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+._1._2._3 {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup:hover::after {
+    content:
+        attr(data-libelle)'\A'
+        attr(data-code)'\A'
+        attr(data-selling)'\A'
+        attr(data-cost)'\A'
+        attr(data-qte)'\A'
+        attr(data-tva)'\A'
+        attr(data-minqte)'\A'
+        attr(data-maxqte)'\A'
+        attr(data-barcode)'\A'
+        attr(data-disc)'\A';
+    position: absolute;
+     background-color: white;/*rgba(rgb(192, 52, 52), rgb(153, 169, 153), rgb(65, 65, 67), 0.9); */
+    color: #000000;
+    padding: 10px;
+    z-index: 1;
+    bottom: 30px;
+    left: 50%;
+    width: 230px;
+    height: 70%;
+    transform: translateX(-50%);
+    white-space: pre-wrap;
+    border-radius: 10px;
+}
+
+.button{
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn1{
+    padding: 0 15%;
+}

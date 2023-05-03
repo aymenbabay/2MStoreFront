@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="form_button">
+        <h1 class="h1">Login</h1>
+        <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()" action="" method="post">
+            <label class="label_username">Username</label>
+            <input type="text" formControlName="userName" autofocus class="email_input" placeholder="Taype your user name">
+            <label class="label_password" for="password">Password</label>
+            <input type="password" formControlName="password" id="password" name="" class="password_input" placeholder="Type your password">
+            <h6 class="forget_password">Forget Your Passowrd?</h6>
+            <button type="submit" class="button_submit">login</button>
+            <h6 >Do Not have an acount?</h6>
+            <h5 routerLink="register" class="signup">Sign Up Now</h5>
+        </form>
+    </div>
+</div>
