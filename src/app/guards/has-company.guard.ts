@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import jwt_decode from 'jwt-decode';
 import { LoginService } from '../services/guest/login/login.service';
@@ -7,7 +7,7 @@ import { LoginService } from '../services/guest/login/login.service';
 @Injectable({
   providedIn: 'root'
 })
-export class HasCompanyGuard implements CanActivateChild {
+export class HasCompanyGuard  {
   isAdmin = false
   constructor(private router : Router, private loginService : LoginService){}
   canActivateChild(
