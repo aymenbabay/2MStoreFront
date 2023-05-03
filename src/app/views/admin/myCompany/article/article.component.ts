@@ -37,7 +37,7 @@ export class ArticleComponent implements OnInit{
         enterAnimationDuration:'1000ms',
          exitAnimationDuration:'1000ms'
       });
-     dialogRef.afterClosed().subscribe(result => {
+     dialogRef.afterClosed().subscribe((result:any) => {
       if (result !== "undefined") {
         this.ngOnInit()
       }
