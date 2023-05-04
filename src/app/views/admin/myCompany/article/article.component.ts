@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { ArticleService } from '../../../../services/admin/article.service';
 import { Article } from '../../../../models/admin/article';
-import { Observable, first, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LoginService } from '../../../../services/guest/login/login.service';
 
 @Component({
@@ -16,13 +16,13 @@ export class ArticleComponent implements OnInit{
   articles!:Observable<Article[]>
   table= false
   constructor(private dialog : MatDialog, private articleService: ArticleService, public loginService : LoginService){
-   
+
   }
 
   ngOnInit(): void {
     this.getAllArticles()
   }
-  
+
   getAllArticles(){
     this.articles = this.articleService.getAllArticles()
   }
@@ -37,7 +37,7 @@ export class ArticleComponent implements OnInit{
         enterAnimationDuration:'1000ms',
          exitAnimationDuration:'1000ms'
       });
-     dialogRef.afterClosed().subscribe((result:any) => {
+     dialogRef.afterClosed().subscribe(result => {
       if (result !== "undefined") {
         this.ngOnInit()
       }
@@ -67,4 +67,3 @@ export class ArticleComponent implements OnInit{
     return this.loginService.admin()
   }
 }
- 
