@@ -4,49 +4,49 @@
   </div>
   <div class="article" *ngIf="type === 'article'">
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" >
-    
+
     <label for="libelle">libelle: </label>
     <input type="text" formControlName="libelle" id="libelle" name="libelle">
 
     <label for="code">code: </label>
     <input type="text" formControlName="code" id="code" name="code">
-   
+
     <label for="tva">tva:</label>
     <input type="number" formControlName="tva" id="tva" name="tva">
- 
+
     <label for="quantity">quantity:</label>
-    <input type="number" formControlName="quantity" id="quantity" name="quantity">  
+    <input type="number" formControlName="quantity" id="quantity" name="quantity">
 
     <label for="minQuantity">minQte:</label>
     <input type="number" formControlName="minQuantity" id="minQuantity" name="minQuantity">
 
     <label for="maxQuantity">maxQte:</label>
     <input type="number" formControlName="maxQuantity" id="maxQuantity" name="maxQuantity">
-  
+
     <label for="cost">cost: </label>
     <input type="number" formControlName="cost" id="cost" name="cost">
-   
+
     <label for="sellingPrice">Price:</label>
     <input type="number" formControlName="sellingPrice" id="sellingPrice" name="sellingPrice">
-  
+
     <label for="unit">unit:</label>
     <input type="text" formControlName="unit" id="unit" name="unit">
-  
+
     <label for="barcode">barcode:</label>
     <input type="text" formControlName="barcode" id="barcode" name="barcode">
-   
+
     <label for="discription">discription:</label>
     <textarea  formControlName="discription" id="discription" name="discription">
     </textarea>
     <input type="number" formControlName="id" hidden id="id" name="id">
-  
+
     <!-- <select *ngIf="providers$" type="text" formControlName="provider" id="provider" name="provider" >
       <option value="">choose provider</option>
       <option  *ngFor="let i of providers$|async" value="{{i.id}}" >{{i.name}}
       </option>
     </select>
 
-    <select type="text" formControlName="category" id="category" name="category" 
+    <select type="text" formControlName="category" id="category" name="category"
      (change)="getSubcategories($event)" >
       <option value="">choose a category</option>
       <option  *ngFor="let i of categories$|async"  value="{{i.id}}" >{{i.libelle}}
@@ -58,7 +58,7 @@
       <option  *ngFor="let i of sousCategories$|async" value="{{i.id}}" >{{i.libelle}}
       </option>
     </select> -->
-  
+
   </form>
 </div>
   <!-- -------------------------------------------------  add quantity  ----------------------------------------------------- -->
@@ -70,7 +70,7 @@
 
     <input type="number" formControlName="id" hidden id="id" name="id">
   </form>
-  
+
     <!-- -------------------------------------------------  client  ----------------------------------------------------- -->
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='client'">
     <label for="name">name</label>
@@ -156,7 +156,7 @@
       </option>
     </select>
     <input type="number" formControlName="id" hidden id="id" name="id">
-    
+
   </form>
   <!-- -------------------------------------------------  worker  ----------------------------------------------------- -->
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='worker'">
@@ -188,7 +188,7 @@
       </option>
     </select>
     <div *ngIf="'invoicee'">
-      
+
     <input type="text" formControlName="code" hidden id="code" name="code">
     <input type="text" formControlName="nature" hidden id="nature" name="nature">
     <input type="number" formControlName="credit" hidden id="credit" name="credit">
@@ -203,18 +203,18 @@
 
    <!-- -------------------------------------------------  command line  ----------------------------------------------------- -->
    <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='command'">
-    <label for="libelle">libelle</label>
+    <label for="libelle" aria-required="true">libelle</label>
     <select type="text" formControlName="libelle" id="libelle" name="libelle" >
       <option value="">choose a article</option>
       <option  *ngFor="let i of article$|async"  value="{{i.code}}" >{{i.libelle}}
       </option>
     </select>
-    <input type="number" formControlName="quantity">
+    <input type="number" aria-required="true" formControlName="quantity">
    </form>
 
-   
+
    <div *ngIf="type !== 'invoice' && type !== 'command' && type !== 'Quantity'">
-  
+
     <input type="file" (change)="upload($event)" accept="image/*" />
     <img *ngIf="imageUrl" height="100px" [src]="imageUrl" alt="Uploaded Image">
     </div>

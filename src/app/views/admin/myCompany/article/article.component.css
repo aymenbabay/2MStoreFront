@@ -46,7 +46,8 @@ img {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
-   
+
+
 }
 
 .article {
@@ -55,6 +56,7 @@ img {
     border: solid gray 0.1px;
     border-radius: 10px;
     box-shadow: 0 14px 18px rgba(37, 17, 214, 0.4);
+    margin-bottom: 20px;
 }
 
 .articlei {
@@ -63,6 +65,7 @@ img {
     flex-direction: column;
     align-items: center;
     height: 100%;
+    padding-bottom: 20px;
 }
 
 p {
@@ -85,6 +88,7 @@ p {
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
 ._1._2._3 {
@@ -118,8 +122,8 @@ p {
     z-index: 1;
     bottom: 30px;
     left: 50%;
-    width: 230px;
-    height: 70%;
+    width: 228px;
+    height: 50%;
     transform: translateX(-50%);
     white-space: pre-wrap;
     border-radius: 10px;

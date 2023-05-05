@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommandLine } from '../../../../../models/admin/lineCommande';
 import { CommandLineService } from '../../../../../services/admin/command-line.service';
 import { CompanyService } from '../../../../../services/user/company/company.service';
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
   templateUrl: './command-line.component.html',
   styleUrls: ['./command-line.component.css']
 })
-export class CommandLineComponent implements OnInit {
+export class CommandLineComponent implements OnInit, OnDestroy {
 
   company$: Observable<Company> = EMPTY
   facture$: Observable<Invoice> = EMPTY
@@ -30,10 +30,6 @@ export class CommandLineComponent implements OnInit {
   ngOnInit(): void {
     this.getMe()
     this.getInvoice()
-    this.commandService.change()
-    this.commandLine$ = this.commandService.commandLine$;
-    this.total = this.commandService.total
-    console.log(this.commandLine$)
   }
 
   // addInvoice() {
@@ -49,8 +45,7 @@ export class CommandLineComponent implements OnInit {
 
   getInvoice(){
     this.facture$ = this.invoiceService.getInvoices();
-    this.facture$.subscribe(x =>console.log(x))
-   
+
   }
 
   addLine(entity : CommandLine|null){
@@ -63,7 +58,10 @@ export class CommandLineComponent implements OnInit {
       });
      dialogRef.afterClosed().subscribe(result => {
       if (result !== "undefined") {
-        this.ngOnInit()
+
+    this.commandService.change()
+    this.commandLine$ = this.commandService.commandLine$;
+    this.total = this.commandService.total
       }
      });
   }
@@ -95,9 +93,15 @@ export class CommandLineComponent implements OnInit {
       this.router.navigate(["/my-company/invoice"])
     })
   }
-  
+
   updateLineServer(line: CommandLine){
     this.commandService.update = true
     this.addLine(line)
+  }
+
+  ngOnDestroy(): void {
+
+     this.commandService.commandLine$=[]
+     this.commandService.total={'totgeneral':0,'totprice':0,'tottva':0}
   }
 }

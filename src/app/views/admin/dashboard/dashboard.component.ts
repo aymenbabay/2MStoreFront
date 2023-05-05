@@ -9,7 +9,7 @@ import { CompanyService } from '../../../services/user/company/company.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
- 
+
 isAdmin = false
 company$! : Company
   constructor(private loginService : LoginService, private companyService : CompanyService){}
@@ -19,7 +19,7 @@ company$! : Company
     this.admin()
   }
 
-  
+
 
  admin():boolean{
  this.isAdmin = this.loginService.admin()
@@ -31,5 +31,5 @@ company$! : Company
  getMyCompany(){
 this.companyService.getMe().subscribe(x => this.company$ = x)
  }
-  
+
 }
