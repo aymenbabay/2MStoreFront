@@ -1,4 +1,15 @@
 
-{{user}}
-<button (click)="logout()" routerLink="guest">logout</button>
-<router-outlet></router-outlet>
+<div class="container">
+
+  <div class="nav_bar">
+    <div>
+      <input type="search" name="" id=""  ><i class="fas fa-search"></i>
+    </div>
+    <mat-icon  matBadge="5" matBadgeColor="warn">notifications</mat-icon>
+    <span class="cdk-visually-hidden"></span>
+    <span class="material-icons">messages</span>
+    {{user}}
+    <button mat-raised-button color="warn"(click)="logout()" routerLink="guest">logout</button>
+  </div>
+  <router-outlet></router-outlet>
+</div>

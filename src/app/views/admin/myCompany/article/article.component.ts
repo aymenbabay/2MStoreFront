@@ -24,7 +24,7 @@ export class ArticleComponent implements OnInit{
   }
 
   getAllArticles(){
-    this.articles = this.articleService.getAllArticles()
+    this.articles = this.articleService.getAllArticles(0)
   }
 
   vuSwitch(){

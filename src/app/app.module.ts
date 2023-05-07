@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AdminComponent } from './modal/admin/admin/admin.component';
 import { MatButtonModule } from '@angular/material/button';
 import { CloudinaryModule } from '@cloudinary/ng';
+import {  MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -25,13 +26,14 @@ import { CloudinaryModule } from '@cloudinary/ng';
     BrowserModule,
     CommonModule,
     AppRoutingModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
     LayoutModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatDialogModule,
     MatButtonModule,
+    MatIconModule,
     CloudinaryModule
   ],
   providers: [httpInterceptorProviders ],

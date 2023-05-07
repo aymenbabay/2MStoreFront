@@ -1,0 +1,17 @@
+
+.conatiner{
+display: flex;
+flex-direction: column;
+}
+
+.nav_bar{
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+
+.fas{
+  margin-left: -15px ;
+  padding-top: 5px;
+}

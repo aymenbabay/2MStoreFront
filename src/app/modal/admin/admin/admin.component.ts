@@ -27,7 +27,7 @@ import {fill} from '@cloudinary/url-gen/actions/resize';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  
+
 
   Form!: FormGroup
   type = ""
@@ -45,7 +45,7 @@ export class AdminComponent implements OnInit {
   imagePath! : any
   constructor(private ref: MatDialogRef<AdminComponent>, public fb: FormBuilder,
     private articleService: ArticleService, @Inject(MAT_DIALOG_DATA) public data: { entity: any, type: string },
-    private router: Router, private clientService : ClientService, private categoryService : CategoryService, 
+    private router: Router, private clientService : ClientService, private categoryService : CategoryService,
     private sousCategoryService : SousCategoryService, private commandLineService : CommandLineService,
     private providerService : ProviderService, private workerService : WorkerService, private invoiceService : InvoiceService,
     private http : HttpClient
@@ -70,7 +70,7 @@ export class AdminComponent implements OnInit {
                     //  'provider': [''],
                     //   'category': [''],
                     //   'sousCategory': [''],
-                      'id': [], 
+                      'id': [],
                       'image':[]
                     })
       break;
@@ -165,7 +165,7 @@ export class AdminComponent implements OnInit {
   }
 
 ngOnInit(): void {
-  
+
   switch (this.data.type){
     case 'article':
       this.getAllCategory()
@@ -266,10 +266,10 @@ console.log(this.data.entity)
                 email: this.data.entity.email,
                 id: this.data.entity.id
               })
-            
+
               break;
 
-              
+
           case 'invoice':
             this.getAllClient();
             if(this.invoiceService.update){
@@ -316,10 +316,10 @@ console.log(this.data.entity)
   }
 
   getSubcategories($event:any){
-    
+
       console.log($event.target.value)
       this.sousCategories$ = this.sousCategoryService.getAllByCategoryId($event.target.value)
-    
+
   }
 
 
@@ -329,13 +329,13 @@ console.log(this.data.entity)
   }
 
   getAllArticle(){
-    this.article$ = this.articleService.getAllArticles()
+    this.article$ = this.articleService.getAllArticles(0)
   }
  submit(){
   switch (this.data.type){
     case 'article':
       let body = {
-        
+
         code: this.Form.value.code,
         libelle: this.Form.value.libelle,
         cost: this.Form.value.cost,
@@ -351,7 +351,7 @@ console.log(this.data.entity)
         category: {id:this.Form.value.category},
         provider: {id:this.Form.value.provider},
         sousCategory: {id:this.Form.value.sousCategory}
-        
+
       }
       const formData = new FormData()
       const article = this.Form.value
@@ -381,7 +381,7 @@ console.log(this.data.entity)
     if (this.categoryService.update) {
       this.categoryService.updateCategory(this.Form.value).subscribe()
     } else {
-      
+
       this.categoryService.addCategory(this.Form.value).subscribe()
     }
     break;
@@ -390,7 +390,7 @@ console.log(this.data.entity)
       this.sousCategoryService.updateSousCategory(this.Form.value).subscribe()
     } else {
       const body = {
-        
+
     libelle: this.Form.value.libelle,
     code: this.Form.value.code,
     category: {id:this.Form.value.category},
@@ -414,7 +414,7 @@ console.log(this.data.entity)
     }
     break;
 
-    
+
     case 'invoice':
     if (this.invoiceService.update) {
       this.invoiceService.updateInvoice(this.Form.value.code).subscribe()
@@ -439,7 +439,7 @@ console.log(this.data.entity)
     case "command":
 
       if(this.Form.value.quantity != 0 && !this.commandLineService.update){
-        
+
         this.article$.pipe(
           switchMap(articles => {
             const selectedArticle = articles.find(article => article.code.toString() === this.Form.value.libelle);

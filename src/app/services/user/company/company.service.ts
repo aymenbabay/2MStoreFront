@@ -2,13 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Company } from '../../../models/user/company';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
+import { Article } from '../../../models/admin/article';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
-
 
   baseUrl = "werehouse/company/"
   constructor(private http: HttpClient) { }
@@ -27,6 +26,12 @@ getMe():Observable<Company>{
 }
 
 checkCompany() :Observable<any>{
-  return this.http.get(`${this.baseUrl}has_company`)
+  return this.http.get(`${this.baseUrl}hascompany`)
 }
+
+getAllCompany():Observable<any> {
+  return this.http.get(`${this.baseUrl}all`)
+}
+
+
 }

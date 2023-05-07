@@ -17,18 +17,17 @@ export class ClientComponent implements OnInit {
   clients$!:Observable<Client[]>
 
   constructor(private dialog : MatDialog, private clientService: ClientService, public loginService : LoginService){
-   
+
   }
 
   ngOnInit(): void {
     this.getAllMyClients()
     this.getAllClients()
   }
-  
+
   getAllMyClients(){
     this.clients = this.clientService.getAllMyClients()
-    this.clients.subscribe(data =>console.log(data))
-  
+
   }
 
   getAllClients(){

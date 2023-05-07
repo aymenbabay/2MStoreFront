@@ -5,7 +5,7 @@ import { AdminGuard } from '../../../guards/admin.guard';
 
 const routes: Routes = [
   {path:'', component:DashboardComponent},
-  
+
   {path:'category', loadChildren:()=>import('../../admin/myCompany/category/category.module').then(m=>m.CategoryModule),
   canActivate:[AdminGuard]},
 {path:'inventory', loadChildren:()=>import('../../admin/myCompany/inventory/inventory.module').then(m=>m.InventoryModule),

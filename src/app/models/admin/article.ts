@@ -1,3 +1,4 @@
+import { Company } from "../user/company"
 import { Category } from "./category"
 import { Provider } from "./provider"
 import { SousCategory } from "./sous-category"
@@ -19,5 +20,6 @@ export class Article{
     sousCategory!: SousCategory
      provider! : Provider
      image!: any
-    
+     company! : Company
+
 }

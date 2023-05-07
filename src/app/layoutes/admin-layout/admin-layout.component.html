@@ -1,5 +1,5 @@
-<div class="company" >
+<div class="company" *ngIf="company" >
 
-  <img src="http://localhost:8080/werehouse/image/preview.jpg/company" alt="download">
+  <img src="http://localhost:8080/werehouse/image/{{company.logo}}/company" alt="download">
 </div>
 <router-outlet></router-outlet>

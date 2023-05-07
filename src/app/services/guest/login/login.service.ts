@@ -10,7 +10,7 @@ import jwt_decode from 'jwt-decode';
   providedIn: 'root'
 })
 export class LoginService {
- 
+
 
   public formData: FormGroup ;
   loginresponse! : loginResponse
@@ -37,11 +37,16 @@ export class LoginService {
   }
 
   refreshToken():Observable<any>{
+    this.getToken()
     this.admin()
    return this.http.post(`${this.baseUrl}refresh`,this.token)
   }
   admin():boolean{
-   
+
     return this.isAdmin
+  }
+
+  getToken(){
+    this.token = localStorage.getItem('jwt')
   }
 }

@@ -1,3 +1,5 @@
+import { SignUp } from "./signup"
+
 export class Company{
       name! : string
        identityNumber!:string
@@ -12,4 +14,5 @@ export class Company{
        email!: string
        logo!:string
        id!: number
+       user!: SignUp
 }

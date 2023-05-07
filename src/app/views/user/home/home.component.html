@@ -1,20 +1,32 @@
 
 <div class="container">
-    <div class="nev_bar">
-        <button>add company</button>
-            <!-- side bar -->
-    </div>
-    <div class="nev_bar">
-        <button (click)="openDialog()">Add Company</button>
 
-        <i class="fas fa-home"></i>
-
+    <div class="nev_bar">
+        <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!has_company">Add Company</button>
+        <button mat-raised-button color="primary" routerLink="/my-company" *ngIf="has_company">My Company </button>
+        <select (change)="toCompanyPage($event)">
+          <option value="">choose a company</option>
+          <option *ngFor="let company of company$|async" value="{{company.id}}">{{company.name}}</option>
+        </select>
+        <!-- <i class="fas fa-home"></i> -->
     </div>
-    <div class="content">
+    <div class="content" >
         <!-- show the publicite -->
-       
-    <button mat-button color="primary">Primary</button>
-       
+      <div class="card" *ngFor="let article of article$|async">
+        <div class="company"> <img class="logo" src="http://localhost:8080/werehouse/image/{{article.company.logo}}/article"
+          alt="download">
+
+        {{article.company.name}}  {{article.company.indestrySector}}
+      </div>
+        <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article"
+          alt="download">
+      </div>
+      <p> article:  {{article.libelle}}</p>
+       <p> Price: {{article.sellingPrice|currency: " Dt "}} </p>
+       <p> Quantity dispo: {{article.quantity}} </p>
+       <p> Discription: {{article.discription}} </p>
+      </div>
+
     </div>
-    
+
 </div>
