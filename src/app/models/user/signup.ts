@@ -1,6 +1,6 @@
 export class SignUp{
     phone! : string
-    userName! : string
+    username! : string
     email! : string
     password! : string
     address! : string

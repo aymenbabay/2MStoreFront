@@ -39,7 +39,7 @@ export class HomeComponent implements OnDestroy, OnInit{
 
   getRandomArticleWithRandomCompany(){
     this.article$ = this.articleService.getRandomArticleWithRandomCompany()
-    this.article$.subscribe(x =>console.log(x[0].company.user))
+    this.article$.subscribe(x =>console.log(x[0].company.user.username))
   }
   check(){
     this.s= this.companyService.checkCompany().subscribe(x =>{

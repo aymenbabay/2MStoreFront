@@ -13,12 +13,12 @@
     <div class="content" >
         <!-- show the publicite -->
       <div class="card" *ngFor="let article of article$|async">
-        <div class="company"> <img class="logo" src="http://localhost:8080/werehouse/image/{{article.company.logo}}/article"
+        <div class="company"> <img class="logo" src="http://localhost:8080/werehouse/image/{{article.company.logo}}/company/{{article.company.user.username}}"
           alt="download">
 
         {{article.company.name}}  {{article.company.indestrySector}}
       </div>
-        <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article"
+        <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.company.user.username}}"
           alt="download">
       </div>
       <p> article:  {{article.libelle}}</p>
