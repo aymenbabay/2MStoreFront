@@ -1,0 +1,24 @@
+
+<div class="container">
+<div class="btn">
+    <select (change)="filter($event,'sector')">
+        <option value="">filter by sector</option>
+        <option *ngFor="let sector of sectors$ " value="{{sector}}">{{sector}}</option>
+    </select>
+    <select (change)="filter($event,'address')">
+        <option value="">filter by address</option>
+        <option *ngFor="let address of address" value="{{address}}">{{address}}</option>
+    </select>
+</div>
+<div class="content">
+    <div class="card" *ngFor="let company of company$|async">
+        {{company.name}}
+        {{company.address}}
+        <img class="logo" src="http://localhost:8080/werehouse/image/{{company.logo}}/company/{{company.user.username}}"
+        alt="download">
+        {{company.email}}
+        {{company.phone}}
+        {{company.nationalIdNumber}}
+    </div>
+</div>
+</div>

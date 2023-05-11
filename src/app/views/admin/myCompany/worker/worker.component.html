@@ -1,7 +1,7 @@
 
 <button mat-raised-button color="primary" *ngIf="worker$" (click)="openWorkerModal()">add worker</button>
 
-<input type="search" [(ngModel)]="entity">
+<input type="search" [(ngModel)]="entity" placeholder="type worker name">
 <button (click)="searchUser()">search</button>
 <div *ngIf="workers | async as workers">
     <table>

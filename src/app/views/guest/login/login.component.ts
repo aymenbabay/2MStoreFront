@@ -1,9 +1,12 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener ,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoginService } from '../../../services/guest/login/login.service';
 import { CompanyService } from '../../../services/user/company/company.service';
+
+
+declare const FB: any;
 
 @Component({
   selector: 'app-login',
@@ -11,7 +14,7 @@ import { CompanyService } from '../../../services/user/company/company.service';
   styleUrls: ['./login.component.css'],
   providers: [DatePipe]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   isOffline:boolean=false;
   @HostListener('window:offline', ['$event'])
@@ -26,6 +29,27 @@ export class LoginComponent {
       'password':[null, Validators.required]
     })
   }
+
+  ngOnInit(): void {
+    FB.init({
+      appId: '103879366037944',
+      autoLogAppEvents: true,
+      xfbml: true,
+      version: 'v11.0'
+    });
+  }
+  loginWithFacebook(): void {
+    // Use the Facebook SDK to request the user's permission to access their profile information
+    FB.login((response: any) => {
+      if (response.authResponse) {
+        const token = response.authResponse.accessToken;
+        console.log(token); // Log the access token to the console
+      } else {
+        console.log('User cancelled login or did not fully authorize.');
+      }
+    }, { scope: 'public_profile,email' });
+  }
+
 
   onSubmit(){
   const val = this.loginForm.value

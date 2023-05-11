@@ -50,8 +50,10 @@ export class SousCategoryComponent implements OnInit {
   deleteSousCategoryServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
-      this.sousCategoryService.deleteSousCategory(id).subscribe()
-     this.getAllSousCategories()
+      this.sousCategoryService.deleteSousCategory(id).subscribe(x =>{
+        this.getAllSousCategories()
+      })
+    
     }
 
   }

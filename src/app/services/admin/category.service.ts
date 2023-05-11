@@ -22,12 +22,12 @@ export class CategoryService {
     return this.http.get<Category[]>(`${this.baseUrl}getbycompany`)
   }
 
-  addCategory(category : Category):Observable<any>{
+  addCategory(category : FormData):Observable<any>{
     return this.http.post(`${this.baseUrl}add`,category)
   }
 
     
-  updateCategory(category: Category) :Observable<any>{
+  updateCategory(category: FormData) :Observable<any>{
     return this.http.put(`${this.baseUrl}update`,category)
   }
 }

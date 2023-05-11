@@ -1,7 +1,7 @@
 <div class="container">
   <div class="company" *ngIf="company$">
 
-  <img src="http://localhost:8080/werehouse/image/{{company$.logo}}/company" alt="download">
+  <img src="http://localhost:8080/werehouse/image/{{company$.logo}}/company/{{company$.user.username}}" alt="download">
     {{company$.name}}
     {{company$.code}}
     {{company$.address}}

@@ -6,6 +6,7 @@
         <tr>
           <th>libelle</th>
           <th> code </th>
+          <th>image</th>
           <th>Actions</th> 
         </tr>
       </thead>
@@ -13,6 +14,8 @@
          <tr *ngFor="let category of categories; index as i"> 
             <td>{{category.libelle}}</td>
             <td>{{category.code}}</td>
+            <td><img class="img" src="http://localhost:8080/werehouse/image/{{category.image}}/category/{{category.company.user.username}}"
+              alt="download"></td>
             <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteCategoryServer( category.libelle,category.id)">delete</mat-icon>
               <mat-icon color="accent" style="font-size: 24px;" (click)="updateCategoryServer(category)">update</mat-icon>
   

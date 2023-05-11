@@ -40,7 +40,7 @@
     </textarea>
     <input type="number" formControlName="id" hidden id="id" name="id">
 
-    <!-- <select *ngIf="providers$" type="text" formControlName="provider" id="provider" name="provider" >
+    <select *ngIf="providers$" type="text" formControlName="provider" id="provider" name="provider" >
       <option value="">choose provider</option>
       <option  *ngFor="let i of providers$|async" value="{{i.id}}" >{{i.name}}
       </option>
@@ -57,7 +57,7 @@
       <option value="">choose a sous category</option>
       <option  *ngFor="let i of sousCategories$|async" value="{{i.id}}" >{{i.libelle}}
       </option>
-    </select> -->
+    </select>
 
   </form>
 </div>

@@ -37,12 +37,16 @@ export class ClientComponent implements OnInit {
   addExistClient($event:any){
     const conf = window.confirm(`are you sure to add ${$event.target.value} !!`)
     if(conf){
-      this.clientService.addExistClient($event.target.value).subscribe()
+      this.clientService.addExistClient($event.target.value).subscribe(x =>{
+        this.ngOnInit()
+      })
     }
   }
 
   addMeAsClient(code:string){
-    this.clientService.addMeAsClient(code).subscribe()
+    this.clientService.addMeAsClient(code).subscribe(x =>{
+        this.ngOnInit()
+    })
   }
 
   openClientModal(entity : Client|null){
@@ -70,8 +74,10 @@ export class ClientComponent implements OnInit {
   deleteClientServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
-      this.clientService.deleteClient(id).subscribe()
-     this.ngOnInit()
+      this.clientService.deleteClient(id).subscribe(x =>{
+        this.ngOnInit()
+      })
+     
     }
 
   }

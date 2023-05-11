@@ -57,7 +57,7 @@ export class HomeComponent implements OnDestroy, OnInit{
   }
 
   toCompanyPage($event:any){
-    this.router.navigate(['/user/'+$event.target.value])
+    this.router.navigate(['/user/company/'+$event.target.value])
     console.log($event.target.value)
   }
   ngOnDestroy(): void {

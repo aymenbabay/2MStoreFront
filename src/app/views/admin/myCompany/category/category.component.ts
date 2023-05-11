@@ -51,8 +51,10 @@ export class CategoryComponent implements OnInit {
   deleteCategoryServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
-      this.categoryService.deleteCategory(id).subscribe()
-     this.ngOnInit()
+      this.categoryService.deleteCategory(id).subscribe(x =>{
+        this.getAllCategorys()
+      })
+    
     }
 
   }

@@ -23,12 +23,12 @@ export class SousCategoryService {
     return this.http.get(`${this.baseUrl}getbycompany`)
   }
 
-  addSousCategory(sous_category : any):Observable<any>{
+  addSousCategory(sous_category : FormData):Observable<any>{
     return this.http.post(`${this.baseUrl}add`,sous_category)
   }
 
     
-  updateSousCategory(sous_category: SousCategory) :Observable<any>{
+  updateSousCategory(sous_category: FormData) :Observable<any>{
     return this.http.put(`${this.baseUrl}update`,sous_category)
   }
 

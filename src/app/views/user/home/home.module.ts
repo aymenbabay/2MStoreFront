@@ -8,12 +8,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button'
 import { AddCompanyModalComponent } from '../../../modal/user/add-company-modal/add-company-modal.component';
 import { CompanyComponent } from '../../../components/company/company.component';
+import { AllCompanyComponent } from '../../../components/all-company/all-company.component';
 
 @NgModule({
-  declarations: [
+  declarations: [ 
     HomeComponent,
     AddCompanyModalComponent,
-    CompanyComponent
+    CompanyComponent,
+    AllCompanyComponent
   ],
   imports: [
     CommonModule,

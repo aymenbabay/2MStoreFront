@@ -39,7 +39,7 @@ export class ArticleComponent implements OnInit{
       });
      dialogRef.afterClosed().subscribe(result => {
       if (result !== "undefined") {
-        this.ngOnInit()
+        this.getAllArticles()
       }
      });
   }
@@ -57,8 +57,10 @@ export class ArticleComponent implements OnInit{
   deleteArticleServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
-      this.articleService.deleteArticle(id).subscribe()
-     this.ngOnInit()
+      this.articleService.deleteArticle(id).subscribe(x =>{
+        this.getAllArticles()
+      })
+     
     }
 
   }

@@ -43,6 +43,7 @@ export class AdminComponent implements OnInit {
   file! :any
   imageUrl!: string| null| ArrayBuffer;
   imagePath! : any
+   formData = new FormData()
   constructor(private ref: MatDialogRef<AdminComponent>, public fb: FormBuilder,
     private articleService: ArticleService, @Inject(MAT_DIALOG_DATA) public data: { entity: any, type: string },
     private router: Router, private clientService : ClientService, private categoryService : CategoryService,
@@ -67,9 +68,9 @@ export class AdminComponent implements OnInit {
                       'maxQuantity': [],
                       'barcode': [''],
                       'tva': [],
-                    //  'provider': [''],
-                    //   'category': [''],
-                    //   'sousCategory': [''],
+                     'provider': [],
+                      'category': [],
+                      'sousCategory': [],
                       'id': [],
                       'image':[]
                     })
@@ -120,7 +121,7 @@ export class AdminComponent implements OnInit {
               this.Form = fb.group({
                 'libelle': [''],
                 'code': [''],
-                'category': [''],
+                'category': [null],
                 'id': ['']
               })
               break;
@@ -183,10 +184,10 @@ ngOnInit(): void {
           maxQuantity: this.data.entity.maxQuantity,
           barcode: this.data.entity.barcode,
           tva: this.data.entity.tva,
-          //provider: this.data.entity.provider,
+          provider: this.data.entity.provider,
           id: this.data.entity.id,
-          //category: this.data.entity.category.id,
-          //sousCategory: this.data.entity.sousCategory.id
+          category: this.data.entity.category.id,
+          sousCategory: this.data.entity.sousCategory.id,
           image: this.data.entity.image
         })
         this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.image}/article`
@@ -348,19 +349,20 @@ console.log(this.data.entity)
         barcode: this.Form.value.barcode,
         tva: this.Form.value.tva,
         id: this.Form.value.id,
-        category: {id:this.Form.value.category},
-        provider: {id:this.Form.value.provider},
-        sousCategory: {id:this.Form.value.sousCategory}
+        category: null as {}|null,
+        provider: null as {}|null,
+        sousCategory:null as {}|null
 
       }
-      const formData = new FormData()
-      const article = this.Form.value
-      formData.append('article',JSON.stringify(article))
-      formData.append('file',this.file)
+      if(this.Form.value.category){body.category = {id:this.Form.value.category}}
+      if(this.Form.value.sousCategory){body.sousCategory = {id:this.Form.value.sousCategory}}
+      if(this.Form.value.provider){body.provider = {id:this.Form.value.provider}}
+      this.formData.append('article',JSON.stringify(body))
+      this.formData.append('file',this.file)
     if (this.articleService.update) {
-      this.articleService.updateArticle(formData).subscribe()
+      this.articleService.updateArticle(this.formData).subscribe()
     } else {
-      this.articleService.addArticle(formData).subscribe()
+      this.articleService.addArticle(this.formData).subscribe()
     }
     break;
 
@@ -378,25 +380,32 @@ console.log(this.data.entity)
     }
     break;
     case 'category':
+      const category = this.Form.value
+      this.formData.append('categoryDto', JSON.stringify(category))
+      this.formData.append('file', this.file)
     if (this.categoryService.update) {
-      this.categoryService.updateCategory(this.Form.value).subscribe()
+      this.categoryService.updateCategory(this.formData).subscribe()
     } else {
-
-      this.categoryService.addCategory(this.Form.value).subscribe()
+      this.categoryService.addCategory(this.formData).subscribe()
     }
     break;
     case 'sous-category':
-    if (this.sousCategoryService.update) {
-      this.sousCategoryService.updateSousCategory(this.Form.value).subscribe()
-    } else {
-      const body = {
-
-    libelle: this.Form.value.libelle,
-    code: this.Form.value.code,
-    category: {id:this.Form.value.category},
-    id: this.Form.value.id
+      let bodysous= {
+          
+        libelle: this.Form.value.libelle,
+        code: this.Form.value.code,
+        category : null as {}|null,
+        id: this.Form.value.id
       }
-      this.sousCategoryService.addSousCategory(body).subscribe()
+      if (this.Form.value.category) {
+        bodysous.category = { id: this.Form.value.category };
+      }
+          this.formData.append('sousCategory', JSON.stringify(bodysous))
+      this.formData.append('file', this.file)
+      if (this.sousCategoryService.update) {
+      this.sousCategoryService.updateSousCategory(this.formData).subscribe()
+    } else {
+      this.sousCategoryService.addSousCategory(this.formData).subscribe()
     }
     break;
     case 'worker':

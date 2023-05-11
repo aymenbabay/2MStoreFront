@@ -60,11 +60,13 @@ export class InvoiceComponent implements OnInit {
     this.openInvoiceModal(invoice)
   }
 
-  deleteInvoiceServer( name: String, id : number){
+   deleteInvoiceServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
-      this.invoiceService.deleteInvoice(id).subscribe()
-     this.getAllInvoices()
+       this.invoiceService.deleteInvoice(id).subscribe(data =>{
+         this.getAllInvoices()
+
+       })
     }
 
   }

@@ -49,7 +49,9 @@ export class ProviderComponent implements OnInit {
   addExistProvider($event:any){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
-      this.providerService.addExistProvider($event.target.value).subscribe()
+      this.providerService.addExistProvider($event.target.value).subscribe(x =>{
+        this.getAllProviders()
+      })
     }
 
   }
@@ -62,8 +64,9 @@ export class ProviderComponent implements OnInit {
   deleteProviderServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
-      this.providerService.deleteProvider(id).subscribe()
-     this.ngOnInit()
+      this.providerService.deleteProvider(id).subscribe(x =>{
+        this.getAllProviders()
+      })
     }
 
   }

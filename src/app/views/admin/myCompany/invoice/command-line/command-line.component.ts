@@ -25,11 +25,10 @@ export class CommandLineComponent implements OnInit, OnDestroy {
   commandLine$: CommandLine[]=[]
   total = {"tottva":0,"totprice":0,"totgeneral":0}
   constructor(private commandService : CommandLineService, private companyServce : CompanyService,private router : Router,
-     private invoiceService: InvoiceService, private clientService : ClientService, private dialog : MatDialog){}
+     private invoiceService: InvoiceService, private dialog : MatDialog){}
 
   ngOnInit(): void {
     this.getMe()
-    this.getInvoice()
   }
 
   // addInvoice() {
@@ -41,6 +40,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
 
   getMe(){
     this.company$ = this.companyServce.getMe()
+    this.company$.subscribe(x => this.getInvoice())
   }
 
   getInvoice(){

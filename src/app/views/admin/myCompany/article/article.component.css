@@ -134,6 +134,7 @@ p {
   flex-direction: row;
   cursor: pointer;
   width: 100%;
+  margin-top: 5px;
 }
 
 .btn1{

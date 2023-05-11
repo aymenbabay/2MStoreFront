@@ -26,7 +26,7 @@ import {  MatIconModule } from '@angular/material/icon';
     BrowserModule,
     CommonModule,
     AppRoutingModule,
-    FormsModule,
+    FormsModule, 
     ReactiveFormsModule,
     LayoutModule,
     HttpClientModule,

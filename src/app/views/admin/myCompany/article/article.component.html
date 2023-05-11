@@ -19,8 +19,8 @@
             <th>maxQuantity</th>
             <th>barcode</th>
             <th>tva</th>
-            <!-- <th>category</th>
-          <th>sous category</th> -->
+            <th>category</th>
+          <th>sous category</th>
             <th>img</th>
             <th *ngIf="loginService.isAdmin">Actions</th> <!-- Add new table header for Actions -->
           </tr>
@@ -37,9 +37,9 @@
             <td>{{article.maxQuantity}}</td>
             <td>{{article.barcode}}</td>
             <td>{{article.tva/100|percent}}</td>
-            <!-- <td>{{article.category.libelle}}</td>
-            <td>{{article.sousCategory.libelle}}</td> -->
-            <img src="http://localhost:8080/werehouse/image/{{article.image}}/article" alt="download">
+            <td >{{article.category.libelle}}</td>
+            <td >{{article.sousCategory.libelle}}</td>
+            <img src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.company.user.username}}" alt="download">
             <td *ngIf="loginService.isAdmin"> 
               <mat-icon color="warn" style="font-size: 24px;"   (click)="deleteArticleServer( article.libelle,article.id)">delete</mat-icon>
               <mat-icon color="accent" style="font-size: 24px;" (click)="updateArticleServer(article)">update</mat-icon>
@@ -65,7 +65,7 @@
                                  [attr.data-disc]="'discription: '+article.discription"
                                   >
         <div class="articlei" >
-          <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article"
+          <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.company.user.username}}"
               alt="download">
           </div>
           <div class="information">

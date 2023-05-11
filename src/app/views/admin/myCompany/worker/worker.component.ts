@@ -63,8 +63,9 @@ export class WorkerComponent implements OnInit {
   deleteWorkerServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
-      this.workerService.deleteWorker(id).subscribe()
-     this.ngOnInit()
+      this.workerService.deleteWorker(id).subscribe(x =>{
+        this.getAllWorkers()
+      })
     }
 
   }
