@@ -18,8 +18,6 @@ import { CommandLineService } from '../../../services/admin/command-line.service
 import { Provider } from '../../../models/admin/provider';
 import { HttpClient } from '@angular/common/http';
 
-import {CloudinaryImage } from '@cloudinary/url-gen';
-import {fill} from '@cloudinary/url-gen/actions/resize';
 
 @Component({
   selector: 'app-admin',
@@ -30,6 +28,7 @@ export class AdminComponent implements OnInit {
 
 
   Form!: FormGroup
+  Add = "Add"
   type = ""
   client = false
   article = false
@@ -51,7 +50,6 @@ export class AdminComponent implements OnInit {
     private providerService : ProviderService, private workerService : WorkerService, private invoiceService : InvoiceService,
     private http : HttpClient
     ) {
-      console.log(data.type)
       this.type = data.type
       switch (data.type){
                   case 'article':
@@ -133,8 +131,22 @@ export class AdminComponent implements OnInit {
                   'phone': [''],
                   'address': [''],
                   'email': [''],
-                  'id': ['']
+                  'id': [''],
+                  'jobtitle': [''],
+                  'department': [''],
+                  'totdayvacation': [''],
+                  'statusvacation': ['']
                 })
+                break;
+
+                case 'vacation':
+                  this.Form = fb.group({
+                    'startdate':[],
+                    'enddate':[],
+                    'remainingday':[],
+                    'usedday':[],
+                    'worker':[]
+                  })
                 break;
 
                 case 'invoice':
@@ -172,6 +184,7 @@ ngOnInit(): void {
       this.getAllCategory()
       this.getAllProviders()
       if(this.articleService.update){
+        this.Add = "update"
         this.Form.setValue({
           libelle: this.data.entity.libelle,
           code: this.data.entity.code,
@@ -204,7 +217,7 @@ ngOnInit(): void {
 
   case 'client':
     if(this.clientService.update){
-
+      this.Add = "update"
       this.Form.setValue({
         name: this.data.entity.name,
         code: this.data.entity.code,
@@ -220,7 +233,7 @@ ngOnInit(): void {
     break;
     case 'category':
       if(this.categoryService.update){
-
+        this.Add = "update"
         this.Form.setValue({
           libelle: this.data.entity.libelle,
           code: this.data.entity.code,
@@ -230,7 +243,7 @@ ngOnInit(): void {
       break;
       case 'provider':
         if(this.providerService.update){
-
+          this.Add = "update"
           this.Form.setValue({
             name: this.data.entity.name,
             code: this.data.entity.code,
@@ -248,7 +261,7 @@ ngOnInit(): void {
 
         this.getAllCategory()
           if(this.sousCategoryService.update){
-
+            this.Add = "update"
             this.Form.setValue({
               libelle: this.data.entity.libelle,
               code: this.data.entity.code,
@@ -258,18 +271,52 @@ ngOnInit(): void {
           }
           break;
           case 'worker':
-console.log(this.data.entity)
-              this.Form.setValue({
-                name: this.data.entity.name,
-                salary: 0,
-                phone: this.data.entity.phone,
-                address: this.data.entity.address,
-                email: this.data.entity.email,
-                id: this.data.entity.id
-              })
+              console.log(this.data.entity)
+              if(!this.workerService.update){
+
+                this.Form.setValue({
+                  name: this.data.entity.name,
+                  salary: 0,
+                  phone: this.data.entity.phone,
+                  address: this.data.entity.address,
+                  email: this.data.entity.email,
+                  id: this.data.entity.id,
+                  jobtitle: "",
+                  department: "",
+                  totdayvacation: 0,
+                  statusvacation: false
+                })
+              }else{
+                this.Add = "update"
+                this.Form.setValue({
+                  name: this.data.entity.name,
+                  salary: this.data.entity.salary,
+                  phone: this.data.entity.user.phone,
+                  address: this.data.entity.user.address,
+                  email: this.data.entity.user.email,
+                  id: this.data.entity.id,
+                  jobtitle: this.data.entity.jobtitle,
+                  department: this.data.entity.department,
+                  totdayvacation: this.data.entity.totdayvacation,
+                  statusvacation: this.data.entity.statusvacation
+                })
+              }
 
               break;
 
+              case 'vacation':
+                
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+                this.Form.setValue({
+                  startdate: today.toISOString().substring(0, 10),
+                  enddate: tomorrow.toISOString().substring(0, 10),
+                  remainingday : this.data.entity.totdayvacation,
+                  usedday : 0,
+                  worker: this.data.entity.id
+                })
+                break
 
           case 'invoice':
             this.getAllClient();
@@ -332,6 +379,8 @@ console.log(this.data.entity)
   getAllArticle(){
     this.article$ = this.articleService.getAllArticles(0)
   }
+
+  // ----------------------------------------submit---------------------------------------------------
  submit(){
   switch (this.data.type){
     case 'article':
@@ -415,6 +464,18 @@ console.log(this.data.entity)
       this.workerService.addWorker(this.Form.value).subscribe()
     }
     break;
+
+    case 'vacation':
+      this.Form.setValue({
+        startdate: this.Form.value.startdate,
+        enddate: this.Form.value.enddate,
+        remainingday: this.Form.value.remainingday,
+        usedday: this.Form.value.usedday,
+        worker : {id:this.Form.value.worker}
+      })
+      this.workerService.addVacation(this.Form.value).subscribe()
+      break;
+
     case 'provider':
     if (this.providerService.update) {
       this.providerService.updateProvider(this.Form.value,this.Form.value.id).subscribe()

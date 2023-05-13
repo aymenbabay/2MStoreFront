@@ -1,6 +1,6 @@
 <div class="container">
   <div class="title">
-    <h1>Add {{type}}</h1>
+    <h1>{{Add}} {{type}}</h1>
   </div>
   <div class="article" *ngIf="type === 'article'">
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" >
@@ -161,23 +161,48 @@
   <!-- -------------------------------------------------  worker  ----------------------------------------------------- -->
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='worker'">
     <label for="name">name</label>
-    <input type="text" formControlName="name" id="name" name="name">
+    <input type="text" formControlName="name" readOnly id="name" name="name">
 
     <label for="phone">phone</label>
-    <input type="text" formControlName="phone" id="phone" name="phone">
+    <input type="text" formControlName="phone" readOnly id="phone" name="phone">
 
     <label for="email">email</label>
-    <input type="text" formControlName="email" id="email" name="email">
+    <input type="text" formControlName="email" readOnly id="email" name="email">
 
     <label for="address">address</label>
-    <input type="text" formControlName="address" id="address" name="address">
+    <input type="text" formControlName="address" readOnly id="address" name="address">
 
     <label for="salary">salary</label>
     <input type="number" formControlName="salary" id="salary" name="salary">
 
+    <label for="jobtitle">job title</label>
+    <input type="text" formControlName="jobtitle" id="jobtitle" name="jobtitle">
+    
+    <label for="department">department</label>
+    <input type="text" formControlName="department" id="department" name="department">
+    
+    <label for="totdayvacation">tot day vacation</label>
+    <input type="number" formControlName="totdayvacation" id="totdayvacation" name="totdayvacation">
+    
+    <label for="statusvacation">status</label>
+    <input type=boolean formControlName="statusvacation" id="statusvacation" name="statusvacation">
+
     <input type="number" formControlName="id" hidden id="id" name="id">
 
   </form>
+
+   <!-- -------------------------------------------------  vacation  ----------------------------------------------------- -->
+
+   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='vacation'">
+    <label for="startdate">startday</label>
+    <input type="date" formControlName="startdate" id="startdate" name="startdate" >
+    <input type="date" formControlName="enddate" id="enddate" name="enddate">
+    <input type="number" formControlName="remainingday" readonly id="remainingday" name="remainingday">
+    <input type="number" formControlName="usedday" readonly id="usedday" name="usedday">
+
+  </form>
+
+
 
    <!-- -------------------------------------------------  invoice  ----------------------------------------------------- -->
    <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='invoice'">

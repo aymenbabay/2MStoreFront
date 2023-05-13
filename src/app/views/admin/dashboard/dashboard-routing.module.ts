@@ -14,7 +14,7 @@ canActivate:[AdminGuard]},
 {path:'provider', loadChildren:()=>import('../../admin/myCompany/provider/provider.module').then(m=>m.ProviderModule)},
 {path:'sous-category', loadChildren:()=>import('../../admin/myCompany/sous-category/sous-category.module')
 .then(m=>m.SousCategoryModule), canActivate:[AdminGuard]},
-{path:'worker', loadChildren:()=>import('../../admin/myCompany/worker/worker.module').then(m=>m.WorkerModule)
+{path:'worker', loadChildren:()=>import('../myCompany/workers/worker.module').then(m=>m.WorkerModule)
 ,canActivate:[AdminGuard]},
   {path:'client', loadChildren:()=>import('../../admin/myCompany/client/client.module').then(m=>m.ClientModule)},
     {path:'article', loadChildren:()=>import('../../admin/myCompany/article/article.module').then(m=>m.ArticleModule)}

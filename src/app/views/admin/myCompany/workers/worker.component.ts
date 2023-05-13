@@ -42,9 +42,7 @@ export class WorkerComponent implements OnInit {
     this.workerService.addWorker(this.worker$).subscribe()
   }
 
-  openWorkerModal(){
-    let type = 'worker'
-    let entity = this.worker$
+  openWorkerModal(entity:Worker,type : string){
     const dialogRef = this.dialog.open(AdminComponent,
       {
         data: { entity, type },
@@ -58,7 +56,14 @@ export class WorkerComponent implements OnInit {
      });
   }
 
+  UpdateWorkerServer(worker : Worker){
+    this.workerService.update = true
+    this.openWorkerModal(worker,"worker")
+  }
 
+  addVacation(worker:Worker){
+    this.openWorkerModal(worker,"vacation")
+  }
 
   deleteWorkerServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)

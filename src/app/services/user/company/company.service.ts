@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Company } from '../../../models/user/company';
 import { Article } from '../../../models/admin/article';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,10 @@ checkCompany() :Observable<any>{
 
 getAllCompany():Observable<any> {
   return this.http.get(`${this.baseUrl}all`)
+}
+
+rate(x: number, id: number) :Observable<any>{
+return this.http.get(`${this.baseUrl}rate/${id}/${x}`)
 }
 
 

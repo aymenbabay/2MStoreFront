@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CompanyService } from '../../services/user/company/company.service';
+import { CompanyService } from '../../../services/user/company/company.service';
 import { EMPTY, NEVER, Observable, map, of } from 'rxjs';
-import { Company } from '../../models/user/company';
+import { Company } from '../../../models/user/company';
 
 @Component({
   selector: 'app-all-company',

@@ -8,11 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WorkerByIdComponent } from '../../../../components/admin/worker-by-id/worker-by-id.component';
 
 
 @NgModule({
   declarations: [
-    WorkerComponent
+    WorkerComponent,
+    WorkerByIdComponent
   ],
   imports: [
     CommonModule,

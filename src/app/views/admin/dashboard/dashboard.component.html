@@ -11,4 +11,25 @@
         <button mat-raised-button color="primary" routerLink="/my-company/worker" *ngIf="isAdmin">worker</button>
         <button mat-raised-button color="primary" routerLink="/my-company/inventory" *ngIf="isAdmin">inventory</button>
     </div>
+    <div class="content" *ngIf="company$">
+        <div class="card">
+            {{company$.name}}
+            {{company$.address}}
+            <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{company$.logo}}/company/{{company$.user.username}}"
+                alt="download">
+            </div> 
+            <mat-icon class="star 1 empty" (click)="star(1,company$.id)">star_border</mat-icon>
+            <mat-icon class="star 1 fill">star</mat-icon>
+            <mat-icon class="star 2 empty" (click)="star(2,company$.id)">star_border</mat-icon>
+            <mat-icon class="star 2 fill">star</mat-icon>
+            <mat-icon class="star 3 empty" (click)="star(3,company$.id)">star_border</mat-icon>
+            <mat-icon class="star 3 fill">star</mat-icon>
+            <mat-icon class="star 4 empty" (click)="star(4,company$.id)">star_border</mat-icon>
+            <mat-icon class="star 4 fill">star</mat-icon>
+            <mat-icon class="star 5 empty " (click)="star(5,company$.id)">star_border</mat-icon>
+            <mat-icon class="star 5 fill">star</mat-icon>
+            ({{company$.raters}})
+           
+        </div>
+    </div>
 </div>

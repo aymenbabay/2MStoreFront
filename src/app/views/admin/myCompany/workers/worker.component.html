@@ -1,0 +1,45 @@
+
+<button mat-raised-button color="primary" *ngIf="worker$" (click)="openWorkerModal(worker$,'worker')">add worker</button>
+
+<input type="search" [(ngModel)]="entity" placeholder="type worker name">
+<button (click)="searchUser()">search</button>
+<div *ngIf="workers | async as workers">
+    <table>
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>address </th>
+          <th>email</th>
+          <th>phone</th>
+          <th>job title</th>
+          <th>department</th>
+          <th>total day vacation</th>
+          <th>status vacation</th>
+          <th>salary</th>
+          <th>Actions</th>  
+        </tr>
+      </thead>
+      <tbody *ngIf="workers.length > 0 " >
+         <tr *ngFor="let worker of workers; index as i" routerLink="{{worker.id}}"> 
+           <td>{{worker.name}}</td>
+            <td>{{worker.user.address}}</td>
+            <td>{{worker.user.email}}</td>
+            <td>{{worker.user.phone}}</td>
+            <td>{{worker.jobtitle}}</td>
+            <td>{{worker.department}}</td>
+            <td>{{worker.totdayvacation}}</td>
+            <td>{{worker.statusvacation}}</td>
+            <td>{{worker.salary}}</td>
+            <td>
+               <mat-icon color="warn" style="font-size: 24px;" (click)="deleteWorkerServer( worker.name,worker.id)">delete</mat-icon>
+               <mat-icon color="warn" style="font-size: 24px;" (click)="UpdateWorkerServer( worker)">update</mat-icon>  
+               <mat-icon color="warn" style="font-size: 24px;" (click)="addVacation( worker)">vacation</mat-icon>  
+            </td>
+           
+          </tr>
+      </tbody>
+    </table>
+    
+   
+  </div>
+  

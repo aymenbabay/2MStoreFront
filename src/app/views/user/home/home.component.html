@@ -5,13 +5,13 @@
         <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!has_company">Add Company</button>
         <button mat-raised-button color="primary" routerLink="/my-company" *ngIf="has_company">My Company </button>
         <button mat-raised-button color="primary" routerLink="/user/all-company" >All Company </button>
-        <select (change)="toCompanyPage($event)">
+        <select (change)="toCompanyPage($event)" *ngIf="company$">
           <option value="">choose a company</option>
           <option *ngFor="let company of company$|async" value="{{company.id}}">{{company.name}}</option>
         </select>
         <!-- <i class="fas fa-home"></i> -->
     </div>
-    <div class="content" >
+    <div class="content" *ngIf="article$" >
         <!-- show the publicite -->
       <div class="card" *ngFor="let article of article$|async">
         <div class="company"> <img class="logo" src="http://localhost:8080/werehouse/image/{{article.company.logo}}/company/{{article.company.user.username}}"

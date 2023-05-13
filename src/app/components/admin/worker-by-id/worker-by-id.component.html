@@ -1,0 +1,33 @@
+
+
+<div *ngIf=" (history$ | async) as history">
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>status</th>
+            <th>total days</th>
+            <th>remain days</th>
+            <th>used day</th>
+            <th>statr day</th>
+            <th>end day</th>
+            <th>action</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let history of history$|async">
+            <tr>
+                <td>{{history.worker.name}}</td>
+                <td>{{history.worker.statusvacation}}</td>
+                <td>{{history.worker.totdayvacation}}</td>
+                <td>{{history.remainingday}}</td>
+                <td>{{history.usedday}}</td>
+                <td>{{history.startdate |date:'dd/MM/yyyy'}}</td>
+                <td>{{history.enddate |date:'dd/MM/yyyy'}}</td>
+                <td>
+                    <mat-icon color="warn" style="font-size: 24px;" (click)="addVacation( history.worker)">add</mat-icon>  </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+</div>

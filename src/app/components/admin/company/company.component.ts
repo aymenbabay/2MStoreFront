@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CompanyService } from '../../services/user/company/company.service';
+import { CompanyService } from '../../../services/user/company/company.service';
 import { EMPTY, Observable } from 'rxjs';
-import { Company } from '../../models/user/company';
-import { ArticleService } from '../../services/admin/article.service';
-import { Article } from '../../models/admin/article';
+import { Company } from '../../../models/user/company';
+import { ArticleService } from '../../../services/admin/article.service';
+import { Article } from '../../../models/admin/article';
 
 @Component({
   selector: 'app-company',

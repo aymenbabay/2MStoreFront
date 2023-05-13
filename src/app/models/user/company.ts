@@ -15,4 +15,5 @@ export class Company{
        logo!:string
        id!: number
        user!: SignUp
+       raters!: number
 }

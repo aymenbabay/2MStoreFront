@@ -29,7 +29,14 @@ company$! : Company
 
 
  getMyCompany(){
-this.companyService.getMe().subscribe(x => this.company$ = x)
+this.companyService.getMe().subscribe(x => {
+  this.company$ = x
+})
+ }
+
+ star(x : number, id:number){
+console.log(x)
+  this.companyService.rate(x,id).subscribe()
  }
 
 }

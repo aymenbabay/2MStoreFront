@@ -8,4 +8,8 @@ export class Worker{
     address!: string
     salary!: number
     user! : SignUp
+    jobtitle!: string
+    department!: string
+    totdayvacation!: number
+    statusvacation! :boolean
 }
