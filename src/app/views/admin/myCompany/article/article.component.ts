@@ -6,6 +6,7 @@ import { Article } from '../../../../models/admin/article';
 import { Observable } from 'rxjs';
 import { LoginService } from '../../../../services/guest/login/login.service';
 
+
 @Component({
   selector: 'app-addarticle',
   templateUrl: './article.component.html',
@@ -16,15 +17,18 @@ export class ArticleComponent implements OnInit{
   articles!:Observable<Article[]>
   table= false
   constructor(private dialog : MatDialog, private articleService: ArticleService, public loginService : LoginService){
-
+   
   }
-
+  sendMessage(): void {
+  
+  }
   ngOnInit(): void {
     this.getAllArticles()
   }
 
   getAllArticles(){
     this.articles = this.articleService.getAllArticles(0)
+    this.articles.subscribe(x => console.log(x[0].companies[0].user))
   }
 
   vuSwitch(){

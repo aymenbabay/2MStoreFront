@@ -1,8 +1,9 @@
 <div class="container">
+  
   <div class="button">
     <button mat-raised-button color="primary" (click)="vuSwitch()">vuSwitch</button>
-    <button mat-raised-button color="primary" *ngIf="isAdmin()" (click)="openArticleModal(null,'article')">add new
-      article</button>
+    <button mat-raised-button color="primary" *ngIf="isAdmin()" (click)="openArticleModal(null,'article')">add new article</button>
+    <button mat-raised-button color="primary" *ngIf="isAdmin()" (click)="openArticleModal(null,'articleFromExistProvider')">add new article from exist provider</button>
   </div>
   <div *ngIf=" (articles | async) as articles">
     <div *ngIf="table">
@@ -16,7 +17,6 @@
             <th>sellingPrice</th>
             <th>discription</th>
             <th>minQuantity</th>
-            <th>maxQuantity</th>
             <th>barcode</th>
             <th>tva</th>
             <th>category</th>
@@ -34,12 +34,13 @@
             <td>{{article.sellingPrice}}</td>
             <td>{{article.discription}}</td>
             <td>{{article.minQuantity}}</td>
-            <td>{{article.maxQuantity}}</td>
             <td>{{article.barcode}}</td>
             <td>{{article.tva/100|percent}}</td>
-            <td >{{article.category.libelle}}</td>
-            <td >{{article.sousCategory.libelle}}</td>
-            <img src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.company.user.username}}" alt="download">
+            <td *ngIf="article.category">{{article.category.libelle}}</td>
+            <td *ngIf="!article.category">without category</td>
+            <td *ngIf="article.sousCategory">{{article.sousCategory.libelle}}</td>
+            <td *ngIf="!article.sousCategory">without sous category</td>
+            <img src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.companies[0].user.username}}" alt="download">
             <td *ngIf="loginService.isAdmin"> 
               <mat-icon color="warn" style="font-size: 24px;"   (click)="deleteArticleServer( article.libelle,article.id)">delete</mat-icon>
               <mat-icon color="accent" style="font-size: 24px;" (click)="updateArticleServer(article)">update</mat-icon>
@@ -60,12 +61,11 @@
                                  [attr.data-selling]="'price: '+article.sellingPrice"
                                  [attr.data-tva]="'tva: '+article.tva+'%'"
                                  [attr.data-minqte]="'min quantity: '+article.minQuantity"
-                                 [attr.data-maxqte]="'max quantity: '+article.maxQuantity"
                                  [attr.data-barcode]="'barcode: '+article.barcode"
                                  [attr.data-disc]="'discription: '+article.discription"
                                   >
         <div class="articlei" >
-          <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.company.user.username}}"
+          <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.companies[0].user.username}}"
               alt="download">
           </div>
           <div class="information">

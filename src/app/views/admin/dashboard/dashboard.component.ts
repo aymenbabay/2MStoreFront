@@ -12,6 +12,8 @@ export class DashboardComponent implements OnInit {
 
 isAdmin = false
 company$! : Company
+rating =0
+stars = [1,2,3,4,5]
   constructor(private loginService : LoginService, private companyService : CompanyService){}
 
   ngOnInit(): void {
@@ -36,7 +38,9 @@ this.companyService.getMe().subscribe(x => {
 
  star(x : number, id:number){
 console.log(x)
+this.rating = x
   this.companyService.rate(x,id).subscribe()
  }
 
+ 
 }

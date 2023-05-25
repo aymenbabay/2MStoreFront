@@ -39,8 +39,6 @@ export class ClientService {
     return this.http.put(`${this.baseUrl}update/${id}`,client)
   }
 
-  addMeAsClient(code:string):Observable<any>{
-    return this.http.get(`${this.baseUrl}add_me/${code}`)
-  }
+
   
 }

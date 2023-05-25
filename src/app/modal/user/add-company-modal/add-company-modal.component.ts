@@ -20,16 +20,16 @@ export class AddCompanyModalComponent {
               private router : Router, private loginService : LoginService){
     this.companyForm = fb.group({
       'name':[''],
-       'identityNumber':[''],
-       'nationalIdNumber':[''],
+       'matfisc':[''],
+      'code':[''],
        'address':[''],
        'indestrySector':[''],
        'capital':[''],
-       'legalStructure':[''],
-       'taxStatus':[''],
        'workForce':[''],
        'phone':[''],
        'email':[''],
+       'rate':[],
+       'raters':[''],
     })
   }
 
@@ -44,9 +44,9 @@ export class AddCompanyModalComponent {
       this.loginService.refreshToken().subscribe(data =>{
         let token = data['token'];
         localStorage.setItem('jwt',token)
+        this.close()
+        this.router.navigate(["/my-company"])
       })
-    this.close()
-    this.router.navigate(["/my-company"])
     })
   }
 

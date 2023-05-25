@@ -1,4 +1,6 @@
-export class Provider{
+import { User } from "../user/user"
+
+export class Fournisseur{
     id!: number
     name!: string
     code!: string
@@ -8,4 +10,5 @@ export class Provider{
     phone!: string
     address!: string
     email!: string
+    user!: User
 }

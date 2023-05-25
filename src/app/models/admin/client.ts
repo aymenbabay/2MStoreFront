@@ -1,3 +1,5 @@
+import { User } from "../user/user"
+
 export class Client{
     id!: number
     name!: string
@@ -8,4 +10,5 @@ export class Client{
     phone!: string
     address!: string
     email!: string
+    user!: User
 }

@@ -43,11 +43,6 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  addMeAsClient(code:string){
-    this.clientService.addMeAsClient(code).subscribe(x =>{
-        this.ngOnInit()
-    })
-  }
 
   openClientModal(entity : Client|null){
     let type = 'client'

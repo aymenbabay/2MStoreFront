@@ -9,13 +9,15 @@ import { MatButtonModule } from '@angular/material/button'
 import { AddCompanyModalComponent } from '../../../modal/user/add-company-modal/add-company-modal.component';
 import { CompanyComponent } from '../../../components/admin/company/company.component';
 import { AllCompanyComponent } from '../../../components/user/all-company/all-company.component';
+import { ProfilComponent } from '../../../components/user/profil/profil.component';
 
 @NgModule({
   declarations: [ 
     HomeComponent,
     AddCompanyModalComponent,
     CompanyComponent,
-    AllCompanyComponent
+    AllCompanyComponent,
+    ProfilComponent
   ],
   imports: [
     CommonModule,

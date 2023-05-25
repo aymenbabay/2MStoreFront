@@ -1,4 +1,4 @@
-import { Component, OnDestroy , OnInit} from '@angular/core';
+import { Component, OnDestroy , OnInit, signal} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCompanyModalComponent } from '../../../modal/user/add-company-modal/add-company-modal.component';
 import { CompanyService } from '../../../services/user/company/company.service';
@@ -18,11 +18,14 @@ export class HomeComponent implements OnDestroy, OnInit{
   has_company = false
   article$ : Observable<Article[]> = EMPTY
   company$ : Observable<Company[]> = EMPTY
+  sig = signal(1)
   constructor(public dialog: MatDialog, private companyService : CompanyService, private articleService : ArticleService, private router : Router){
 
   }
 
   ngOnInit(): void {
+    this.sig.update(value => value+2)
+    console.log(this.sig())
     this.check()
     this.getRandomArticleWithRandomCompany()
     this.getAllCompany()

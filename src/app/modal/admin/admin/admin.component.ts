@@ -15,7 +15,7 @@ import { SousCategory } from '../../../models/admin/sous-category';
 import { InvoiceService } from '../../../services/admin/invoice.service';
 import { Client } from '../../../models/admin/client';
 import { CommandLineService } from '../../../services/admin/command-line.service';
-import { Provider } from '../../../models/admin/provider';
+import { Fournisseur } from '../../../models/admin/fournisseur';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -35,7 +35,7 @@ export class AdminComponent implements OnInit {
   categories$!:Observable<Category[]>
   sousCategories$!:Observable<SousCategory[]>
   client$!:Observable<Client[]>
-  providers$!:Observable<Provider[]>
+  providers$!:Observable<Fournisseur[]>
   selectedOption! : any
   selectedCategoryId!: number
   article$!: Observable<Article[]>
@@ -63,16 +63,23 @@ export class AdminComponent implements OnInit {
                       'unit': [''],
                       'discription': [''],
                       'minQuantity': [],
-                      'maxQuantity': [],
                       'barcode': [''],
                       'tva': [],
-                     'provider': [],
+                     'fournisseur': [],
                       'category': [],
                       'sousCategory': [],
                       'id': [],
                       'image':[]
                     })
       break;
+
+      case 'articleFromExistProvider':
+        this.Form = fb.group({
+          'idProvider':[],
+          'idArticle' : []
+        })
+
+        break;
 
       case 'Quantity':
          this.Form = fb.group({
@@ -182,7 +189,7 @@ ngOnInit(): void {
   switch (this.data.type){
     case 'article':
       this.getAllCategory()
-      this.getAllProviders()
+      this.getAllVirtualProviders()
       if(this.articleService.update){
         this.Add = "update"
         this.Form.setValue({
@@ -194,18 +201,27 @@ ngOnInit(): void {
           unit: this.data.entity.unit,
           discription: this.data.entity.discription,
           minQuantity: this.data.entity.minQuantity,
-          maxQuantity: this.data.entity.maxQuantity,
           barcode: this.data.entity.barcode,
           tva: this.data.entity.tva,
-          provider: this.data.entity.provider,
+          fournisseur: this.data.entity.fournisseur,
           id: this.data.entity.id,
           category: this.data.entity.category.id,
           sousCategory: this.data.entity.sousCategory.id,
           image: this.data.entity.image
         })
-        this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.image}/article`
+        this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.image}/article/${this.data.entity.company.user.username}`
       }
   break;
+
+  
+  case 'articleFromExistProvider':
+    this.getAllProviders()
+    this.Form.setValue({
+      idProvider:0,
+      idArticle : 0
+    })
+
+    break;
 
   case 'Quantity':
       this.Form.setValue({
@@ -359,10 +375,18 @@ ngOnInit(): void {
    this.categories$.subscribe(data =>console.log(data))
   }
 
+  getAllVirtualProviders(){
+    this.providers$ = this.providerService.getAllVirtualProviders()
+  }
+
   getAllProviders(){
     this.providers$ = this.providerService.getAllProviders()
   }
 
+  getProvidersArticle($event:any){
+    this.article$ = this.articleService.getAllArticlesByProviderId($event.target.value)
+    this.article$.subscribe(x =>console.log(x))
+  }
   getSubcategories($event:any){
 
       console.log($event.target.value)
@@ -370,6 +394,15 @@ ngOnInit(): void {
 
   }
 
+  getArticle($event:any){
+    const id = $event.target.value;
+    this.article$.subscribe(articles => {
+      const article = articles.find(a => a.id === id);
+      if (article) {
+        console.log(article);
+      }
+    });
+  }
 
   getAllClient(){
     this.client$ = this.clientService.getAllMyClients();
@@ -399,13 +432,13 @@ ngOnInit(): void {
         tva: this.Form.value.tva,
         id: this.Form.value.id,
         category: null as {}|null,
-        provider: null as {}|null,
+        fournisseur: null as {}|null,
         sousCategory:null as {}|null
 
       }
       if(this.Form.value.category){body.category = {id:this.Form.value.category}}
       if(this.Form.value.sousCategory){body.sousCategory = {id:this.Form.value.sousCategory}}
-      if(this.Form.value.provider){body.provider = {id:this.Form.value.provider}}
+      if(this.Form.value.provider){body.fournisseur = {id:this.Form.value.fournisseur}}
       this.formData.append('article',JSON.stringify(body))
       this.formData.append('file',this.file)
     if (this.articleService.update) {

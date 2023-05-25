@@ -2,18 +2,25 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Article } from '../../models/admin/article';
 import { Observable } from 'rxjs'
-import { Form } from '@angular/forms';
+
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleService {
 
-
   update = false
   baseUrl="werehouse/article/"
 
-  constructor(private http: HttpClient) { }
+  
 
+  constructor(private http: HttpClient) {
+   
+   
+   }
+
+   
 
   deleteArticle(id: number):Observable<any>{
     return  this.http.delete(`${this.baseUrl}delete/${id}`)
@@ -39,5 +46,9 @@ export class ArticleService {
 
   getRandomArticleWithRandomCompany(): Observable<Article[]> {
     return this.http.get<Article[]>(`${this.baseUrl}getrandom`)
+  }
+
+  getAllArticlesByProviderId(value: any):Observable<Article[]> {
+    return this.http.get<Article[]>(`${this.baseUrl}getAllProvidersArticleByProviderId/${value}`)
   }
 }

@@ -3,64 +3,80 @@
     <h1>{{Add}} {{type}}</h1>
   </div>
   <div class="article" *ngIf="type === 'article'">
-  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" >
+    <form [formGroup]="Form" (keydown.enter)="submit()" class="form">
 
-    <label for="libelle">libelle: </label>
-    <input type="text" formControlName="libelle" id="libelle" name="libelle">
+      <label for="libelle">libelle: </label>
+      <input type="text" formControlName="libelle" id="libelle" name="libelle">
 
-    <label for="code">code: </label>
-    <input type="text" formControlName="code" id="code" name="code">
+      <label for="code">code: </label>
+      <input type="text" formControlName="code" id="code" name="code">
 
-    <label for="tva">tva:</label>
-    <input type="number" formControlName="tva" id="tva" name="tva">
+      <label for="tva">tva:</label>
+      <input type="number" formControlName="tva" id="tva" name="tva">
 
-    <label for="quantity">quantity:</label>
-    <input type="number" formControlName="quantity" id="quantity" name="quantity">
+      <label for="quantity">quantity:</label>
+      <input type="number" formControlName="quantity" id="quantity" name="quantity">
 
-    <label for="minQuantity">minQte:</label>
-    <input type="number" formControlName="minQuantity" id="minQuantity" name="minQuantity">
+      <label for="minQuantity">minQte:</label>
+      <input type="number" formControlName="minQuantity" id="minQuantity" name="minQuantity">
 
-    <label for="maxQuantity">maxQte:</label>
-    <input type="number" formControlName="maxQuantity" id="maxQuantity" name="maxQuantity">
+      <label for="cost">cost: </label>
+      <input type="number" formControlName="cost" id="cost" name="cost">
 
-    <label for="cost">cost: </label>
-    <input type="number" formControlName="cost" id="cost" name="cost">
+      <label for="sellingPrice">Price:</label>
+      <input type="number" formControlName="sellingPrice" id="sellingPrice" name="sellingPrice">
 
-    <label for="sellingPrice">Price:</label>
-    <input type="number" formControlName="sellingPrice" id="sellingPrice" name="sellingPrice">
+      <label for="unit">unit:</label>
+      <input type="text" formControlName="unit" id="unit" name="unit">
 
-    <label for="unit">unit:</label>
-    <input type="text" formControlName="unit" id="unit" name="unit">
+      <label for="barcode">barcode:</label>
+      <input type="text" formControlName="barcode" id="barcode" name="barcode">
 
-    <label for="barcode">barcode:</label>
-    <input type="text" formControlName="barcode" id="barcode" name="barcode">
-
-    <label for="discription">discription:</label>
-    <textarea  formControlName="discription" id="discription" name="discription">
+      <label for="discription">discription:</label>
+      <textarea formControlName="discription" id="discription" name="discription">
     </textarea>
-    <input type="number" formControlName="id" hidden id="id" name="id">
+      <input type="number" formControlName="id" hidden id="id" name="id">
 
-    <select *ngIf="providers$" type="text" formControlName="provider" id="provider" name="provider" >
-      <option value="">choose provider</option>
-      <option  *ngFor="let i of providers$|async" value="{{i.id}}" >{{i.name}}
-      </option>
+      <select *ngIf="providers$" type="text" formControlName="fournisseur" id="provider" name="provider">
+        <option value="">choose provider</option>
+        <option *ngFor="let i of providers$|async" value="{{i.id}}">{{i.name}}
+        </option>
+      </select>
+
+      <select type="text" formControlName="category" id="category" name="category" (change)="getSubcategories($event)">
+        <option value="">choose a category</option>
+        <option *ngFor="let i of categories$|async" value="{{i.id}}">{{i.libelle}}
+        </option>
+      </select>
+
+      <select *ngIf="sousCategories$" type="text" formControlName="sousCategory" id="SousCategory" name="sousCategory">
+        <option value="">choose a sous category</option>
+        <option *ngFor="let i of sousCategories$|async" value="{{i.id}}">{{i.libelle}}
+        </option>
+      </select>
+
+    </form>
+  </div>
+
+
+  <!-- -------------------------------------------------  add article from exist provider  ----------------------------------------------------- -->
+  <form [formGroup]="Form" class="form" *ngIf="type ==='articleFromExistProvider'">
+    <select name="" id="" (change)="getProvidersArticle($event)">
+      <option value="">-select a provider-</option>
+      <option *ngFor="let provider of providers$|async" value="{{provider.id}}">{{provider.name}}</option>
     </select>
+    <div (keydown.enter)="submit()" *ngIf="(article$ | async)?.length ?? 0 > 0">
+      <select (change)="getArticle($event)">
+        <option value="">-select an article-</option>
+        <option *ngFor="let article of article$ |async" value="{{article.id}}">{{article.libelle}}</option>
+      </select>
 
-    <select type="text" formControlName="category" id="category" name="category"
-     (change)="getSubcategories($event)" >
-      <option value="">choose a category</option>
-      <option  *ngFor="let i of categories$|async"  value="{{i.id}}" >{{i.libelle}}
-      </option>
-    </select>
 
-    <select *ngIf="sousCategories$" type="text" formControlName="sousCategory" id="SousCategory" name="sousCategory" >
-      <option value="">choose a sous category</option>
-      <option  *ngFor="let i of sousCategories$|async" value="{{i.id}}" >{{i.libelle}}
-      </option>
-    </select>
-
+      <input type="text" formControlName="idArticle">
+    </div>
   </form>
-</div>
+
+
   <!-- -------------------------------------------------  add quantity  ----------------------------------------------------- -->
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='Quantity'">
     <label for="libelle">libelle</label>
@@ -71,7 +87,7 @@
     <input type="number" formControlName="id" hidden id="id" name="id">
   </form>
 
-    <!-- -------------------------------------------------  client  ----------------------------------------------------- -->
+  <!-- -------------------------------------------------  client  ----------------------------------------------------- -->
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='client'">
     <label for="name">name</label>
     <input type="text" formControlName="name" id="name" name="name">
@@ -150,9 +166,9 @@
 
     <label for="category">category</label>
 
-    <select type="text" formControlName="category" id="category" name="category" >
+    <select type="text" formControlName="category" id="category" name="category">
       <option value="">choose a category</option>
-      <option  *ngFor="let i of categories$|async" value="{{i.id}}" >{{i.libelle}}
+      <option *ngFor="let i of categories$|async" value="{{i.id}}">{{i.libelle}}
       </option>
     </select>
     <input type="number" formControlName="id" hidden id="id" name="id">
@@ -177,13 +193,13 @@
 
     <label for="jobtitle">job title</label>
     <input type="text" formControlName="jobtitle" id="jobtitle" name="jobtitle">
-    
+
     <label for="department">department</label>
     <input type="text" formControlName="department" id="department" name="department">
-    
+
     <label for="totdayvacation">tot day vacation</label>
     <input type="number" formControlName="totdayvacation" id="totdayvacation" name="totdayvacation">
-    
+
     <label for="statusvacation">status</label>
     <input type=boolean formControlName="statusvacation" id="statusvacation" name="statusvacation">
 
@@ -191,11 +207,11 @@
 
   </form>
 
-   <!-- -------------------------------------------------  vacation  ----------------------------------------------------- -->
+  <!-- -------------------------------------------------  vacation  ----------------------------------------------------- -->
 
-   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='vacation'">
+  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='vacation'">
     <label for="startdate">startday</label>
-    <input type="date" formControlName="startdate" id="startdate" name="startdate" >
+    <input type="date" formControlName="startdate" id="startdate" name="startdate">
     <input type="date" formControlName="enddate" id="enddate" name="enddate">
     <input type="number" formControlName="remainingday" readonly id="remainingday" name="remainingday">
     <input type="number" formControlName="usedday" readonly id="usedday" name="usedday">
@@ -204,45 +220,45 @@
 
 
 
-   <!-- -------------------------------------------------  invoice  ----------------------------------------------------- -->
-   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='invoice'">
+  <!-- -------------------------------------------------  invoice  ----------------------------------------------------- -->
+  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='invoice'">
     <label for="name">name</label>
-    <select type="text" formControlName="name" id="name" name="name" >
+    <select type="text" formControlName="name" id="name" name="name">
       <option value="">choose a client</option>
-      <option  *ngFor="let i of client$|async"  value="{{i.id}}" >{{i.name}}
+      <option *ngFor="let i of client$|async" value="{{i.id}}">{{i.name}}
       </option>
     </select>
     <div *ngIf="'invoicee'">
 
-    <input type="text" formControlName="code" hidden id="code" name="code">
-    <input type="text" formControlName="nature" hidden id="nature" name="nature">
-    <input type="number" formControlName="credit" hidden id="credit" name="credit">
-    <input type="number" formControlName="mvt" hidden id="mvt" name="mvt">
-    <input type="text" formControlName="phone" hidden id="phone" name="phone">
-    <input type="text" formControlName="address" hidden id="address" name="address">
-    <input type="text" formControlName="email" hidden id="email" name="email">
-    <input type="number" formControlName="id" hidden id="id" name="id">
+      <input type="text" formControlName="code" hidden id="code" name="code">
+      <input type="text" formControlName="nature" hidden id="nature" name="nature">
+      <input type="number" formControlName="credit" hidden id="credit" name="credit">
+      <input type="number" formControlName="mvt" hidden id="mvt" name="mvt">
+      <input type="text" formControlName="phone" hidden id="phone" name="phone">
+      <input type="text" formControlName="address" hidden id="address" name="address">
+      <input type="text" formControlName="email" hidden id="email" name="email">
+      <input type="number" formControlName="id" hidden id="id" name="id">
 
     </div>
   </form>
 
-   <!-- -------------------------------------------------  command line  ----------------------------------------------------- -->
-   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='command'">
+  <!-- -------------------------------------------------  command line  ----------------------------------------------------- -->
+  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='command'">
     <label for="libelle" aria-required="true">libelle</label>
-    <select type="text" formControlName="libelle" id="libelle" name="libelle" >
+    <select type="text" formControlName="libelle" id="libelle" name="libelle">
       <option value="">choose a article</option>
-      <option  *ngFor="let i of article$|async"  value="{{i.code}}" >{{i.libelle}}
+      <option *ngFor="let i of article$|async" value="{{i.code}}">{{i.libelle}}
       </option>
     </select>
     <input type="number" aria-required="true" formControlName="quantity">
-   </form>
+  </form>
 
 
-   <div *ngIf="type !== 'invoice' && type !== 'command' && type !== 'Quantity'">
+  <div *ngIf="type !== 'invoice' && type !== 'command' && type !== 'Quantity' && type !== 'articleFromExistProvider'">
 
     <input type="file" (change)="upload($event)" accept="image/*" />
     <img *ngIf="imageUrl" height="100px" [src]="imageUrl" alt="Uploaded Image">
-    </div>
+  </div>
   <div class="button" mat-dialog-actions>
     <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>
     <button mat-raised-button color="primary" (click)="submit()" class="submit">OK</button>

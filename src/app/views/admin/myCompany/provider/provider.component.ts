@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { ProviderService } from '../../../../services/admin/provider.service';
-import { Provider } from '../../../../models/admin/provider';
+import { Fournisseur } from '../../../../models/admin/fournisseur';
 import { LoginService } from '../../../../services/guest/login/login.service';
 
 @Component({
@@ -13,21 +13,27 @@ import { LoginService } from '../../../../services/guest/login/login.service';
 })
 export class ProviderComponent implements OnInit {
 
-  providers$!:Observable<Provider[]>
+  providers$!:Observable<Fournisseur[]>
+  providers!:Observable<Fournisseur[]>
   constructor(private dialog : MatDialog, private providerService: ProviderService, public loginService : LoginService){
    
   }
 
   ngOnInit(): void {
     this.getAllProviders()
+    this.getAllMyProviders()
   }
   
   getAllProviders(){
     this.providers$ = this.providerService.getAllProviders()
+  }
   
+  getAllMyProviders(){
+    this.providers = this.providerService.getAllMyProviders()
+
   }
 
-  openProviderModal(entity : Provider|null){
+  openProviderModal(entity : Fournisseur|null){
     let type = 'provider'
     const dialogRef = this.dialog.open(AdminComponent,
       {
@@ -42,21 +48,18 @@ export class ProviderComponent implements OnInit {
      });
   }
 
-   addMeAsProvider(code : string){
-     this.providerService.addMeAsProvider(code).subscribe()
-  }
-
+  
   addExistProvider($event:any){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
       this.providerService.addExistProvider($event.target.value).subscribe(x =>{
-        this.getAllProviders()
+        this.ngOnInit()
       })
     }
 
   }
 
-  updateProviderServer(provider : Provider){
+  updateProviderServer(provider : Fournisseur){
     this.providerService.update = true
     this.openProviderModal(provider)
   }
@@ -65,7 +68,7 @@ export class ProviderComponent implements OnInit {
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
       this.providerService.deleteProvider(id).subscribe(x =>{
-        this.getAllProviders()
+        this.ngOnInit()
       })
     }
 

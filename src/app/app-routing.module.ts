@@ -28,7 +28,6 @@ const routes: Routes = [
   children:[
     {path:'',loadChildren:()=>import('./views/user/home/home.module').then(m=>m.HomeModule)},
   ]},
-
   {path: '**', redirectTo: '/guest', pathMatch: 'full'}
 ];
 

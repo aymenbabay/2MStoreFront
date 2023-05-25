@@ -4,6 +4,7 @@
     <div class="nev_bar">
         <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="!has_company">Add Company</button>
         <button mat-raised-button color="primary" routerLink="/my-company" *ngIf="has_company">My Company </button>
+        <button mat-raised-button color="primary" routerLink="/user/my-profil" >My Profil </button>
         <button mat-raised-button color="primary" routerLink="/user/all-company" >All Company </button>
         <select (change)="toCompanyPage($event)" *ngIf="company$">
           <option value="">choose a company</option>
@@ -14,12 +15,12 @@
     <div class="content" *ngIf="article$" >
         <!-- show the publicite -->
       <div class="card" *ngFor="let article of article$|async">
-        <div class="company"> <img class="logo" src="http://localhost:8080/werehouse/image/{{article.company.logo}}/company/{{article.company.user.username}}"
+        <div class="company"> <img class="logo" src="http://localhost:8080/werehouse/image/{{article.companies[0].logo}}/company/{{article.companies[0].user.username}}"
           alt="download">
 
-        {{article.company.name}}  {{article.company.indestrySector}}
+        {{article.companies[0].name}}  {{article.companies[0].indestrySector}}
       </div>
-        <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.company.user.username}}"
+        <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.companies[0].user.username}}"
           alt="download">
       </div>
       <p> article:  {{article.libelle}}</p>

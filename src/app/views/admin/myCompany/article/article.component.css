@@ -112,7 +112,6 @@ p {
         attr(data-qte)'\A'
         attr(data-tva)'\A'
         attr(data-minqte)'\A'
-        attr(data-maxqte)'\A'
         attr(data-barcode)'\A'
         attr(data-disc)'\A';
     position: absolute;
