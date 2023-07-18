@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { InvoiceRoutingModule } from './invoice-routing.module';
 import { InvoiceComponent } from './invoice.component';
@@ -11,6 +11,7 @@ import { CommandLineComponent } from './command-line/command-line.component';
 
 
 @NgModule({
+  providers: [DatePipe],
   declarations: [
     InvoiceComponent,
     CommandLineComponent

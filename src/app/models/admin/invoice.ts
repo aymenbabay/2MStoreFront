@@ -3,14 +3,12 @@ import { Client } from "./client"
 
 export class Invoice{
     id! : number
-    tot_tva! : number
-    code! : string
+    code! : number
     tot_tva_invoice! : number
-    prix_article_tot! : number
     prix_invoice_tot! : number
-    createdDate! : number
+    prix_article_tot! : number
+    status = false
     client! : Client
     company! : Company
-	 status = false
 
 }

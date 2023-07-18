@@ -10,7 +10,7 @@
           <th> client </th>
           <th>TT tva</th>
           <th>TT prix </th> 
-          <th>date</th>
+          <!-- <th>date</th> -->
           <th *ngIf="!me">Actions</th> 
           <th *ngIf="me">Fournisseur</th> 
         </tr>
@@ -21,7 +21,7 @@
            <td>{{invoice.client.name}}</td>
             <td>{{invoice.tot_tva_invoice}}</td>
             <td>{{invoice.prix_invoice_tot}}</td>
-            <td>{{invoice.createdDate |date:'dd/MM/yyyy' }}</td>
+            <!-- <td>{{invoice.createdDate |date:'dd/MM/yyyy' }}</td> -->
             <td *ngIf="me">{{invoice.company.name}}</td>
             <td *ngIf="!me"> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteInvoiceServer( invoice.code,invoice.id)">delete</mat-icon>
               <mat-icon color="accent" style="font-size: 24px;" (click)="updateInvoiceServer(invoice)">update</mat-icon>

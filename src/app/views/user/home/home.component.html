@@ -15,16 +15,16 @@
     <div class="content" *ngIf="article$" >
         <!-- show the publicite -->
       <div class="card" *ngFor="let article of article$|async">
-        <div class="company"> <img class="logo" src="http://localhost:8080/werehouse/image/{{article.companies[0].logo}}/company/{{article.companies[0].user.username}}"
+        <div class="company"> <img class="logo" src="http://localhost:8080/werehouse/image/{{article.provider.company.logo}}/company/{{article.provider.company.user.username}}"
           alt="download">
 
-        {{article.companies[0].name}}  {{article.companies[0].indestrySector}}
+        {{article.provider.company.name}}  {{article.provider.company.indestrySector}}
       </div>
-        <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.companies[0].user.username}}"
+        <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.provider.company.user.username}}"
           alt="download">
       </div>
       <p> article:  {{article.libelle}}</p>
-       <p> Price: {{article.sellingPrice|currency: " Dt "}} </p>
+       <p> Price: {{article.cost*article.margin|currency: " Dt "}} </p>
        <p> Quantity dispo: {{article.quantity}} </p>
        <p> Discription: {{article.discription}} </p>
       </div>

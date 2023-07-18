@@ -5,12 +5,12 @@
         <h1 >Register</h1>
     </div>
     <form class="form" [formGroup]="registerForm">
-        <input formControlName="userName" type="text" name="user" autofocus [class]="usernam" (blur)="checkUserName()"
+        <input formControlName="username" type="text" name="user" autofocus [class]="usernam" (blur)="checkUserName()"
             placeholder="type your user name">
-        <p *ngIf="registerForm.controls['userName'].errors?.['required'] && registerForm.controls['userName'].touched ">
+        <p *ngIf="registerForm.controls['username'].errors?.['required'] && registerForm.controls['username'].touched ">
             username is required.</p>
         <p *ngIf=" usernam!='usernam'">This username is already exist.</p>
-        <p *ngIf="registerForm.controls['userName'].errors?.['minlength']">min length is 5 caracters.</p>
+        <p *ngIf="registerForm.controls['username'].errors?.['minlength']">min length is 5 caracters.</p>
         <input formControlName="email" type="email" placeholder="type your email">
         <p *ngIf="registerForm.controls['email'].errors?.['email']">Please enter a valid email.</p>
         <input formControlName="phone" type="tel" placeholder="type your phone">

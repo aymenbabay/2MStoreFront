@@ -1,16 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommandLine } from '../../../../../models/admin/lineCommande';
+import { Component, OnDestroy, OnInit  } from '@angular/core';
 import { CommandLineService } from '../../../../../services/admin/command-line.service';
 import { CompanyService } from '../../../../../services/user/company/company.service';
 import { Company } from '../../../../../models/user/company';
 import { EMPTY, Observable } from 'rxjs';
-import { Invoice } from '../../../../../models/admin/invoice';
 import { InvoiceService } from '../../../../../services/admin/invoice.service';
-import { Client } from '../../../../../models/admin/client';
-import { ClientService } from '../../../../../services/admin/client.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminComponent } from '../../../../../modal/admin/admin/admin.component';
 import { Router } from '@angular/router';
+import { Article } from '../../../../../models/admin/Article';
+import { CommandLine } from '../../../../../models/admin/lineCommande';
+import { Client } from '../../../../../models/admin/client';
+import { DatePipe } from '@angular/common';
+import { Line } from '../../../../../models/admin/Line';
 //import { saveAs } from 'file-saver';
 
 @Component({
@@ -20,27 +21,29 @@ import { Router } from '@angular/router';
 })
 export class CommandLineComponent implements OnInit, OnDestroy {
 
+ 
   company$: Observable<Company> = EMPTY
-  facture$: Observable<Invoice> = EMPTY
-  commandLine$: CommandLine[]=[]
+  facture$: Observable<number> = EMPTY
+  client! : Client
+  commandLine$: Line[]=[]
+  currentDate!: string;
   total = {"tottva":0,"totprice":0,"totgeneral":0}
   constructor(private commandService : CommandLineService, private companyServce : CompanyService,private router : Router,
-     private invoiceService: InvoiceService, private dialog : MatDialog){}
+     private invoiceService: InvoiceService, private dialog : MatDialog, private datePipe: DatePipe){}
 
   ngOnInit(): void {
+    this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')||"";
+
+   this.client = this.invoiceService.client
+   console.log(this.client)
     this.getMe()
+    this.getInvoice()
   }
 
-  // addInvoice() {
-  //   this.commandService.addInvoice().subscribe(pdfData => {
-  //     const blob = new Blob([pdfData], {type: 'application/pdf'});
-  //     saveAs(blob, 'products.pdf');
-  //   });
-  // }
 
   getMe(){
     this.company$ = this.companyServce.getMe()
-    this.company$.subscribe(x => this.getInvoice())
+   // this.company$.subscribe(x => this.getInvoice())
   }
 
   getInvoice(){
@@ -60,7 +63,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       if (result !== "undefined") {
 
     this.commandService.change()
-    this.commandLine$ = this.commandService.commandLine$;
+    this.commandLine$ = this.commandService.line;
     this.total = this.commandService.total
       }
      });
@@ -69,8 +72,9 @@ export class CommandLineComponent implements OnInit, OnDestroy {
   deleteLineServer(line: string, id:number){
 
   }
-
-  addInvoice(code:number, type :string, clientId:number){
+  
+  addInvoice(code:number, type :string, clientId:number){ 
+  
     console.log(code)
     this.commandService.addInvoice(code,type,clientId).subscribe(x =>{
       console.log(x)
@@ -87,21 +91,22 @@ export class CommandLineComponent implements OnInit, OnDestroy {
           link.remove();
         }, 100);
       }
+     
       this.commandService.commandLine$ = []
       this.commandLine$ = []
-      this.commandService.article$!
+      this.commandService.article$! = new Article()
       this.router.navigate(["/my-company/invoice"])
     })
   }
 
-  updateLineServer(line: CommandLine){
+  updateLineServer(line: Line){
     this.commandService.update = true
-    this.addLine(line)
+    //this.addLine(line)
   }
 
   ngOnDestroy(): void {
 
-     this.commandService.commandLine$=[]
+    this.commandService.line = this.commandService.commandLine$=[]
      this.commandService.total={'totgeneral':0,'totprice':0,'tottva':0}
   }
 }

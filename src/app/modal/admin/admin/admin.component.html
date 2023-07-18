@@ -37,21 +37,21 @@
     </textarea>
       <input type="number" formControlName="id" hidden id="id" name="id">
 
-      <select *ngIf="providers$" type="text" formControlName="fournisseur" id="provider" name="provider">
+      <select *ngIf="providers$" type="string" formControlName="provider" id="provider" name="provider">
         <option value="">choose provider</option>
         <option *ngFor="let i of providers$|async" value="{{i.id}}">{{i.name}}
         </option>
       </select>
 
-      <select type="text" formControlName="category" id="category" name="category" (change)="getSubcategories($event)">
+      <select type="number" formControlName="category" id="category" name="category" (change)="getSubcategories($event,0)">
         <option value="">choose a category</option>
         <option *ngFor="let i of categories$|async" value="{{i.id}}">{{i.libelle}}
         </option>
       </select>
 
-      <select *ngIf="sousCategories$" type="text" formControlName="sousCategory" id="SousCategory" name="sousCategory">
+      <select *ngIf="subCategories$" type="number" formControlName="subCategory" id="SubCategory" name="subCategory">
         <option value="">choose a sous category</option>
-        <option *ngFor="let i of sousCategories$|async" value="{{i.id}}">{{i.libelle}}
+        <option *ngFor="let i of subCategories$|async" value="{{i.id}}">{{i.libelle}}
         </option>
       </select>
 
@@ -63,12 +63,12 @@
   <form [formGroup]="Form" class="form" *ngIf="type ==='articleFromExistProvider'">
     <select name="" id="" (change)="getProvidersArticle($event)">
       <option value="">-select a provider-</option>
-      <option *ngFor="let provider of providers$|async" value="{{provider.id}}">{{provider.name}}</option>
+      <option *ngFor="let provider of providers$|async" value="{{provider.id}}">{{provider.company.name}}</option>
     </select>
     <div (keydown.enter)="submit()" *ngIf="(article$ | async)?.length ?? 0 > 0">
       <select (change)="getArticle($event)">
         <option value="">-select an article-</option>
-        <option *ngFor="let article of article$ |async" value="{{article.id}}">{{article.libelle}}</option>
+        <option *ngFor="let article of article$ |async" value="{{article.id}}">{{article.article.libelle}}</option>
       </select>
 
 
@@ -95,9 +95,18 @@
     <label for="code">code</label>
     <input type="text" formControlName="code" id="code" name="code">
 
+    <label for="matfisc">matricule fiscal</label>
+    <input type="text" formControlName="matfisc" id="matfisc" name="matfisc">
+
     <label for="nature">nature</label>
     <input type="text" formControlName="nature" id="nature" name="nature">
-
+    
+    <label for="bankaccountnumber">bank account</label>
+    <input type="text" formControlName="bankaccountnumber" id="bankaccountnumber" name="bankaccountnumber">
+    
+    <label for="indestrySector">indestry Sector</label>
+    <input type="text" formControlName="indestrySector" id="indestrySector" name="indestrySector">
+    
     <label for="credit">credit</label>
     <input type="number" formControlName="credit" id="credit" name="credit">
 
@@ -132,8 +141,17 @@
     <label for="name">name</label>
     <input type="text" formControlName="name" id="name" name="name">
 
+    <label for="matfisc">mat fisc</label>
+    <input type="text" formControlName="matfisc" id="matfisc" name="matfisc">
+
+    <label for="bankaccountnumber">banc account</label>
+    <input type="text" formControlName="bankaccountnumber" id="bankaccountnumber" name="bankaccountnumber">
+
     <label for="code">code</label>
     <input type="text" formControlName="code" id="code" name="code">
+
+    <label for="indestrySector">sector</label>
+    <input type="text" formControlName="indestrySector" id="indestrySector" name="indestrySector">
 
     <label for="nature">nature</label>
     <input type="text" formControlName="nature" id="nature" name="nature">
@@ -247,7 +265,7 @@
     <label for="libelle" aria-required="true">libelle</label>
     <select type="text" formControlName="libelle" id="libelle" name="libelle">
       <option value="">choose a article</option>
-      <option *ngFor="let i of article$|async" value="{{i.code}}">{{i.libelle}}
+      <option *ngFor="let i of article$|async" value="{{i.article.code}}">{{i.article.libelle}}
       </option>
     </select>
     <input type="number" aria-required="true" formControlName="quantity">

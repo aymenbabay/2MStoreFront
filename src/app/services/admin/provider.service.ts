@@ -1,41 +1,53 @@
 import { Injectable } from '@angular/core';
-import { Fournisseur } from '../../models/admin/fournisseur';
+import { Provider } from '../../models/admin/provider';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Article } from '../../models/admin/article';
+import { Store } from '@ngrx/store';
+import { StoreInterface } from '../../store/store';
+import { providerIdSelector } from '../../store/reducer/state.reducer';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProviderService {
+ 
   
   update = false
-  baseUrl="werehouse/fournisseur/"
+  baseUrl="werehouse/provider/"
    
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private store :Store<StoreInterface>) { }
 
 
   deleteProvider(id: number):Observable<any>{
     return  this.http.delete(`${this.baseUrl}delete/${id}`)
   }
+
+  deleteMyProvider(id: number):Observable<any>{
+    return  this.http.delete(`${this.baseUrl}delete_my/${id}`)
+  }
+
   getAllProviders():Observable<any>{
     return this.http.get(`${this.baseUrl}get_all`)
   }
 
-  getAllVirtualProviders():Observable<any>{
+  getAllMyVirtualProviders():Observable<any>{
     return this.http.get(`${this.baseUrl}get_all_my_virtual`)
   }
 
   getAllMyProviders():Observable<any>{
     return this.http.get(`${this.baseUrl}get_all_my`)
   }
-  addProvider(provider : Fournisseur):Observable<any>{
+  addProvider(provider : Provider):Observable<any>{
     console.log(provider)
     return this.http.post(`${this.baseUrl}add`,provider)
   }
 
+  getAll():Observable<any>{
+    return this.http.get(`${this.baseUrl}get_all`)
+  }
     
-  updateProvider(provider: Fournisseur,id : number) :Observable<any>{
+  updateProvider(provider: Provider,id : number) :Observable<any>{
     return this.http.put(`${this.baseUrl}update/${id}`,provider)
   }
 
@@ -44,6 +56,14 @@ export class ProviderService {
     return this.http.get(`${this.baseUrl}add_exist/${id}`)
   }
 
+  getMyProviderId():Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}get_my_provider_id`)
+   }
+
+   getMeProviderId():Observable<number>{
+   
+   return this.store.select(providerIdSelector)
+   }
 
 
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SousCategory } from '../../models/admin/sous-category';
+import { SubCategory } from '../../models/admin/sub-category';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class SousCategoryService {
 
   
   update = false
-  baseUrl="werehouse/souscategory/"
+  baseUrl="werehouse/subcategory/"
    
   constructor(private http: HttpClient) { }
 
@@ -32,7 +32,7 @@ export class SousCategoryService {
     return this.http.put(`${this.baseUrl}update`,sous_category)
   }
 
-  getAllByCategoryId(categoryId: number): Observable<SousCategory[]> {
-    return this.http.get<SousCategory[]>(`${this.baseUrl}${categoryId}`)
+  getAllByCategoryId(categoryId: number): Observable<SubCategory[]> {
+    return this.http.get<SubCategory[]>(`${this.baseUrl}${categoryId}`)
   }
 }

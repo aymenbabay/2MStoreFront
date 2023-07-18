@@ -3,13 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddCompanyModalComponent } from '../../../modal/user/add-company-modal/add-company-modal.component';
 import { CompanyService } from '../../../services/user/company/company.service';
 import { EMPTY, Subscription, Observable } from 'rxjs';
-import { Article } from '../../../models/admin/article';
+import { Article } from '../../../models/admin/Article';
 import { ArticleService } from '../../../services/admin/article.service';
 import { Company } from '../../../models/user/company';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
+  templateUrl: './home.component.html', 
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnDestroy, OnInit{
@@ -32,8 +32,13 @@ export class HomeComponent implements OnDestroy, OnInit{
   }
 
   openDialog() {
+    let type = "add"
     const dialogRef = this.dialog.open(AddCompanyModalComponent,
-      {enterAnimationDuration:'1000ms', exitAnimationDuration:'1000ms'});
+      {
+        data : {type},
+        enterAnimationDuration:'1000ms',
+         exitAnimationDuration:'1000ms'
+      });
 
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);

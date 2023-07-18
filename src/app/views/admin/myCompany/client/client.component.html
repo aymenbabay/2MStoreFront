@@ -18,7 +18,7 @@
           <th>address</th>
           <th>credit</th>
           <th>mouvement</th>
-          <th>email</th>
+          <!-- <th>email</th> -->
           <th  *ngIf="loginService.isAdmin">Actions</th> 
         </tr> 
       </thead>
@@ -31,9 +31,9 @@
             <td>{{client.address}}</td>
             <td>{{client.credit}}</td>
             <td>{{client.mvt}}</td>
-            <td  *ngIf="loginService.isAdmin">{{client.email}}</td>
+            <!-- <td  *ngIf="loginService.isAdmin">{{client.company.email}}</td> -->
             <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteClientServer( client.name,client.id)">delete</mat-icon>
-              <mat-icon color="accent" style="font-size: 24px;" *ngIf="client.user ===null" (click)="updateClientServer(client)">update</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;"  (click)="updateClientServer(client)">update</mat-icon>
   
   
             </td>

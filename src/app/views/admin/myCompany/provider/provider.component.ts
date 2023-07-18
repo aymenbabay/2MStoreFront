@@ -3,8 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { ProviderService } from '../../../../services/admin/provider.service';
-import { Fournisseur } from '../../../../models/admin/fournisseur';
+import { Provider } from '../../../../models/admin/provider';
 import { LoginService } from '../../../../services/guest/login/login.service';
+import { ClientService } from '../../../../services/admin/client.service';
 
 @Component({
   selector: 'app-provider',
@@ -13,8 +14,8 @@ import { LoginService } from '../../../../services/guest/login/login.service';
 })
 export class ProviderComponent implements OnInit {
 
-  providers$!:Observable<Fournisseur[]>
-  providers!:Observable<Fournisseur[]>
+  providers$!:Observable<Provider[]>
+  allproviders$!: Observable<Provider[]>
   constructor(private dialog : MatDialog, private providerService: ProviderService, public loginService : LoginService){
    
   }
@@ -22,18 +23,23 @@ export class ProviderComponent implements OnInit {
   ngOnInit(): void {
     this.getAllProviders()
     this.getAllMyProviders()
+    this.getAll()
   }
-  
+  getAll(){
+    this.allproviders$ = this.providerService.getAll()
+  }
+
   getAllProviders(){
-    this.providers$ = this.providerService.getAllProviders()
+    this.providers$ = this.providerService.getAllMyProviders()
   }
   
   getAllMyProviders(){
-    this.providers = this.providerService.getAllMyProviders()
+    // this.providers = this.providerService.getAllMyVirtualProviders()
+    // this.providers.subscribe((x:Provider[]) => console.log(x[1]))
 
   }
 
-  openProviderModal(entity : Fournisseur|null){
+  openProviderModal(entity : Provider|null){
     let type = 'provider'
     const dialogRef = this.dialog.open(AdminComponent,
       {
@@ -59,12 +65,12 @@ export class ProviderComponent implements OnInit {
 
   }
 
-  updateProviderServer(provider : Fournisseur){
+  updateProviderServer(provider : Provider){
     this.providerService.update = true
     this.openProviderModal(provider)
   }
 
-  deleteProviderServer( name: String, id : number){
+  deleteProvider( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
       this.providerService.deleteProvider(id).subscribe(x =>{
@@ -72,6 +78,15 @@ export class ProviderComponent implements OnInit {
       })
     }
 
+  }
+
+  deleteMyProvider(name:string, id: number){
+    const conf = window.confirm(`are you sure to delete ${name} !!`)
+    if(conf){
+      this.providerService.deleteMyProvider(id).subscribe(x =>{
+        this.ngOnInit()
+      })
+    }
   }
 
 

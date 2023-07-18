@@ -16,7 +16,7 @@ export class RegisterComponent {
   checkpassword = false
   constructor( public fb : FormBuilder, private registerService : RegisterService, private router : Router){
     this.registerForm = this.fb.group({
-      'userName':[null, [Validators.required, Validators.minLength(5)]],
+      'username':[null, [Validators.required, Validators.minLength(5)]],
       'password':[null, [Validators.required, Validators.minLength(8)]],
       'email':[null, [Validators.required, Validators.email]],
       'address':[null],

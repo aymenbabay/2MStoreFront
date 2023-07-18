@@ -1,11 +1,11 @@
 import { Company } from "../user/company"
 import { Category } from "./category"
 
-export class SousCategory{
+export class SubCategory{
     id!: number
     code!: string
     libelle!: string
-    category!: Category
     image!: string
+    category!: Category
     company!: Company
 }

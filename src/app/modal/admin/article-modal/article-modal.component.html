@@ -1,0 +1,94 @@
+<div class="container">
+
+    <div class="article" *ngIf="type === 'article'">
+        <form [formGroup]="Form" (keydown.enter)="submit()" class="form">
+            
+            <label for="libelle">libelle: </label>
+            <input type="text" formControlName="libelle" id="libelle" name="libelle">
+            
+            <label for="code">code: </label>
+            <input type="text" formControlName="code" id="code" name="code">
+            
+            <label for="tva">tva:</label>
+            <input type="number" formControlName="tva" id="tva" name="tva">
+            
+            <label for="quantity">quantity:</label>
+            <input type="number" formControlName="quantity" id="quantity" name="quantity">
+            
+            <label for="minQuantity">minQte:</label>
+            <input type="number" formControlName="minQuantity" id="minQuantity" name="minQuantity">
+            
+            <label for="cost">cost: </label>
+            <input type="number" formControlName="cost" id="cost" name="cost">
+            
+            <label for="margin">margin:</label>
+      <input type="number" formControlName="margin" id="margin" name="margin">
+
+      <label for="unit">unit:</label>
+      <input type="text" formControlName="unit" id="unit" name="unit">
+      
+      <label for="barcode">barcode:</label>
+      <input type="text" formControlName="barcode" id="barcode" name="barcode">
+      
+      <label for="discription">discription:</label>
+      <textarea formControlName="discription" id="discription" name="discription">
+    </textarea>
+    <input type="number" formControlName="id" hidden id="id" name="id">
+    
+    <select *ngIf="providers$" type="string" formControlName="provider" id="provider" name="provider">
+        <option value="">choose provider</option>
+        <option *ngFor="let i of providers$|async" value="{{i.id}}">{{i.name}}
+        </option>
+    </select>
+    
+    <select type="number" formControlName="category" id="category" name="category" (change)="getSubcategories($event,0)">
+        <option value="">choose a category</option>
+        <option *ngFor="let i of categories$|async" value="{{i.id}}">{{i.libelle}}
+        </option>
+    </select>
+
+      <select *ngIf="subCategories$" type="number" formControlName="subCategory" id="SubCategory" name="subCategory">
+        <option value="">choose a sous category</option>
+        <option *ngFor="let i of subCategories$|async" value="{{i.id}}">{{i.libelle}}
+        </option>
+      </select>
+
+    </form>
+    <div>
+
+      <input type="file" (change)="upload($event)" accept="image/*" />
+      <img *ngIf="imageUrl" height="100px" [src]="imageUrl" alt="Uploaded Image">
+    </div>
+</div>
+<div class="companyArticle" *ngIf="type === 'companyArticle'">
+
+  <form [formGroup]="Form" (keydown.enter)="submit()" class="form">
+    <label for="libelle">libelle:</label>
+    <input type="text" formControlName="libelle" id="libelle" name="libelle">
+    
+    <label for="quantity">quantity:</label>
+    <input type="text" formControlName="quantity" id="quantity" name="quantity">
+    
+    <label for="margin">margin:</label>
+    <input type="text" formControlName="margin" id="margin" name="margin">
+     
+    <select type="number" formControlName="category" id="category" name="category" (change)="getSubcategories($event,0)">
+        <option value="">choose a category</option>
+        <option *ngFor="let i of categories$|async" value="{{i.id}}">{{i.libelle}}
+        </option>
+    </select>
+
+      <select *ngIf="subCategories$" type="number" formControlName="subCategory" id="SubCategory" name="subCategory" (change)="updateIds($event)">
+        <option value="">choose a sous category</option>
+        <option *ngFor="let i of subCategories$|async" value="{{i.id}}">{{i.libelle}}
+        </option>
+      </select>
+  </form>
+</div>
+
+
+  <div class="button" mat-dialog-actions>
+    <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" class="submit">OK</button>
+  </div>
+</div>

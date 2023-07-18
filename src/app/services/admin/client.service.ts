@@ -39,6 +39,9 @@ export class ClientService {
     return this.http.put(`${this.baseUrl}update/${id}`,client)
   }
 
+  getAllMyProvider():Observable<any>{
+    return this.http.get(`${this.baseUrl}get_all_my_provider`)
+  }
 
   
 }

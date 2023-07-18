@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Article } from '../../models/admin/article';
+import { Article } from '../../models/admin/Article';
 import { Observable } from 'rxjs'
+import { CompanyArticle } from '../../models/admin/companyArticle';
+import { FormGroup } from '@angular/forms';
 
 
 
@@ -9,6 +11,9 @@ import { Observable } from 'rxjs'
   providedIn: 'root'
 })
 export class ArticleService {
+  UpdateCompanyArticle(form: CompanyArticle) :Observable<any>{
+    return this.http.put(`${this.baseUrl}updatecompanyarticle`,form)
+  }
 
   update = false
   baseUrl="werehouse/article/"
@@ -25,8 +30,9 @@ export class ArticleService {
   deleteArticle(id: number):Observable<any>{
     return  this.http.delete(`${this.baseUrl}delete/${id}`)
   }
-  getAllArticles(id:number |0):Observable<Article[]>{
-    return this.http.get<Article[]>(`${this.baseUrl}getbycompany/${id}`)
+
+  getAllArticles(id:number |0):Observable<CompanyArticle[]>{
+    return this.http.get<CompanyArticle[]>(`${this.baseUrl}getAllMyArticle`)
   }
 
   addArticle(article : FormData):Observable<any>{

@@ -2,14 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Company } from '../../../models/user/company';
-import { Article } from '../../../models/admin/article';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
 
+
+  update = false
   baseUrl = "werehouse/company/"
   constructor(private http: HttpClient) { }
 
@@ -32,6 +32,10 @@ checkCompany() :Observable<any>{
 
 getAllCompany():Observable<any> {
   return this.http.get(`${this.baseUrl}all`)
+}
+
+updateCompany(formData: FormData) :Observable<any>{
+  return this.http.put(`${this.baseUrl}update`,formData)
 }
 
 rate(x: number, id: number) :Observable<any>{

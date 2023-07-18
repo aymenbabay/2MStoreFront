@@ -3,7 +3,7 @@ import { SousCategoryService } from '../../../../services/admin/sous-category.se
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
-import { SousCategory } from '../../../../models/admin/sous-category';
+import { SubCategory } from '../../../../models/admin/sub-category';
 
 @Component({
   selector: 'app-sous-category',
@@ -12,7 +12,7 @@ import { SousCategory } from '../../../../models/admin/sous-category';
 })
 export class SousCategoryComponent implements OnInit {
 
-  sous_categories!:Observable<SousCategory[]>
+  sous_categories!:Observable<SubCategory[]>
   constructor(private dialog : MatDialog, private sousCategoryService: SousCategoryService){
    
   }
@@ -26,7 +26,7 @@ export class SousCategoryComponent implements OnInit {
   
   }
 
-  openSousCategoryModal(entity : SousCategory|null){
+  openSousCategoryModal(entity : SubCategory|null){
     let type = 'sous-category'
     const dialogRef = this.dialog.open(AdminComponent,
       {
@@ -42,7 +42,7 @@ export class SousCategoryComponent implements OnInit {
   }
 
 
-  updateSousCategoryServer(sousCategory : SousCategory){
+  updateSousCategoryServer(sousCategory : SubCategory){
     this.sousCategoryService.update = true
     this.openSousCategoryModal(sousCategory)
   }
@@ -58,7 +58,7 @@ export class SousCategoryComponent implements OnInit {
 
   }
 
-  track(index:number, sousCategory:SousCategory){
+  track(index:number, sousCategory:SubCategory){
     console.log('Track called for item', sousCategory);
     return sousCategory.id
   }

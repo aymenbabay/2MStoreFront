@@ -15,12 +15,18 @@ import { AdminComponent } from './modal/admin/admin/admin.component';
 import { MatButtonModule } from '@angular/material/button';
 import { CloudinaryModule } from '@cloudinary/ng';
 import {  MatIconModule } from '@angular/material/icon';
+import { InfoComponent } from './modal/admin/info/info.component';
 
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store/store';
+import { ArticleModalComponent } from './modal/admin/article-modal/article-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent
+    AdminComponent,
+    InfoComponent,
+    ArticleModalComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +40,8 @@ import {  MatIconModule } from '@angular/material/icon';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    CloudinaryModule
+    CloudinaryModule,
+    StoreModule.forRoot(reducers)
   ],
   providers: [httpInterceptorProviders ],
   bootstrap: [AppComponent]

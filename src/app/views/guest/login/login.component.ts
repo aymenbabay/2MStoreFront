@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit{
   constructor(private loginService : LoginService, public fb : FormBuilder, private datePipe : DatePipe, private router : Router,
               private companyService  :CompanyService){
     this.loginForm = this.fb.group({
-      'userName':[null, Validators.required],
+      'username':[null, Validators.required],
       'password':[null, Validators.required]
     })
   }

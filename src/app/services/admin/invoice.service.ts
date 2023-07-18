@@ -11,6 +11,7 @@ export class InvoiceService {
     
   update = false
   baseUrl="werehouse/invoice/"
+  client!: Client;
    
   constructor(private http: HttpClient) { }
 
@@ -27,8 +28,8 @@ export class InvoiceService {
     return this.http.post(`${this.baseUrl}add`,client)
   }
 
-  getInvoices(): Observable<Invoice> {
-    return this.http.get<Invoice>(`${this.baseUrl}getlastinvoice`)
+  getInvoices(): Observable<number> {
+    return this.http.get<number>(`${this.baseUrl}getlastinvoice`)
   }
     
   updateInvoice(invoice: Invoice) :Observable<any>{

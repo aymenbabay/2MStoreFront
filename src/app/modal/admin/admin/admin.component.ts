@@ -1,22 +1,21 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ArticleService } from '../../../services/admin/article.service';
-import { Article } from '../../../models/admin/article';
 import { ClientService } from '../../../services/admin/client.service';
 import { CategoryService } from '../../../services/admin/category.service';
 import { SousCategoryService } from '../../../services/admin/sous-category.service';
 import { ProviderService } from '../../../services/admin/provider.service';
 import { WorkerService } from '../../../services/admin/worker.service';
 import { Category } from '../../../models/admin/category';
-import { EMPTY, Observable, map, of, switchMap, take } from 'rxjs';
-import { SousCategory } from '../../../models/admin/sous-category';
+import { EMPTY, Observable, Subscription, of, switchMap } from 'rxjs';
+import { SubCategory } from '../../../models/admin/sub-category';
 import { InvoiceService } from '../../../services/admin/invoice.service';
 import { Client } from '../../../models/admin/client';
 import { CommandLineService } from '../../../services/admin/command-line.service';
-import { Fournisseur } from '../../../models/admin/fournisseur';
-import { HttpClient } from '@angular/common/http';
+import { CompanyArticle } from '../../../models/admin/companyArticle';
+import { Provider } from '../../../models/admin/provider';
 
 
 @Component({
@@ -24,8 +23,9 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
 
+  private subscriptions: Subscription = new Subscription();
 
   Form!: FormGroup
   Add = "Add"
@@ -33,12 +33,13 @@ export class AdminComponent implements OnInit {
   client = false
   article = false
   categories$!:Observable<Category[]>
-  sousCategories$!:Observable<SousCategory[]>
+  subCategories$!:Observable<SubCategory[]>
   client$!:Observable<Client[]>
-  providers$!:Observable<Fournisseur[]>
+  providers$!:Observable<Provider[]>
+  providerId = 0
   selectedOption! : any
   selectedCategoryId!: number
-  article$!: Observable<Article[]>
+  article$!: Observable<CompanyArticle[]>
   file! :any
   imageUrl!: string| null| ArrayBuffer;
   imagePath! : any
@@ -47,8 +48,7 @@ export class AdminComponent implements OnInit {
     private articleService: ArticleService, @Inject(MAT_DIALOG_DATA) public data: { entity: any, type: string },
     private router: Router, private clientService : ClientService, private categoryService : CategoryService,
     private sousCategoryService : SousCategoryService, private commandLineService : CommandLineService,
-    private providerService : ProviderService, private workerService : WorkerService, private invoiceService : InvoiceService,
-    private http : HttpClient
+    private providerService : ProviderService, private workerService : WorkerService, private invoiceService : InvoiceService
     ) {
       this.type = data.type
       switch (data.type){
@@ -65,11 +65,13 @@ export class AdminComponent implements OnInit {
                       'minQuantity': [],
                       'barcode': [''],
                       'tva': [],
-                     'fournisseur': [],
+                     'provider': [],
                       'category': [],
-                      'sousCategory': [],
+                      'subCategory': [],
                       'id': [],
-                      'image':[]
+                      'image':[],
+                      'company':[],
+                      'article':[]
                     })
       break;
 
@@ -77,6 +79,7 @@ export class AdminComponent implements OnInit {
         this.Form = fb.group({
           'idProvider':[],
           'idArticle' : []
+
         })
 
         break;
@@ -94,6 +97,9 @@ export class AdminComponent implements OnInit {
           'name': [''],
           'code': [''],
           'nature': [''],
+          'bankaccountnumber':[''],
+          'indestrySector':[''],
+          'matfisc':[''],
           'credit': [''],
           'mvt': [''],
           'phone': [''],
@@ -112,6 +118,9 @@ export class AdminComponent implements OnInit {
           case 'provider':
             this.Form = fb.group({
               'name': [''],
+              'matfisc': [''],
+              'bankaccountnumber': [''],
+              'indestrySector': [''],
               'code': [''],
               'nature': [''],
               'credit': [''],
@@ -190,29 +199,35 @@ ngOnInit(): void {
     case 'article':
       this.getAllCategory()
       this.getAllVirtualProviders()
-      if(this.articleService.update){
-        this.Add = "update"
-        this.Form.setValue({
-          libelle: this.data.entity.libelle,
-          code: this.data.entity.code,
-          cost: this.data.entity.cost,
-          quantity: this.data.entity.quantity,
-          sellingPrice: this.data.entity.sellingPrice,
-          unit: this.data.entity.unit,
-          discription: this.data.entity.discription,
-          minQuantity: this.data.entity.minQuantity,
-          barcode: this.data.entity.barcode,
-          tva: this.data.entity.tva,
-          fournisseur: this.data.entity.fournisseur,
-          id: this.data.entity.id,
-          category: this.data.entity.category.id,
-          sousCategory: this.data.entity.sousCategory.id,
-          image: this.data.entity.image
+      this.providerService.getMeProviderId().subscribe(x =>{
+        this.providerId =x
+        console.log(this.providerId+" "+this.data.entity.article.provider.id)
+        if(this.articleService.update && this.providerId === this.data.entity.article.provider.id){
+          this.getSubcategories("any",this.data.entity.category.id)
+          this.Add = "update"
+          this.Form.setValue({
+            libelle: this.data.entity.article.libelle,
+            code: this.data.entity.article.code,
+          cost: this.data.entity.article.cost,
+          quantity: this.data.entity.article.quantity,
+          sellingPrice: this.data.entity.article.sellingPrice,
+          unit: this.data.entity.article.unit,
+          discription: this.data.entity.article.discription,
+          minQuantity: this.data.entity.article.minQuantity,
+          barcode: this.data.entity.article.barcode,
+          tva: this.data.entity.article.tva,
+          provider: this.data.entity.article.provider.id,
+          id: this.data.entity.article.id,
+          category: this.data.entity.article.category.id,
+          subCategory: this.data.entity.article.subCategory.id,
+          image: this.data.entity.article.image,
         })
-        this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.image}/article/${this.data.entity.company.user.username}`
+      
+        this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.article.image}/article/${this.data.entity.article.provider.company.user.username}`
       }
+    })
   break;
-
+  
   
   case 'articleFromExistProvider':
     this.getAllProviders()
@@ -255,6 +270,8 @@ ngOnInit(): void {
           code: this.data.entity.code,
           id: this.data.entity.id
         })
+        this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.image}/category/${this.data.entity.company.user.username}`
+    
       }
       break;
       case 'provider':
@@ -263,6 +280,9 @@ ngOnInit(): void {
           this.Form.setValue({
             name: this.data.entity.name,
             code: this.data.entity.code,
+            matfisc: this.data.entity.matfisc,
+            bankaccountnumber: this.data.entity.bankaccountnumber,
+            indestrySector: this.data.entity.indestrySector,
           nature: this.data.entity.nature,
           credit: this.data.entity.credit,
           mvt: this.data.entity.mvt,
@@ -375,8 +395,12 @@ ngOnInit(): void {
    this.categories$.subscribe(data =>console.log(data))
   }
 
+  getAllSubCategory(){
+
+  }
+
   getAllVirtualProviders(){
-    this.providers$ = this.providerService.getAllVirtualProviders()
+    this.providers$ = this.providerService.getAllMyVirtualProviders()
   }
 
   getAllProviders(){
@@ -384,13 +408,18 @@ ngOnInit(): void {
   }
 
   getProvidersArticle($event:any){
-    this.article$ = this.articleService.getAllArticlesByProviderId($event.target.value)
-    this.article$.subscribe(x =>console.log(x))
+    // this.article$ = this.articleService.getAllArticlesByProviderId($event.target.value)
+    // this.article$.subscribe(x =>console.log(x))
   }
-  getSubcategories($event:any){
+  getSubcategories($event:any, id:number){
+    if(id===0){
 
       console.log($event.target.value)
-      this.sousCategories$ = this.sousCategoryService.getAllByCategoryId($event.target.value)
+      this.subCategories$ = this.sousCategoryService.getAllByCategoryId($event.target.value)
+    }else{
+      this.subCategories$ = this.sousCategoryService.getAllByCategoryId(id)
+
+    }
 
   }
 
@@ -427,23 +456,38 @@ ngOnInit(): void {
         unit: this.Form.value.unit,
         discription: this.Form.value.discription,
         minQuantity: this.Form.value.minQuantity,
-        maxQuantity: this.Form.value.maxQuantity,
         barcode: this.Form.value.barcode,
         tva: this.Form.value.tva,
         id: this.Form.value.id,
-        category: null as {}|null,
-        fournisseur: null as {}|null,
-        sousCategory:null as {}|null
+        category: this.Form.value.category,
+        provider: this.Form.value.provider,
+        subCategory: this.Form.value.subCategory
 
       }
-      if(this.Form.value.category){body.category = {id:this.Form.value.category}}
-      if(this.Form.value.sousCategory){body.sousCategory = {id:this.Form.value.sousCategory}}
-      if(this.Form.value.provider){body.fournisseur = {id:this.Form.value.fournisseur}}
+      if(!this.articleService.update){
+
+        if(this.Form.value.provider ){
+          body.provider = {id:this.Form.value.provider}
+        }
+        if(this.Form.value.category){
+          body.category = {id:this.Form.value.category}
+        }
+        if(this.Form.value.subCategory){
+          body.subCategory = {id:this.Form.value.subCategory}
+        }
+       
+      }
+      //  if(this.Form.value.category&&this.articleService.update){body.category = this.Form.value.category.id}
+      //  if(this.Form.value.subCategory&&this.articleService.update){body.subCategory = this.Form.value.subCategory.id}
+      //  if(this.Form.value.provider&&this.articleService.update){body.provider = this.Form.value.provider.id
+      // console.log(this.Form.value)}
       this.formData.append('article',JSON.stringify(body))
       this.formData.append('file',this.file)
     if (this.articleService.update) {
+      console.log(body)
       this.articleService.updateArticle(this.formData).subscribe()
     } else {
+      console.log(body)
       this.articleService.addArticle(this.formData).subscribe()
     }
     break;
@@ -522,12 +566,12 @@ ngOnInit(): void {
     if (this.invoiceService.update) {
       this.invoiceService.updateInvoice(this.Form.value.code).subscribe()
     } else {
-      this.client$
+      const mySubsc = this.client$
       .pipe(
         switchMap(clients => {
           const selectedClient =  clients.find(client => client.id.toString() === this.Form.value.name);
           if (selectedClient) {
-            this.invoiceService.addInvoice(selectedClient).subscribe()
+            this.invoiceService.client =selectedClient
           }
           return selectedClient ? of(selectedClient) : EMPTY;
         })
@@ -536,6 +580,8 @@ ngOnInit(): void {
         console.log('selectedClient:', selectedClient);
          this.router.navigate(["/my-company/invoice/command"])
       });
+      this.subscriptions.add(mySubsc)
+
     }
     break;
 
@@ -545,15 +591,15 @@ ngOnInit(): void {
 
         this.article$.pipe(
           switchMap(articles => {
-            const selectedArticle = articles.find(article => article.code.toString() === this.Form.value.libelle);
+            const selectedArticle = articles.find(article => article.article.code.toString() === this.Form.value.libelle);
             if(selectedArticle){
-              this.commandLineService.article$ =selectedArticle
+              this.commandLineService.article$ =selectedArticle.article
               this.commandLineService.qte = this.Form.value.quantity
             }
             return selectedArticle ? of(selectedArticle) : EMPTY;
           })
           ).subscribe(selectedArticle => {
-            console.log('selectedClient:', selectedArticle);
+            console.log('selectedClient:', selectedArticle.article);
           });
         }else{
 this.commandLineService.update = false
@@ -571,7 +617,6 @@ upload($event:any) {
 
     const file = $event.target.files[0];
     this.file = file;
-
     var mimeType = $event.target.files[0].type
 
     if(mimeType.match(/image\/*/) == null){
@@ -619,4 +664,9 @@ close(status : string){
   }
 }
 
+
+ngOnDestroy(): void {
+  
+  this.subscriptions.unsubscribe()
+}
 }

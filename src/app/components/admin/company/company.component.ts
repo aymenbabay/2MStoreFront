@@ -4,7 +4,8 @@ import { CompanyService } from '../../../services/user/company/company.service';
 import { EMPTY, Observable } from 'rxjs';
 import { Company } from '../../../models/user/company';
 import { ArticleService } from '../../../services/admin/article.service';
-import { Article } from '../../../models/admin/article';
+import { Article } from '../../../models/admin/Article';
+import { CompanyArticle } from '../../../models/admin/companyArticle';
 
 @Component({
   selector: 'app-company',
@@ -14,7 +15,7 @@ import { Article } from '../../../models/admin/article';
 export class CompanyComponent implements OnInit {
   id!:number|0
   company$! : Company
-  article$ : Observable<Article[]> = EMPTY
+  article$ : Observable<CompanyArticle[]> = EMPTY
 constructor(private activatedRoute: ActivatedRoute, private companyService : CompanyService, private articleService : ArticleService){}
 
 ngOnInit(): void {

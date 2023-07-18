@@ -1,3 +1,5 @@
+import { Company } from "../user/company"
+
 export class Inventory{
     id!: number
     current_quantity!: number
@@ -8,5 +10,5 @@ export class Inventory{
     bestClient!: number
     articleCost!: number
     articleSelling!: number
-
+    company       !:Company
 }

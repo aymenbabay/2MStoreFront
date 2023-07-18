@@ -1,3 +1,4 @@
+import { Company } from "../user/company"
 import { SignUp } from "../user/signup"
 
 export class Worker{
@@ -7,9 +8,10 @@ export class Worker{
     email!: string
     address!: string
     salary!: number
-    user! : SignUp
     jobtitle!: string
     department!: string
     totdayvacation!: number
     statusvacation! :boolean
+    user! : SignUp
+    company !: Company
 }
