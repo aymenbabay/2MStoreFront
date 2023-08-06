@@ -31,14 +31,7 @@ export class ArticleComponent implements OnInit{
   
   }
   ngOnInit(): void {
-    this.store.select(providerIdSelector).subscribe(x=>{
-     
-        this.providerService.getMyProviderId().subscribe((x:number) =>{
-          this.store.dispatch(new ProviderId(x))
-          
-        })
-  
-     })
+   this.providerService.getMyProviderid()
     this.getAllArticles()
     this.providerService.getMyProviderId().subscribe()
   }

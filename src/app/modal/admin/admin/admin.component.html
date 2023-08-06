@@ -2,64 +2,7 @@
   <div class="title">
     <h1>{{Add}} {{type}}</h1>
   </div>
-  <div class="article" *ngIf="type === 'article'">
-    <form [formGroup]="Form" (keydown.enter)="submit()" class="form">
-
-      <label for="libelle">libelle: </label>
-      <input type="text" formControlName="libelle" id="libelle" name="libelle">
-
-      <label for="code">code: </label>
-      <input type="text" formControlName="code" id="code" name="code">
-
-      <label for="tva">tva:</label>
-      <input type="number" formControlName="tva" id="tva" name="tva">
-
-      <label for="quantity">quantity:</label>
-      <input type="number" formControlName="quantity" id="quantity" name="quantity">
-
-      <label for="minQuantity">minQte:</label>
-      <input type="number" formControlName="minQuantity" id="minQuantity" name="minQuantity">
-
-      <label for="cost">cost: </label>
-      <input type="number" formControlName="cost" id="cost" name="cost">
-
-      <label for="sellingPrice">Price:</label>
-      <input type="number" formControlName="sellingPrice" id="sellingPrice" name="sellingPrice">
-
-      <label for="unit">unit:</label>
-      <input type="text" formControlName="unit" id="unit" name="unit">
-
-      <label for="barcode">barcode:</label>
-      <input type="text" formControlName="barcode" id="barcode" name="barcode">
-
-      <label for="discription">discription:</label>
-      <textarea formControlName="discription" id="discription" name="discription">
-    </textarea>
-      <input type="number" formControlName="id" hidden id="id" name="id">
-
-      <select *ngIf="providers$" type="string" formControlName="provider" id="provider" name="provider">
-        <option value="">choose provider</option>
-        <option *ngFor="let i of providers$|async" value="{{i.id}}">{{i.name}}
-        </option>
-      </select>
-
-      <select type="number" formControlName="category" id="category" name="category" (change)="getSubcategories($event,0)">
-        <option value="">choose a category</option>
-        <option *ngFor="let i of categories$|async" value="{{i.id}}">{{i.libelle}}
-        </option>
-      </select>
-
-      <select *ngIf="subCategories$" type="number" formControlName="subCategory" id="SubCategory" name="subCategory">
-        <option value="">choose a sous category</option>
-        <option *ngFor="let i of subCategories$|async" value="{{i.id}}">{{i.libelle}}
-        </option>
-      </select>
-
-    </form>
-  </div>
-
-
-  <!-- -------------------------------------------------  add article from exist provider  ----------------------------------------------------- -->
+   <!-- -------------------------------------------------  add article from exist provider  ----------------------------------------------------- -->
   <form [formGroup]="Form" class="form" *ngIf="type ==='articleFromExistProvider'">
     <select name="" id="" (change)="getProvidersArticle($event)">
       <option value="">-select a provider-</option>
@@ -87,44 +30,6 @@
     <input type="number" formControlName="id" hidden id="id" name="id">
   </form>
 
-  <!-- -------------------------------------------------  client  ----------------------------------------------------- -->
-  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='client'">
-    <label for="name">name</label>
-    <input type="text" formControlName="name" id="name" name="name">
-
-    <label for="code">code</label>
-    <input type="text" formControlName="code" id="code" name="code">
-
-    <label for="matfisc">matricule fiscal</label>
-    <input type="text" formControlName="matfisc" id="matfisc" name="matfisc">
-
-    <label for="nature">nature</label>
-    <input type="text" formControlName="nature" id="nature" name="nature">
-    
-    <label for="bankaccountnumber">bank account</label>
-    <input type="text" formControlName="bankaccountnumber" id="bankaccountnumber" name="bankaccountnumber">
-    
-    <label for="indestrySector">indestry Sector</label>
-    <input type="text" formControlName="indestrySector" id="indestrySector" name="indestrySector">
-    
-    <label for="credit">credit</label>
-    <input type="number" formControlName="credit" id="credit" name="credit">
-
-    <label for="mvt">mouvement</label>
-    <input type="number" formControlName="mvt" id="mvt" name="mvt">
-
-    <label for="phone">phone</label>
-    <input type="text" formControlName="phone" id="phone" name="phone">
-
-    <label for="address">address</label>
-    <input type="text" formControlName="address" id="address" name="address">
-
-    <label for="email">email</label>
-    <input type="text" formControlName="email" id="email" name="email">
-
-    <input type="number" formControlName="id" hidden id="id" name="id">
-
-  </form>
   <!-- -------------------------------------------------  category  ----------------------------------------------------- -->
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='category'">
     <label for="libelle">libelle</label>
@@ -136,44 +41,7 @@
     <input type="number" formControlName="id" hidden id="id" name="id">
 
   </form>
-  <!-- -------------------------------------------------  provider  ----------------------------------------------------- -->
-  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='provider'">
-    <label for="name">name</label>
-    <input type="text" formControlName="name" id="name" name="name">
 
-    <label for="matfisc">mat fisc</label>
-    <input type="text" formControlName="matfisc" id="matfisc" name="matfisc">
-
-    <label for="bankaccountnumber">banc account</label>
-    <input type="text" formControlName="bankaccountnumber" id="bankaccountnumber" name="bankaccountnumber">
-
-    <label for="code">code</label>
-    <input type="text" formControlName="code" id="code" name="code">
-
-    <label for="indestrySector">sector</label>
-    <input type="text" formControlName="indestrySector" id="indestrySector" name="indestrySector">
-
-    <label for="nature">nature</label>
-    <input type="text" formControlName="nature" id="nature" name="nature">
-
-    <label for="credit">credit</label>
-    <input type="number" formControlName="credit" id="credit" name="credit">
-
-    <label for="mvt">mouvement</label>
-    <input type="number" formControlName="mvt" id="mvt" name="mvt">
-
-    <label for="phone">phone</label>
-    <input type="text" formControlName="phone" id="phone" name="phone">
-
-    <label for="address">address</label>
-    <input type="text" formControlName="address" id="address" name="address">
-
-    <label for="email">email</label>
-    <input type="text" formControlName="email" id="email" name="email">
-
-    <input type="number" formControlName="id" hidden id="id" name="id">
-
-  </form>
   <!-- -------------------------------------------------  sous category  ----------------------------------------------------- -->
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='sous-category'">
     <label for="libelle">libelle</label>

@@ -10,7 +10,7 @@ export class CompanyArticle{
     quantity     ! : number
     minQuantity  ! : number
     tva          ! : number
-    margin ! : number
+    margin       ! : number
     article      ! : Article
     company      ! :Company
     category     ! :Category

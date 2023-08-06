@@ -52,28 +52,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     ) {
       this.type = data.type
       switch (data.type){
-                  case 'article':
-                    this.article = true
-                    this.Form = fb.group({
-                      'libelle': [''],
-                      'code': [''],
-                      'cost': [],
-                      'quantity': [],
-                      'sellingPrice': [],
-                      'unit': [''],
-                      'discription': [''],
-                      'minQuantity': [],
-                      'barcode': [''],
-                      'tva': [],
-                     'provider': [],
-                      'category': [],
-                      'subCategory': [],
-                      'id': [],
-                      'image':[],
-                      'company':[],
-                      'article':[]
-                    })
-      break;
 
       case 'articleFromExistProvider':
         this.Form = fb.group({
@@ -91,23 +69,6 @@ export class AdminComponent implements OnInit, OnDestroy {
           'id': ['']
          })
         break;
-
-      case 'client':
-        this.Form = fb.group({
-          'name': [''],
-          'code': [''],
-          'nature': [''],
-          'bankaccountnumber':[''],
-          'indestrySector':[''],
-          'matfisc':[''],
-          'credit': [''],
-          'mvt': [''],
-          'phone': [''],
-          'address': [''],
-          'email': [''],
-          'id': ['']
-        })
-        break;
         case 'category':
           this.Form = fb.group({
             'libelle': [''],
@@ -115,22 +76,7 @@ export class AdminComponent implements OnInit, OnDestroy {
             'id': ['']
           })
           break;
-          case 'provider':
-            this.Form = fb.group({
-              'name': [''],
-              'matfisc': [''],
-              'bankaccountnumber': [''],
-              'indestrySector': [''],
-              'code': [''],
-              'nature': [''],
-              'credit': [''],
-              'mvt': [''],
-              'phone': [''],
-              'address': [''],
-              'email': [''],
-              'id': ['']
-            })
-            break;
+       
             case 'sous-category':
               this.Form = fb.group({
                 'libelle': [''],
@@ -196,39 +142,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 ngOnInit(): void {
 
   switch (this.data.type){
-    case 'article':
-      this.getAllCategory()
-      this.getAllVirtualProviders()
-      this.providerService.getMeProviderId().subscribe(x =>{
-        this.providerId =x
-        console.log(this.providerId+" "+this.data.entity.article.provider.id)
-        if(this.articleService.update && this.providerId === this.data.entity.article.provider.id){
-          this.getSubcategories("any",this.data.entity.category.id)
-          this.Add = "update"
-          this.Form.setValue({
-            libelle: this.data.entity.article.libelle,
-            code: this.data.entity.article.code,
-          cost: this.data.entity.article.cost,
-          quantity: this.data.entity.article.quantity,
-          sellingPrice: this.data.entity.article.sellingPrice,
-          unit: this.data.entity.article.unit,
-          discription: this.data.entity.article.discription,
-          minQuantity: this.data.entity.article.minQuantity,
-          barcode: this.data.entity.article.barcode,
-          tva: this.data.entity.article.tva,
-          provider: this.data.entity.article.provider.id,
-          id: this.data.entity.article.id,
-          category: this.data.entity.article.category.id,
-          subCategory: this.data.entity.article.subCategory.id,
-          image: this.data.entity.article.image,
-        })
-      
-        this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.article.image}/article/${this.data.entity.article.provider.company.user.username}`
-      }
-    })
-  break;
-  
-  
+     
   case 'articleFromExistProvider':
     this.getAllProviders()
     this.Form.setValue({
@@ -246,22 +160,6 @@ ngOnInit(): void {
       })
       break;
 
-  case 'client':
-    if(this.clientService.update){
-      this.Add = "update"
-      this.Form.setValue({
-        name: this.data.entity.name,
-        code: this.data.entity.code,
-        nature: this.data.entity.nature,
-        credit: this.data.entity.credit,
-        mvt: this.data.entity.mvt,
-        phone: this.data.entity.phone,
-        address: this.data.entity.address,
-        email: this.data.entity.email,
-        id: this.data.entity.id
-      })
-    }
-    break;
     case 'category':
       if(this.categoryService.update){
         this.Add = "update"
@@ -274,25 +172,7 @@ ngOnInit(): void {
     
       }
       break;
-      case 'provider':
-        if(this.providerService.update){
-          this.Add = "update"
-          this.Form.setValue({
-            name: this.data.entity.name,
-            code: this.data.entity.code,
-            matfisc: this.data.entity.matfisc,
-            bankaccountnumber: this.data.entity.bankaccountnumber,
-            indestrySector: this.data.entity.indestrySector,
-          nature: this.data.entity.nature,
-          credit: this.data.entity.credit,
-          mvt: this.data.entity.mvt,
-          phone: this.data.entity.phone,
-          address: this.data.entity.address,
-          email: this.data.entity.email,
-          id: this.data.entity.id
-        })
-      }
-        break;
+     
         case 'sous-category':
 
         this.getAllCategory()
@@ -445,66 +325,12 @@ ngOnInit(): void {
   // ----------------------------------------submit---------------------------------------------------
  submit(){
   switch (this.data.type){
-    case 'article':
-      let body = {
-
-        code: this.Form.value.code,
-        libelle: this.Form.value.libelle,
-        cost: this.Form.value.cost,
-        quantity: this.Form.value.quantity,
-        sellingPrice: this.Form.value.sellingPrice,
-        unit: this.Form.value.unit,
-        discription: this.Form.value.discription,
-        minQuantity: this.Form.value.minQuantity,
-        barcode: this.Form.value.barcode,
-        tva: this.Form.value.tva,
-        id: this.Form.value.id,
-        category: this.Form.value.category,
-        provider: this.Form.value.provider,
-        subCategory: this.Form.value.subCategory
-
-      }
-      if(!this.articleService.update){
-
-        if(this.Form.value.provider ){
-          body.provider = {id:this.Form.value.provider}
-        }
-        if(this.Form.value.category){
-          body.category = {id:this.Form.value.category}
-        }
-        if(this.Form.value.subCategory){
-          body.subCategory = {id:this.Form.value.subCategory}
-        }
-       
-      }
-      //  if(this.Form.value.category&&this.articleService.update){body.category = this.Form.value.category.id}
-      //  if(this.Form.value.subCategory&&this.articleService.update){body.subCategory = this.Form.value.subCategory.id}
-      //  if(this.Form.value.provider&&this.articleService.update){body.provider = this.Form.value.provider.id
-      // console.log(this.Form.value)}
-      this.formData.append('article',JSON.stringify(body))
-      this.formData.append('file',this.file)
-    if (this.articleService.update) {
-      console.log(body)
-      this.articleService.updateArticle(this.formData).subscribe()
-    } else {
-      console.log(body)
-      this.articleService.addArticle(this.formData).subscribe()
-    }
-    break;
-
+   
     case 'Quantity':
       console.log(this.Form.value)
     this.articleService.addQuantity(this.Form.value.quantity, this.Form.value.id).subscribe()
     break;
 
-    case 'client':
-    if (this.clientService.update) {
-      console.log(this.Form.value.id)
-      this.clientService.updateClient(this.Form.value, this.Form.value.id).subscribe()
-    } else {
-      this.clientService.addClient(this.Form.value).subscribe()
-    }
-    break;
     case 'category':
       const category = this.Form.value
       this.formData.append('categoryDto', JSON.stringify(category))
@@ -553,14 +379,6 @@ ngOnInit(): void {
       this.workerService.addVacation(this.Form.value).subscribe()
       break;
 
-    case 'provider':
-    if (this.providerService.update) {
-      this.providerService.updateProvider(this.Form.value,this.Form.value.id).subscribe()
-    } else {
-      this.providerService.addProvider(this.Form.value).subscribe()
-    }
-    break;
-
 
     case 'invoice':
     if (this.invoiceService.update) {
@@ -594,6 +412,7 @@ ngOnInit(): void {
             const selectedArticle = articles.find(article => article.article.code.toString() === this.Form.value.libelle);
             if(selectedArticle){
               this.commandLineService.article$ =selectedArticle.article
+              this.commandLineService.companyArticle = selectedArticle
               this.commandLineService.qte = this.Form.value.quantity
             }
             return selectedArticle ? of(selectedArticle) : EMPTY;
@@ -638,12 +457,7 @@ upload($event:any) {
 close(status : string){
   this.ref.close(status)
   switch (this.data.type){
-    case 'article':
-      this.articleService.update = false
-      break
-      case 'client':
-        this.clientService.update = false
-        break
+   
         case 'category':
           this.categoryService.update = false
           break

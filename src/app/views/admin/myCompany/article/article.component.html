@@ -29,17 +29,17 @@
           <tr *ngFor="let article of articles; index as i">
             <td>{{article.article.libelle}}</td>
             <td>{{article.article.code}}</td>
-            <td>{{article.article.cost}}</td>
+            <td>{{article.cost}}</td>
             <td>{{article.quantity}}</td>
-            <td>{{article.article.cost*article.article.margin}}</td>
+            <td>{{article.cost*article.margin}}</td>
             <td>{{article.article.discription}}</td>
-            <td>{{article.article.minQuantity}}</td>
+            <td>{{article.minQuantity}}</td>
             <td>{{article.article.barcode}}</td>
             <td>{{article.article.tva/100|percent}}</td>
-            <td *ngIf="article.article.category">{{article.article.category.libelle}}</td>
-            <td *ngIf="!article.article.category">without category</td>
-            <td *ngIf="article.article.subCategory">{{article.article.subCategory.libelle}}</td>
-            <td *ngIf="!article.article.subCategory">without sous category</td>
+            <td *ngIf="article.category">{{article.category.libelle}}</td>
+            <td *ngIf="!article.category">without category</td>
+            <td *ngIf="article.subCategory">{{article.subCategory.libelle}}</td>
+            <td *ngIf="!article.subCategory">without sous category</td>
             <img src="http://localhost:8080/werehouse/image/{{article.article.image}}/article/{{article.article.provider.company.user.username}}" alt="download">
             <td *ngIf="loginService.isAdmin"> 
               <mat-icon color="warn" style="font-size: 24px;"   (click)="deleteArticleServer( article.article.libelle,article.id)">delete</mat-icon>
@@ -56,11 +56,11 @@
     <div class="card" *ngIf="!table"  >
       <div *ngFor="let article of articles" class="article popup" [attr.data-libelle]="'libelle: '+article.article.libelle"
                                  [attr.data-code]="'code: '+article.article.code"
-                                 [attr.data-cost]="'cost: '+article.article.cost"
+                                 [attr.data-cost]="'cost: '+article.cost"
                                  [attr.data-qte]="'quantity: '+article.quantity"
-                                 [attr.data-selling]="'price: '+article.article.cost*article.article.margin"
+                                 [attr.data-selling]="'price: '+article.cost*article.margin"
                                  [attr.data-tva]="'tva: '+article.article.tva+'%'"
-                                 [attr.data-minqte]="'min quantity: '+article.article.minQuantity"
+                                 [attr.data-minqte]="'min quantity: '+article.minQuantity"
                                  [attr.data-barcode]="'barcode: '+article.article.barcode"
                                  [attr.data-disc]="'discription: '+article.article.discription"
                                   >
@@ -75,7 +75,7 @@
               <p>
               <p>Code: {{article.article.code}}
               <p>
-              <p>Selling Price: {{article.article.cost*article.article.margin|currency:'Dt '}}
+              <p>Selling Price: {{article.cost*article.margin|currency:'Dt '}}
               <p>
             </div>
         </div>

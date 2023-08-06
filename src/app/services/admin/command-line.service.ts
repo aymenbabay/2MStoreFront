@@ -17,40 +17,48 @@ export class CommandLineService {
   
 
   baseUrl = "werehouse/commandline/"
-  commandLine$: CommandLine[]=[]
-  line :Line[] = []
+  commandLine$: CommandLine[]=[];
+  line :Line[] = [];
+  linee :Line[] = [];
   article$! :Article
+  companyArticle! : CompanyArticle
   qte =0
   update = false
   art! : FormData
   total = {"tottva":0,"totprice":0,"totgeneral":0}
   constructor(private http : HttpClient,private dialog : MatDialog) {
-    this.change() 
+   // this.change() 
   }
 
   change(){
     if(this.article$){
       console.log(this.article$.id+"command line service ")
       for(let i = 0; i<this.commandLine$.length; i++){
-       if(this.commandLine$[i].companyarticle === this.article$.id){
-         console.log(this.commandLine$[i].companyarticle+"command line id")
+
+       if(this.commandLine$[i].companyArticle === this.companyArticle.id){
          console.log(this.article$.id+"article id")
          let message = `this article ${this.article$.libelle} is already added`
        this.openInfoModal(message)
         return;
        }
       }
-       let newLine = new CommandLine()
-      let line = new Line()
-      line.article = this.article$
-       newLine.companyarticle = this.article$.id
-       line.totTva= newLine.totTva = this.article$.tva * this.qte * (this.article$.cost * this.article$.margin /100)
-       line.prixArticleTot = newLine.prixArticleTot = this.article$.cost * this.article$.margin * this.qte
-      line.quantity = newLine.quantity = this.qte
-      console.log(this.article$)
-      line.invoice = newLine.invoice = new Invoice()
-      this.commandLine$.push(newLine)
-      this.line.push(line)
+       let newCommandLine  = new CommandLine();
+      let newLine  = new Line();
+      console.log(newCommandLine)
+      newCommandLine.companyArticle =  this.companyArticle.id
+      newLine.companyarticle = {...this.companyArticle}
+      
+      newLine.totTva =  this.article$.tva * this.qte * (this.companyArticle.cost * this.companyArticle.margin /100)
+      newCommandLine.totTva = this.article$.tva * this.qte * (this.companyArticle.cost * this.companyArticle.margin /100)
+      newLine.prixArticleTot = this.companyArticle.cost * this.companyArticle.margin * this.qte
+      newCommandLine.prixArticleTot = this.companyArticle.cost * this.companyArticle.margin * this.qte
+      newLine.quantity = this.qte
+      newCommandLine.quantity = this.qte
+      newCommandLine.invoice = new Invoice()
+      this.commandLine$.push(newCommandLine )
+      this.linee.push(newLine)
+      console.log(newCommandLine )
+      console.log(newLine )
       let totTva = 0;
       let totPrice = 0;
       let totGeneral = 0;
@@ -64,6 +72,7 @@ export class CommandLineService {
       
       console.log(this.total.tottva+"total")
       console.log(this.commandLine$)
+      console.log(this.linee)
     }
   }
   

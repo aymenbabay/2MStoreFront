@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../../store/store';
 import { providerIdSelector } from '../../store/reducer/state.reducer';
+import { ProviderId } from '../../store/actions/state.action';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class ProviderService {
   }
 
   getAll():Observable<any>{
-    return this.http.get(`${this.baseUrl}get_all`)
+    return this.http.get(`${this.baseUrl}get_all_real`)
   }
     
   updateProvider(provider: Provider,id : number) :Observable<any>{
@@ -65,6 +66,17 @@ export class ProviderService {
    return this.store.select(providerIdSelector)
    }
 
+   getMyProviderid(){
+
+     this.store.select(providerIdSelector).subscribe(x=>{
+       
+       this.getMyProviderId().subscribe((x:number) =>{
+         this.store.dispatch(new ProviderId(x))
+         
+        })
+        
+      })
+    }
 
 
 }

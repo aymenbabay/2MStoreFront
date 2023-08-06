@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientService } from '../../../../services/admin/client.service';
 import { LoginService } from '../../../../services/guest/login/login.service';
+import { ClientModalComponent } from '../../../../modal/admin/client-modal/client-modal.component';
 
 @Component({
   selector: 'app-client',
@@ -46,7 +47,7 @@ export class ClientComponent implements OnInit {
 
   openClientModal(entity : Client|null){
     let type = 'client'
-    const dialogRef = this.dialog.open(AdminComponent,
+    const dialogRef = this.dialog.open(ClientModalComponent,
       {
         data: { entity , type},
         enterAnimationDuration:'1000ms',

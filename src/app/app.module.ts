@@ -20,13 +20,17 @@ import { InfoComponent } from './modal/admin/info/info.component';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './store/store';
 import { ArticleModalComponent } from './modal/admin/article-modal/article-modal.component';
+import { ProviderModalComponent } from './modal/admin/provider-modal/provider-modal.component';
+import { ClientModalComponent } from './modal/admin/client-modal/client-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminComponent,
     InfoComponent,
-    ArticleModalComponent
+    ArticleModalComponent,
+    ProviderModalComponent,
+    ClientModalComponent
   ],
   imports: [
     BrowserModule,

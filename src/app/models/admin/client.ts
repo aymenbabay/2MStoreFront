@@ -14,6 +14,8 @@ export class Client{
     phone ! :string 
     address ! : string
     indestrySector ! :string
-   // company! : Company
+    email !: string
+    company! : Company
     providers! : Provider[];
+    virtual! : boolean
 }

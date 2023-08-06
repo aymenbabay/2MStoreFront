@@ -1,0 +1,45 @@
+
+<div class="content">
+
+    <form [formGroup]="Form" (keydown.enter)="submit()" class="form">
+        <label for="name">name</label>
+    <input type="text" formControlName="name" id="name" name="name">
+
+    <label for="matfisc">mat fisc</label>
+    <input type="text" formControlName="matfisc" id="matfisc" name="matfisc">
+    
+    <label for="bankaccountnumber">banc account</label>
+    <input type="text" formControlName="bankaccountnumber" id="bankaccountnumber" name="bankaccountnumber">
+
+    <label for="code">code</label>
+    <input type="text" formControlName="code" id="code" name="code">
+
+    <label for="indestrySector">sector</label>
+    <input type="text" formControlName="indestrySector" id="indestrySector" name="indestrySector">
+    
+    <label for="nature">nature</label>
+    <input type="text" formControlName="nature" id="nature" name="nature">
+    
+    <label for="credit">credit</label>
+    <input type="number" formControlName="credit" id="credit" name="credit">
+    
+    <label for="mvt">mouvement</label>
+    <input type="number" formControlName="mvt" id="mvt" name="mvt">
+    
+    <label for="phone">phone</label>
+    <input type="text" formControlName="phone" id="phone" name="phone">
+    
+    <label for="address">address</label>
+    <input type="text" formControlName="address" id="address" name="address">
+    
+    <label for="email">email</label>
+    <input type="text" formControlName="email" id="email" name="email">
+    
+    <input type="number" formControlName="id" hidden id="id" name="id">
+    
+</form>
+<div class="button" mat-dialog-actions>
+    <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" class="submit">OK</button>
+  </div>
+</div>

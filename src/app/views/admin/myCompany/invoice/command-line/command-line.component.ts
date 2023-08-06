@@ -12,6 +12,7 @@ import { CommandLine } from '../../../../../models/admin/lineCommande';
 import { Client } from '../../../../../models/admin/client';
 import { DatePipe } from '@angular/common';
 import { Line } from '../../../../../models/admin/Line';
+import { CompanyArticle } from '../../../../../models/admin/companyArticle';
 //import { saveAs } from 'file-saver';
 
 @Component({
@@ -63,7 +64,8 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       if (result !== "undefined") {
 
     this.commandService.change()
-    this.commandLine$ = this.commandService.line;
+    this.commandLine$ = this.commandService.linee;
+    console.log(this.commandLine$)
     this.total = this.commandService.total
       }
      });

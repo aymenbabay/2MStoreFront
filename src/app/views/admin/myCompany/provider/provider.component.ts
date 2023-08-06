@@ -6,6 +6,9 @@ import { ProviderService } from '../../../../services/admin/provider.service';
 import { Provider } from '../../../../models/admin/provider';
 import { LoginService } from '../../../../services/guest/login/login.service';
 import { ClientService } from '../../../../services/admin/client.service';
+import { Store } from '@ngrx/store';
+import { providerIdSelector } from '../../../../store/reducer/state.reducer';
+import { ProviderModalComponent } from '../../../../modal/admin/provider-modal/provider-modal.component';
 
 @Component({
   selector: 'app-provider',
@@ -16,7 +19,8 @@ export class ProviderComponent implements OnInit {
 
   providers$!:Observable<Provider[]>
   allproviders$!: Observable<Provider[]>
-  constructor(private dialog : MatDialog, private providerService: ProviderService, public loginService : LoginService){
+  myProviderId!: number
+  constructor(private dialog : MatDialog, private providerService: ProviderService, public loginService : LoginService, private store : Store){
    
   }
 
@@ -24,6 +28,12 @@ export class ProviderComponent implements OnInit {
     this.getAllProviders()
     this.getAllMyProviders()
     this.getAll()
+    this.providerService.getMyProviderid()
+    this.store.select(providerIdSelector).subscribe(x =>{
+      this.myProviderId = x
+      console.log(x)
+    })
+  this.providerService.update = false
   }
   getAll(){
     this.allproviders$ = this.providerService.getAll()
@@ -31,6 +41,9 @@ export class ProviderComponent implements OnInit {
 
   getAllProviders(){
     this.providers$ = this.providerService.getAllMyProviders()
+    this.providers$.subscribe(x =>{
+      console.log(x[0])
+    })
   }
   
   getAllMyProviders(){
@@ -41,7 +54,7 @@ export class ProviderComponent implements OnInit {
 
   openProviderModal(entity : Provider|null){
     let type = 'provider'
-    const dialogRef = this.dialog.open(AdminComponent,
+    const dialogRef = this.dialog.open(ProviderModalComponent,
       {
         data: { entity, type },
         enterAnimationDuration:'1000ms',
@@ -65,7 +78,7 @@ export class ProviderComponent implements OnInit {
 
   }
 
-  updateProviderServer(provider : Provider){
+  updateProvider(provider : Provider){
     this.providerService.update = true
     this.openProviderModal(provider)
   }

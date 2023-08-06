@@ -14,11 +14,14 @@
           <th>name</th>
           <th> code </th>
           <th>nature</th>
-          <th>phone</th>
-          <th>address</th>
           <th>credit</th>
           <th>mouvement</th>
-          <!-- <th>email</th> -->
+          <th>phone</th>
+          <th>email</th>
+          <th>address</th>
+          <th>bankaccountnumber</th>
+          <th>mat fisc</th>
+          <th>sector</th>
           <th  *ngIf="loginService.isAdmin">Actions</th> 
         </tr> 
       </thead>
@@ -27,13 +30,17 @@
             <td>{{client.name}}</td>
             <td>{{client.code}}</td>
             <td>{{client.nature}}</td>
-            <td>{{client.phone}}</td>
-            <td>{{client.address}}</td>
             <td>{{client.credit}}</td>
             <td>{{client.mvt}}</td>
-            <!-- <td  *ngIf="loginService.isAdmin">{{client.company.email}}</td> -->
-            <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteClientServer( client.name,client.id)">delete</mat-icon>
-              <mat-icon color="accent" style="font-size: 24px;"  (click)="updateClientServer(client)">update</mat-icon>
+            <td>{{client.phone}}</td>
+            <td>{{client.email}}</td>
+            <td>{{client.address}}</td>
+            <td>{{client.bankaccountnumber}}</td>
+            <td>{{client.matfisc}}</td>
+            <td>{{client.indestrySector}}</td>
+            <td *ngIf="loginService.isAdmin"> 
+              <mat-icon color="warn" style="font-size: 24px;" (click)="deleteClientServer( client.name,client.id)">delete</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;" *ngIf="client.virtual ==true || client.id" (click)="updateClientServer(client)">update</mat-icon>
   
   
             </td>

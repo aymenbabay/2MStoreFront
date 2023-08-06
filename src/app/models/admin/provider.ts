@@ -13,5 +13,7 @@ export class Provider{
     credit!: number
     nature!: string
     company! : Company
+    virtual ! : boolean
+    email!: string
 
 }
