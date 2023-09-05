@@ -15,14 +15,14 @@
       </thead>  
       <tbody >
          <tr *ngFor="let inventory of inventories; index as i"> 
-            <td>{{inventory.companyArticle.article.libelle}}</td>
-            <td>{{inventory.companyArticle.article.code}}</td>
+            <td>{{inventory.companyArticle.libelle}}</td>
+            <td>{{inventory.companyArticle.code}}</td>
             <td [ngStyle]="{'background-color': inventory.companyArticle.quantity < 15 ? 'red' : ''}">{{inventory.companyArticle.quantity}}</td>
             <td>{{inventory.out_quantity}}</td>
             <td>{{inventory.in_quantity}}</td>
             <td>{{inventory.bestClient}}</td>
-            <td>{{inventory.companyArticle.article.cost}}</td>
-            <td>{{inventory.companyArticle.article.cost*inventory.companyArticle.article.tva/100}}</td>           
+            <td>{{inventory.companyArticle.cost}}</td>
+            <td>{{inventory.companyArticle.cost*inventory.companyArticle.tva/100}}</td>           
           </tr>
       </tbody>
     </table>

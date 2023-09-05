@@ -22,5 +22,5 @@ export class Article{
      image        !:string
      company      !:Company|null
      article      !:Article|null
-
+     sharedPoint  !:string
 }

@@ -1,5 +1,4 @@
 import { Article } from "./Article"
-import { CompanyArticle } from "./companyArticle"
 import { Invoice } from "./invoice"
 
 export class Line {
@@ -8,7 +7,7 @@ export class Line {
     totTva         ! :number
     prixArticleTot ! :number
    // invoice        ! :Invoice
-    companyarticle        ! :CompanyArticle
+    article        ! :Article
     articleLibelle        ! :string
     articleCost           ! :number
     articleTva            ! :number

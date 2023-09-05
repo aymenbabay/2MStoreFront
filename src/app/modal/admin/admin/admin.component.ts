@@ -14,8 +14,8 @@ import { SubCategory } from '../../../models/admin/sub-category';
 import { InvoiceService } from '../../../services/admin/invoice.service';
 import { Client } from '../../../models/admin/client';
 import { CommandLineService } from '../../../services/admin/command-line.service';
-import { CompanyArticle } from '../../../models/admin/companyArticle';
 import { Provider } from '../../../models/admin/provider';
+import { Article } from '../../../models/admin/Article';
 
 
 @Component({
@@ -39,7 +39,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   providerId = 0
   selectedOption! : any
   selectedCategoryId!: number
-  article$!: Observable<CompanyArticle[]>
+  article$!: Observable<Article[]>
   file! :any
   imageUrl!: string| null| ArrayBuffer;
   imagePath! : any
@@ -394,10 +394,10 @@ ngOnInit(): void {
 
         this.article$.pipe(
           switchMap(articles => {
-            const selectedArticle = articles.find(article => article.article.code.toString() === this.Form.value.libelle);
+            const selectedArticle = articles.find(article => article.code.toString() === this.Form.value.libelle);
             if(selectedArticle){
-              this.commandLineService.article$ =selectedArticle.article
-              this.commandLineService.companyArticle = selectedArticle
+              this.commandLineService.article$ =selectedArticle
+              this.commandLineService.article = selectedArticle
               this.commandLineService.qte = this.Form.value.quantity
             }
             return selectedArticle ? of(selectedArticle) : EMPTY;

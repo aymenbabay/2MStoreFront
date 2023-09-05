@@ -11,7 +11,7 @@
     <div (keydown.enter)="submit()" *ngIf="(article$ | async)?.length ?? 0 > 0">
       <select (change)="getArticle($event)">
         <option value="">-select an article-</option>
-        <option *ngFor="let article of article$ |async" value="{{article.id}}">{{article.article.libelle}}</option>
+        <option *ngFor="let article of article$ |async" value="{{article.id}}">{{article.libelle}}</option>
       </select>
 
 
@@ -124,7 +124,7 @@
     <label for="libelle" aria-required="true">libelle</label>
     <select type="text" formControlName="libelle" id="libelle" name="libelle">
       <option value="">choose a article</option>
-      <option *ngFor="let i of article$|async" value="{{i.article.code}}">{{i.article.libelle}}
+      <option *ngFor="let i of article$|async" value="{{i.code}}">{{i.libelle}}
       </option>
     </select>
     <input type="number" aria-required="true" formControlName="quantity">

@@ -27,22 +27,22 @@
         </thead>
         <tbody *ngIf="articles.length > 0 ">
           <tr *ngFor="let article of articles; index as i">
-            <td>{{article.article.libelle}}</td>
-            <td>{{article.article.code}}</td>
+            <td>{{article.libelle}}</td>
+            <td>{{article.code}}</td>
             <td>{{article.cost}}</td>
             <td>{{article.quantity}}</td>
             <td>{{article.cost*article.margin}}</td>
-            <td>{{article.article.discription}}</td>
+            <td>{{article.discription}}</td>
             <td>{{article.minQuantity}}</td>
-            <td>{{article.article.barcode}}</td>
-            <td>{{article.article.tva/100|percent}}</td>
+            <td>{{article.barcode}}</td>
+            <td>{{article.tva/100|percent}}</td>
             <td *ngIf="article.category">{{article.category.libelle}}</td>
             <td *ngIf="!article.category">without category</td>
             <td *ngIf="article.subCategory">{{article.subCategory.libelle}}</td>
             <td *ngIf="!article.subCategory">without sous category</td>
-            <img src="http://localhost:8080/werehouse/image/{{article.article.image}}/article/{{article.article.provider.company.user.username}}" alt="download">
+            <img src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.provider.company.user.username}}" alt="download">
             <td *ngIf="loginService.isAdmin"> 
-              <mat-icon color="warn" style="font-size: 24px;"   (click)="deleteArticleServer( article.article.libelle,article.id)">delete</mat-icon>
+              <mat-icon color="warn" style="font-size: 24px;"   (click)="deleteArticleServer( article.libelle,article.id)">delete</mat-icon>
               <mat-icon color="accent" style="font-size: 24px;" (click)="updateArticleServer(article)">update</mat-icon>
               <mat-icon color="accent" style="font-size: 24px;" (click)="addQuantity(article)">add</mat-icon>
 
@@ -54,26 +54,26 @@
       </table>
     </div>
     <div class="card" *ngIf="!table"  >
-      <div *ngFor="let article of articles" class="article popup" [attr.data-libelle]="'libelle: '+article.article.libelle"
-                                 [attr.data-code]="'code: '+article.article.code"
+      <div *ngFor="let article of articles" class="article popup" [attr.data-libelle]="'libelle: '+article.libelle"
+                                 [attr.data-code]="'code: '+article.code"
                                  [attr.data-cost]="'cost: '+article.cost"
                                  [attr.data-qte]="'quantity: '+article.quantity"
-                                 [attr.data-selling]="'price: '+(article.cost*(article.article.tva + article.margin)/100+article.cost)"
-                                 [attr.data-tva]="'tva: '+article.article.tva+'%'"
+                                 [attr.data-selling]="'price: '+(article.cost*(article.tva + article.margin)/100+article.cost)"
+                                 [attr.data-tva]="'tva: '+article.tva+'%'"
                                  [attr.data-minqte]="'min quantity: '+article.minQuantity"
-                                 [attr.data-barcode]="'barcode: '+article.article.barcode"
-                                 [attr.data-disc]="'discription: '+article.article.discription"
+                                 [attr.data-barcode]="'barcode: '+article.barcode"
+                                 [attr.data-disc]="'discription: '+article.discription"
                                   >
         <div class="articlei" >
           <div class="image">
-             <img *ngIf="article.article.image" class="img" src="http://localhost:8080/werehouse/image/{{article.article.image}}/article/{{article.article.provider.company.user.username}}" alt="download">
-             <p *ngIf="!article.article.image">without image</p>
+             <img *ngIf="article.image" class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.sharedPoint}}" alt="download">
+             <p *ngIf="!article.image">without image</p>
           </div>
           <div class="information">
             <div class="_1">
-              <p>Libelle: {{article.article.libelle}}
+              <p>Libelle: {{article.libelle}}
               <p>
-              <p>Code: {{article.article.code}}
+              <p>Code: {{article.code}}
               <p>
               <p>Selling Price: {{article.cost*article.margin|currency:'Dt '}}
               <p>
@@ -82,7 +82,7 @@
       </div>
       <div class="button">
         
-        <mat-icon color="warn" style="font-size: 24px;" class="btn1"  (click)="deleteArticleServer( article.article.libelle,article.id)">delete</mat-icon>
+        <mat-icon color="warn" style="font-size: 24px;" class="btn1"  (click)="deleteArticleServer( article.libelle,article.id)">delete</mat-icon>
         <mat-icon color="accent" style="font-size: 24px;" class="btn1"  (click)="updateArticleServer(article)">update</mat-icon>
         <mat-icon color="accent" style="font-size: 24px;" class="btn1"  (click)="addQuantity(article)">add</mat-icon>
       </div>

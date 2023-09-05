@@ -5,7 +5,6 @@ import { ArticleService } from '../../../../services/admin/article.service';
 import { Article } from '../../../../models/admin/Article';
 import { Observable } from 'rxjs';
 import { LoginService } from '../../../../services/guest/login/login.service';
-import { CompanyArticle } from '../../../../models/admin/companyArticle';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../../../../store/store';
 import { providerIdSelector } from '../../../../store/reducer/state.reducer';
@@ -21,7 +20,7 @@ import { ArticleModalComponent } from '../../../../modal/admin/article-modal/art
 })
 export class ArticleComponent implements OnInit{
 
-  articles!:Observable<CompanyArticle[]>
+  articles!:Observable<Article[]>
   table= false
   constructor(private dialog : MatDialog, private articleService: ArticleService, public loginService : LoginService,
     private providerService : ProviderService , private store : Store<StoreInterface>){
@@ -44,7 +43,7 @@ export class ArticleComponent implements OnInit{
   vuSwitch(){
     this.table = !this.table
   }
-  openArticleModal(entity : CompanyArticle|Article|null, type:string){
+  openArticleModal(entity : Article|null, type:string){
     const dialogRef = this.dialog.open(ArticleModalComponent,
       {
         data: { entity, type },
@@ -59,15 +58,15 @@ export class ArticleComponent implements OnInit{
      });
   }
 
-  addQuantity(article: CompanyArticle){
+  addQuantity(article: Article){
     this.openArticleModal(article,"Quantity")
   }
 
-  updateArticleServer(article : CompanyArticle){
+  updateArticleServer(article : Article){
     this.articleService.update = true
     this.providerService.getMeProviderId().subscribe(x =>{
       console.log(x)
-      if (article.article.provider.id === x){
+      if (article.provider.id === x){
         this.openArticleModal(article.article,"article")
       } 
       else{

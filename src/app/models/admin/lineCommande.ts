@@ -6,7 +6,7 @@ export class CommandLine{
     quantity              ! :number
     totTva                ! :number
     prixArticleTot        ! :number
-    companyArticle        ! :number
+    article        ! :number
     articleLibelle        ! :string
     articleCost           ! :number
     articleTva            ! :number

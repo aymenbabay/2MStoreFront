@@ -54,15 +54,15 @@
             <tbody *ngIf="commandLine$.length > 0 && !commandService.view " >
             
                 <tr *ngFor="let line of commandLine$; index as i"> 
-                  <td>{{line.companyarticle.article.libelle}}</td>
-                  <td>{{line.companyarticle.article.code}}</td>
+                  <td>{{line.article.libelle}}</td>
+                  <td>{{line.article.code}}</td>
                   <td>{{line.quantity}}</td>
-                  <td>{{line.companyarticle.article.unit}}</td>
-                  <td>{{line.companyarticle.article.tva/100|percent}}</td>
-                  <td>{{line.companyarticle.article.cost*line.companyarticle.article.margin/100|currency: ' DT '}}</td>
+                  <td>{{line.article.unit}}</td>
+                  <td>{{line.article.tva/100|percent}}</td>
+                  <td>{{line.article.cost*line.article.margin/100|currency: ' DT '}}</td>
                   <td>{{line.totTva|currency: ' DT '}}</td>
                   <td>{{line.prixArticleTot|currency: ' DT '}}</td>
-                  <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteLineServer( line.companyarticle.article.code,line.id)">delete</mat-icon>
+                  <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteLineServer( line.article.code,line.id)">delete</mat-icon>
                     <mat-icon color="accent" style="font-size: 24px;" (click)="updateLineServer(line)">update</mat-icon>  
                   </td>
                 </tr>

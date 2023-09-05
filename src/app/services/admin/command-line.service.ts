@@ -4,7 +4,6 @@ import { CommandLine } from '../../models/admin/lineCommande';
 import { Article } from '../../models/admin/Article';
 import { Observable } from 'rxjs';
 import { Invoice } from '../../models/admin/invoice';
-import { CompanyArticle } from '../../models/admin/companyArticle';
 import { InfoComponent } from '../../modal/admin/info/info.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Line } from '../../models/admin/Line';
@@ -31,8 +30,8 @@ export class CommandLineService {
   commandLine$: CommandLine[]=[];
   line :Line[] = [];
   linee :Line[] = [];
-  article$! :Article
-  companyArticle! : CompanyArticle
+  article$! :Article|null
+  article! : Article
   qte =0
   update = false
   view = false
@@ -47,7 +46,7 @@ export class CommandLineService {
       console.log(this.article$.id+"command line service ")
       for(let i = 0; i<this.commandLine$.length; i++){
 
-       if(this.commandLine$[i].companyArticle === this.companyArticle.id){
+       if(this.commandLine$[i].article === this.article.id){
          console.log(this.article$.id+"article id")
          let message = `this article ${this.article$.libelle} is already added`
        this.openInfoModal(message)
@@ -57,13 +56,13 @@ export class CommandLineService {
        let newCommandLine  = new CommandLine();
       let newLine  = new Line();
       console.log(newCommandLine)
-      newCommandLine.companyArticle =  this.companyArticle.id
-      newLine.companyarticle = {...this.companyArticle}
+      newCommandLine.article =  this.article.id
+      newLine.article = {...this.article}
       
-      newLine.totTva =  this.article$.tva * this.qte * (this.companyArticle.cost * this.companyArticle.margin /100)
-      newCommandLine.totTva = this.article$.tva * this.qte * (this.companyArticle.cost * this.companyArticle.margin /100)
-      newLine.prixArticleTot = this.companyArticle.cost * this.companyArticle.margin * this.qte
-      newCommandLine.prixArticleTot = this.companyArticle.cost * this.companyArticle.margin * this.qte
+      newLine.totTva =  this.article$.tva * this.qte * (this.article.cost * this.article.margin /100)
+      newCommandLine.totTva = this.article$.tva * this.qte * (this.article.cost * this.article.margin /100)
+      newLine.prixArticleTot = this.article.cost * this.article.margin * this.qte
+      newCommandLine.prixArticleTot = this.article.cost * this.article.margin * this.qte
       newLine.quantity = this.qte
       newCommandLine.quantity = this.qte
      // newCommandLine.invoice = new Invoice()

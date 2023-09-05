@@ -12,7 +12,6 @@ import { CommandLine } from '../../../../../models/admin/lineCommande';
 import { Client } from '../../../../../models/admin/client';
 import { DatePipe } from '@angular/common';
 import { Line } from '../../../../../models/admin/Line';
-import { CompanyArticle } from '../../../../../models/admin/companyArticle';
 //import { saveAs } from 'file-saver';
 
 @Component({
@@ -109,7 +108,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
   
   addInvoice(code:number, type :string, clientId:number){ 
   
-    console.log(code)
+    console.log(code+" "+ clientId + " " + type)
     this.commandService.addInvoice(code,type,clientId).subscribe(x =>{
       console.log(x)
       if(type==="pdf-save-client"){
