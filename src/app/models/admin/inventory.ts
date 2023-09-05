@@ -1,4 +1,5 @@
 import { Company } from "../user/company"
+import { CompanyArticle } from "./companyArticle"
 
 export class Inventory{
     id!: number
@@ -11,4 +12,5 @@ export class Inventory{
     articleCost!: number
     articleSelling!: number
     company       !:Company
+    companyArticle !:CompanyArticle
 }

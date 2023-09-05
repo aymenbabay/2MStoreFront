@@ -7,6 +7,9 @@ import { Article } from '../../../models/admin/Article';
 import { ArticleService } from '../../../services/admin/article.service';
 import { Company } from '../../../models/user/company';
 import { Router } from '@angular/router';
+import { Position } from '@cloudinary/url-gen/qualifiers';
+import { ClientService } from '../../../services/admin/client.service';
+import { ProviderService } from '../../../services/admin/provider.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html', 
@@ -19,7 +22,8 @@ export class HomeComponent implements OnDestroy, OnInit{
   article$ : Observable<Article[]> = EMPTY
   company$ : Observable<Company[]> = EMPTY
   sig = signal(1)
-  constructor(public dialog: MatDialog, private companyService : CompanyService, private articleService : ArticleService, private router : Router){
+  constructor(public dialog: MatDialog, private companyService : CompanyService, private articleService : ArticleService,
+     private router : Router, private providerService : ProviderService, private clientService : ClientService){
 
   }
 
@@ -29,7 +33,11 @@ export class HomeComponent implements OnDestroy, OnInit{
     this.check()
     this.getRandomArticleWithRandomCompany()
     this.getAllCompany()
+    this.providerService.getMyProviderid()
+    this.clientService.getMyClientId()
   }
+
+ 
 
   openDialog() {
     let type = "add"

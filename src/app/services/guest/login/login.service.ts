@@ -4,7 +4,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { User } from '../../../models/user/user';
 import { loginResponse } from '../../../interface/loginResponse';
-import jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +16,7 @@ export class LoginService {
   baseUrl = 'api/auth/'
   isAdmin = false
   token!: string|null
+  
   constructor(private http : HttpClient, private fb : FormBuilder) {
     this.formData = this.fb.group({
       userName: ['example@example.com'],

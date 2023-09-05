@@ -15,3 +15,28 @@ flex-direction: column;
   margin-left: -15px ;
   padding-top: 5px;
 }
+
+.menuContainer{
+  background-color: aliceblue;
+}
+
+.notificationMenu {
+  position: absolute;
+  top: 5%;
+  right: 1%;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: none;
+  padding: 5px;
+  border-radius: 10px;
+  z-index: 100;
+}
+
+.notificationMenu.opened {
+  display: block;
+}
+
+p{
+  font-size: 12px;
+}

@@ -78,6 +78,7 @@ export class ArticleComponent implements OnInit{
   }
 
   deleteArticleServer( name: String, id : number){
+    console.log(id)
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
       this.articleService.deleteArticle(id).subscribe(x =>{

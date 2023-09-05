@@ -7,7 +7,13 @@ export class Line {
     quantity       ! :number
     totTva         ! :number
     prixArticleTot ! :number
-    invoice        ! :Invoice
+   // invoice        ! :Invoice
     companyarticle        ! :CompanyArticle
+    articleLibelle        ! :string
+    articleCost           ! :number
+    articleTva            ! :number
+    articleMargin           ! :number
+    articleUnit         ! : string
+    articleCode     ! : string
 
 }

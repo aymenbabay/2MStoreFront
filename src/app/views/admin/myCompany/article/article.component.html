@@ -58,7 +58,7 @@
                                  [attr.data-code]="'code: '+article.article.code"
                                  [attr.data-cost]="'cost: '+article.cost"
                                  [attr.data-qte]="'quantity: '+article.quantity"
-                                 [attr.data-selling]="'price: '+article.cost*article.margin"
+                                 [attr.data-selling]="'price: '+(article.cost*(article.article.tva + article.margin)/100+article.cost)"
                                  [attr.data-tva]="'tva: '+article.article.tva+'%'"
                                  [attr.data-minqte]="'min quantity: '+article.minQuantity"
                                  [attr.data-barcode]="'barcode: '+article.article.barcode"

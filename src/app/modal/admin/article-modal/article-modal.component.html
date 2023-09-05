@@ -85,6 +85,15 @@
       </select>
   </form>
 </div>
+ <!-- -------------------------------------------------  add quantity  ----------------------------------------------------- -->
+ <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='Quantity'">
+  <label for="libelle">libelle</label>
+  <input type="text" formControlName="libelle" id="libelle" name="libelle" readonly>
+  <label for="quantity">quantity</label>
+  <input type="text" formControlName="quantity" id="quantity" name="quantity" autofocus>
+
+  <input type="number" formControlName="id" hidden id="id" name="id">
+</form>
 
 
   <div class="button" mat-dialog-actions>

@@ -4,14 +4,17 @@ import { createFeatureSelector, createSelector } from "@ngrx/store"
 
 export interface state{
     providerId : number
+    clientId     : number
 }
+
 
 let initstate ={
-    providerId : 0
+    providerId : 0,
+    clientId : 0
 }
 
 
-export function funcstate(state: state = initstate, action: CustomAction):state{
+export function stateReducer(state: state = initstate, action: CustomAction):state{
     switch(action.type){
         case Provider.Provider:
         return{
@@ -19,6 +22,14 @@ export function funcstate(state: state = initstate, action: CustomAction):state{
             ...state,
             providerId : action.payload
         }
+        case Provider.Client:
+            return {
+                ...state,
+                clientId : action.payload
+            }
+        case Provider.Init:
+            return  initstate
+            
         default:
             return state;
         };
@@ -28,3 +39,4 @@ export function funcstate(state: state = initstate, action: CustomAction):state{
 
 let statefs = createFeatureSelector<state>('state');
 export let providerIdSelector = createSelector(statefs, n => n.providerId);
+export let clientIdSelector   = createSelector(statefs, n => n.clientId);

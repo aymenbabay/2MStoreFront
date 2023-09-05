@@ -1,4 +1,6 @@
 
 export const Provider ={
-    Provider : 'provider'
+    Provider : 'provider',
+    Client : 'client',
+    Init : 'init'
 }

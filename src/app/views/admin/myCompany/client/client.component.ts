@@ -33,6 +33,7 @@ export class ClientComponent implements OnInit {
 
   getAllClients(){
     this.clients$ = this.clientService.getAllClients()
+    this.clients$.subscribe(x => console.log(x))
   }
 
   addExistClient($event:any){

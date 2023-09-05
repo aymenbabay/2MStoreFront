@@ -4,6 +4,8 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoginService } from '../../../services/guest/login/login.service';
 import { CompanyService } from '../../../services/user/company/company.service';
+import { ProviderService } from '../../../services/admin/provider.service';
+import { ClientService } from '../../../services/admin/client.service';
 
 
 declare const FB: any;
@@ -23,7 +25,7 @@ export class LoginComponent implements OnInit{
   }
   loginForm : FormGroup
   constructor(private loginService : LoginService, public fb : FormBuilder, private datePipe : DatePipe, private router : Router,
-              private companyService  :CompanyService){
+              private companyService  :CompanyService, private providerService : ProviderService, private clientService : ClientService){
     this.loginForm = this.fb.group({
       'username':[null, Validators.required],
       'password':[null, Validators.required]
@@ -58,9 +60,10 @@ export class LoginComponent implements OnInit{
     localStorage.setItem('jwt',token)
     console.log(val)
     this.router.navigate(["user"]) 
-
+  
  })
   }
+
 
  
   dataTransform(date:Date){

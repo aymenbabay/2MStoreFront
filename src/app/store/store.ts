@@ -1,6 +1,6 @@
 
 import { ActionReducerMap, Action } from '@ngrx/store';
-import { funcstate, state } from './reducer/state.reducer';
+import { stateReducer , state } from './reducer/state.reducer';
 
 
 export interface StoreInterface {
@@ -14,4 +14,4 @@ export interface CustomAction extends Action {
 
 
 
-export const reducers: ActionReducerMap<StoreInterface, CustomAction> = { state: funcstate}
+export const reducers: ActionReducerMap<StoreInterface, CustomAction> = { state: stateReducer }

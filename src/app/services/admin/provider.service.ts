@@ -67,15 +67,12 @@ export class ProviderService {
    }
 
    getMyProviderid(){
-
-     this.store.select(providerIdSelector).subscribe(x=>{
-       
-       this.getMyProviderId().subscribe((x:number) =>{
-         this.store.dispatch(new ProviderId(x))
-         
-        })
-        
-      })
+    this.getMyProviderId().subscribe((x:number) =>{
+      this.store.dispatch(new ProviderId(x))
+      
+     })
+    //  this.store.select(providerIdSelector).subscribe(x=>{
+    //   })
     }
 
 

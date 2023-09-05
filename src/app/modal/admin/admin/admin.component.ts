@@ -62,13 +62,6 @@ export class AdminComponent implements OnInit, OnDestroy {
 
         break;
 
-      case 'Quantity':
-         this.Form = fb.group({
-          'libelle': [''],
-          'quantity': [''],
-          'id': ['']
-         })
-        break;
         case 'category':
           this.Form = fb.group({
             'libelle': [''],
@@ -151,14 +144,6 @@ ngOnInit(): void {
     })
 
     break;
-
-  case 'Quantity':
-      this.Form.setValue({
-        libelle: this.data.entity.libelle,
-        quantity:0,
-        id: this.data.entity.id
-      })
-      break;
 
     case 'category':
       if(this.categoryService.update){

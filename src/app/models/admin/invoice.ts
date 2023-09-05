@@ -10,5 +10,6 @@ export class Invoice{
     status = false
     client! : Client
     company! : Company
+    createdDate! : Date
 
 }

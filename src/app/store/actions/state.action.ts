@@ -8,3 +8,20 @@ export class ProviderId{
         this.payload=payload
     }
 }
+
+export class ClientId{
+    type : string = Provider.Client
+    payload : any
+
+    constructor(payload:any){
+        this.payload = payload
+    }
+}
+
+export class Init{
+    type : string = Provider.Init
+   
+
+    constructor(){
+    }
+}

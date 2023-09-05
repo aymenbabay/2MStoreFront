@@ -13,13 +13,16 @@ import { InvoiceService } from '../../../../services/admin/invoice.service';
 export class InvoiceComponent implements OnInit {
 
   invoices$!:Observable<Invoice[]>
+  invoices!:Observable<Invoice[]>
   me = false
+  provider = true
   constructor(private dialog : MatDialog, private invoiceService: InvoiceService){
    
   }
 
   ngOnInit(): void {
     this.getAllInvoices()
+    this.getAllMyInvoicesAsProvider()
   }
   
   getAllInvoices(){
@@ -30,7 +33,11 @@ export class InvoiceComponent implements OnInit {
   }
 
   getAllMyInvoice(){
+    this.provider = true
     this.ngOnInit()
+  }
+  getAllMyInvoicesAsProvider(){
+    this.invoices = this.invoiceService.getAllInvoiceAsProvider()
   }
   openInvoiceModal(invoice : Invoice|null){
     let type = 'invoice'
@@ -48,8 +55,8 @@ export class InvoiceComponent implements OnInit {
   }
 
   getInvoiceAsClient(){
-    this.me = true
-    this.invoices$ = this.invoiceService.getInvoiceAClient()
+    this.provider = false
+    this.invoices = this.invoiceService.getInvoiceAClient()
     console.log("clicked"+this.invoices$)
 
   }

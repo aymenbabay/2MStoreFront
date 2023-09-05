@@ -24,7 +24,7 @@
           alt="download">
       </div>
       <p> article:  {{article.libelle}}</p>
-       <p> Price: {{article.cost*article.margin|currency: " Dt "}} </p>
+       <p> Price: {{(article.cost +article.cost *article.tva/100)+(article.cost +article.cost *article.tva/100)*article.margin/100|currency: " Dt "}} </p>
        <p> Quantity dispo: {{article.quantity}} </p>
        <p> Discription: {{article.discription}} </p>
       </div>

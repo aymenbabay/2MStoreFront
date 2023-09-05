@@ -65,13 +65,32 @@ export class ArticleModalComponent implements OnInit{
                         'subCategory':[],
                         'id':[]
                       })
-
+      break;
+                   
+      case 'Quantity':
+        this.Form = fb.group({
+         'libelle': [''],
+         'quantity': [''],
+         'id': ['']
+        })
+       break;
     }
     }
 
     ngOnInit(): void {
       console.log(this.data.entity)
-      this.getAllCategory()
+      switch(this.data.type){
+        
+  case 'Quantity':
+    this.type = this.data.type
+    this.Form.setValue({
+      libelle: this.data.entity.article.libelle,
+      quantity:0,
+      id: this.data.entity.id
+    })
+    break;
+    default :
+        this.getAllCategory()
       this.getAllVirtualProviders()
       if (this.articleService.update){
         this.Add = "update"
@@ -82,7 +101,7 @@ export class ArticleModalComponent implements OnInit{
               this.Form.setValue({
                 libelle: this.data.entity.article.libelle,
                 code: this.data.entity.article.code,
-              quantity: this.data.entity.article.quantity,
+              quantity: this.data.entity.quantity,
               margin: this.data.entity.article.margin,
               id: this.data.entity.article.id,
               category: this.data.entity.category.id,
@@ -108,9 +127,10 @@ export class ArticleModalComponent implements OnInit{
             subCategory: this.data.entity.subCategory.id,
             image: this.data.entity.image,
           })
-        
+          
           this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.image}/article/${this.data.entity.provider.company.user.username}`
-       
+          
+        }
           }
       }
   }
@@ -137,14 +157,18 @@ export class ArticleModalComponent implements OnInit{
     }
 
     submit(){
+      switch (this.data.type){
+        case 'Quantity':
+          this.articleService.addQuantity(this.Form.value.quantity,this.Form.value.id).subscribe()
+          break;
+          default :
+          let Id
+          this.providerService.getMeProviderId().subscribe(x=>{Id = x})
+          console.log(this.data.entity)
+          if(this.Add === 'Add' || (this.Add === 'update' && Id === this.data.entity.provider.id)){
 
-      let Id
-     this.providerService.getMeProviderId().subscribe(x=>{Id = x})
-     console.log(this.data.entity)
-      if(this.Add === 'Add' || (this.Add === 'update' && Id === this.data.entity.provider.id)){
-
-        let body = {
-          
+            let body = {
+              
         code: this.Form.value.code,
         libelle: this.Form.value.libelle,
         cost: this.Form.value.cost,
@@ -175,31 +199,32 @@ export class ArticleModalComponent implements OnInit{
         }
         
       
-      this.formData.append('article',JSON.stringify(body))
-      this.formData.append('file',this.file)
-      if (this.articleService.update) {
-        console.log(body)
-        this.articleService.updateArticle(this.formData).subscribe()
-      } else {
-        console.log(body)
-        this.articleService.addArticle(this.formData).subscribe()
+        this.formData.append('article',JSON.stringify(body))
+        this.formData.append('file',this.file)
+        if (this.articleService.update) {
+          console.log(body)
+          this.articleService.updateArticle(this.formData).subscribe()
+        } else {
+          console.log(body)
+          this.articleService.addArticle(this.formData).subscribe()
+        }
+      }
+      else{
+        console.log(this.Form.value)
+        this.Form.setValue({
+          libelle: this.Form.value.libelle,
+          code: this.Form.value.code,
+          quantity: this.Form.value.quantity,
+          margin: this.Form.value.margin,
+          id: this.Form.value.id,
+          category: {id:this.categoryId},
+          subCategory: {id:this.subCategoryId},
+        })
+        console.log(this.Form.value)
+        this.articleService.UpdateCompanyArticle(this.Form.value).subscribe()
       }
     }
-    else{
-      console.log(this.Form.value)
-      this.Form.setValue({
-        libelle: this.Form.value.libelle,
-        code: this.Form.value.code,
-        quantity: this.Form.value.quantity,
-        margin: this.Form.value.margin,
-        id: this.Form.value.id,
-        category: {id:this.categoryId},
-        subCategory: {id:this.subCategoryId},
-      })
-      console.log(this.Form.value)
-      this.articleService.UpdateCompanyArticle(this.Form.value).subscribe()
-    }
-    this.close("article")
+      this.close("article")
     }
     
     close(status : string){
@@ -208,8 +233,8 @@ export class ArticleModalComponent implements OnInit{
         case 'article':
           this.articleService.update = false
           break
-
-      }
+          
+        }
     }
 
     updateIds(event:any){

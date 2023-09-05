@@ -13,10 +13,21 @@ import { Line } from '../../models/admin/Line';
   providedIn: 'root'
 })
 export class CommandLineService {
+ 
   
   
 
   baseUrl = "werehouse/commandline/"
+  clientName!:string
+  clientAddress!:string
+  clientPhone!:string
+  clientMatriculeFiscal!:string
+  providerMatriculeFiscal!:string
+  providerAddress!:string
+  providerPhone!:string
+  factureCode! : Observable< number>
+  invoiceDate!:Date
+  invoiceId ! : number
   commandLine$: CommandLine[]=[];
   line :Line[] = [];
   linee :Line[] = [];
@@ -24,6 +35,7 @@ export class CommandLineService {
   companyArticle! : CompanyArticle
   qte =0
   update = false
+  view = false
   art! : FormData
   total = {"tottva":0,"totprice":0,"totgeneral":0}
   constructor(private http : HttpClient,private dialog : MatDialog) {
@@ -54,7 +66,7 @@ export class CommandLineService {
       newCommandLine.prixArticleTot = this.companyArticle.cost * this.companyArticle.margin * this.qte
       newLine.quantity = this.qte
       newCommandLine.quantity = this.qte
-      newCommandLine.invoice = new Invoice()
+     // newCommandLine.invoice = new Invoice()
       this.commandLine$.push(newCommandLine )
       this.linee.push(newLine)
       console.log(newCommandLine )
@@ -96,6 +108,9 @@ export class CommandLineService {
      });
   }
 
-  
+  getCommandLines() :Observable<any>{
+    console.log(this.invoiceId)
+    return this.http.get(`${this.baseUrl}getcommandline/${this.invoiceId}`)
+  }
   
 }

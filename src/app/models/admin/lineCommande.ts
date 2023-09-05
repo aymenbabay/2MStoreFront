@@ -1,6 +1,4 @@
-import { Article } from "./Article"
-import { CompanyArticle } from "./companyArticle"
-import { Invoice } from "./invoice"
+
 
 export class CommandLine{
     
@@ -8,6 +6,11 @@ export class CommandLine{
     quantity              ! :number
     totTva                ! :number
     prixArticleTot        ! :number
-    invoice               ! :Invoice
     companyArticle        ! :number
+    articleLibelle        ! :string
+    articleCost           ! :number
+    articleTva            ! :number
+    articleMargin         ! :number
+    articleUnit           ! : string
+    articleCode           ! : string
 }

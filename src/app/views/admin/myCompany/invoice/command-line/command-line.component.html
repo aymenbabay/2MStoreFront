@@ -3,12 +3,14 @@
         <h1>Facture N°: {{facture$}}</h1>
         <!-- <p>date: {{facture$.createdDate|date: 'dd/MM/yyyy'}}</p> -->
         <p>Current Date: {{ currentDate }}</p>
+        <div *ngIf="!commandService.view">
 
-        <mat-icon color="accent" style="font-size: 24px;" (click)="addLine(null)">add</mat-icon>
-        <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'pdf-save-client',client.id)">save</mat-icon>
-        <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'pdf-save',client.id)">save pdf</mat-icon>
-        <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'save-client',client.id)">send</mat-icon>
-    </div>
+          <mat-icon color="accent" style="font-size: 24px;" (click)="addLine(null)">add</mat-icon>
+          <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'pdf-save-client',client.id)">save</mat-icon>
+          <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'pdf-save',client.id)">save pdf</mat-icon>
+          <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'save-client',client.id)">send</mat-icon>
+        </div>
+      </div>
     <div class="company" *ngIf="(company$|async) as company$">
         <div class="left-mycompany">
             <p>ste: {{company$.name | uppercase}}</p>
@@ -21,11 +23,18 @@
             <p>email: {{company$.email | uppercase}}</p>
         </div>
     </div>
-    <div class="client" *ngIf="(facture$|async) as facture$">
-        <h2>Client:</h2>
+    <h2>Client:</h2>
+    <div class="client" *ngIf="client && (facture$|async) as facture$">
         <p> name:    {{client.name}}</p>
         <p> address: {{client.address}}</p>
         <p> phone:   {{client.phone}}</p>
+        <p> matricule:   {{client.matfisc}}</p>
+    </div>
+    <div *ngIf="commandService.clientName">
+      <p> name:    {{commandService.clientName}}</p>
+      <p> address: {{commandService.clientAddress}}</p>
+      <p> phone:   {{commandService.clientPhone}}</p>
+      <p> matricule:   {{commandService.clientMatriculeFiscal}}</p>
     </div>
     <div>
         <table>
@@ -39,13 +48,14 @@
                 <th>prix unit</th>
                 <th>tot tva</th>
                 <th>prix tot  article</th>
-                <th>Actions</th> 
+                <th *ngIf="!commandService.view">Actions</th> 
               </tr>
             </thead>
-            <tbody *ngIf="commandLine$.length > 0 " >
-               <tr *ngFor="let line of commandLine$; index as i"> 
-                 <td>{{line.companyarticle.article.libelle}}</td>
-                 <td>{{line.companyarticle.article.code}}</td>
+            <tbody *ngIf="commandLine$.length > 0 && !commandService.view " >
+            
+                <tr *ngFor="let line of commandLine$; index as i"> 
+                  <td>{{line.companyarticle.article.libelle}}</td>
+                  <td>{{line.companyarticle.article.code}}</td>
                   <td>{{line.quantity}}</td>
                   <td>{{line.companyarticle.article.unit}}</td>
                   <td>{{line.companyarticle.article.tva/100|percent}}</td>
@@ -53,13 +63,23 @@
                   <td>{{line.totTva|currency: ' DT '}}</td>
                   <td>{{line.prixArticleTot|currency: ' DT '}}</td>
                   <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteLineServer( line.companyarticle.article.code,line.id)">delete</mat-icon>
-                    <mat-icon color="accent" style="font-size: 24px;" (click)="updateLineServer(line)">update</mat-icon>
-        
-        
+                    <mat-icon color="accent" style="font-size: 24px;" (click)="updateLineServer(line)">update</mat-icon>  
                   </td>
-                  
                 </tr>
+         
             </tbody>
+              <tbody *ngIf="commandService.view">
+                <tr *ngFor="let line of commandLine$; index as i"> 
+                  <td>{{line.articleLibelle}}</td>
+                  <td>{{line.articleCode}}</td>
+                  <td>{{line.quantity}}</td>
+                  <td>{{line.articleUnit}}</td>
+                  <td>{{line.articleTva/100|percent}}</td>
+                  <td>{{line.articleCost*line.articleMargin/100|currency: ' DT '}}</td>
+                  <td>{{line.totTva|currency: ' DT '}}</td>
+                  <td>{{line.prixArticleTot|currency: ' DT '}}</td>
+        
+                </tbody>
           </table>
     </div>
     <div class="total" *ngIf="total">
