@@ -9,34 +9,69 @@
       <mat-icon  matBadge="4" matBadgeColor="warn" (click) = "openNotification()">notifications</mat-icon>
       <div class="notificationMenu" [class.opened]="openedNotification">
         <div class="menuContainer" *ngFor="let invoice of invoice$|async">
-          <div *ngIf="invoice.isAccepted == 'INWAITING' && invoice.clientId == clientId">
-            <p>{{invoice.providerName}} send an invoice code : {{invoice.invoice}}</p>
+          <div *ngIf="invoice.status== 'INWAITING' && invoice.clientId == clientId">
+            <p>{{invoice.companyName}} send an invoice code : {{invoice.code}}</p>
             <div>
               <button  mat-raised-button color="accent" (click)="review(invoice)">review</button>
-              <button  mat-raised-button color="primary" (click)="InvoiceStatus('ACCEPT',invoice.invoice)">accept</button>
-              <button  mat-raised-button color="warn" (click)="InvoiceStatus('REFUSE',invoice.invoice)">reject</button>
+              <button  mat-raised-button color="primary" (click)="InvoiceStatus('ACCEPT',invoice.code)">accept</button>
+              <button  mat-raised-button color="warn" (click)="InvoiceStatus('REFUSE',invoice.code)">reject</button>
             </div>
           </div>
-          <div *ngIf="invoice.isAccepted == 'INWAITING' && invoice.providerId == providerId">
-            <p> you have sent an invoice code : {{invoice.invoice}} to {{invoice.clientName}}</p>
+          <div *ngIf="invoice.status == 'INWAITING' && invoice.companyId == companyId">
+            <p> you have sent an invoice code : {{invoice.code}} to {{invoice.clientName}}</p>
           </div>
-          <div *ngIf="invoice.isAccepted =='ACCEPTED'  && invoice.providerId == providerId">
-            <p> {{invoice.clientName}} is accepted your invoice :  {{invoice.invoice}} </p>
+          <div *ngIf="invoice.status =='ACCEPTED'  && invoice.companyId == companyId">
+            <p> {{invoice.clientName}} is accepted your invoice :  {{invoice.code}} </p>
           </div>
-          <div *ngIf="invoice.isAccepted =='ACCEPTED'  && invoice.clientId == clientId">
-            <p> you are accepted  invoice :  {{invoice.invoice}} from {{invoice.providerName}} </p>
+          <div *ngIf="invoice.status =='ACCEPTED'  && invoice.clientId == clientId">
+            <p> you are accepted  invoice :  {{invoice.code}} from {{invoice.companyName}} </p>
           </div>
-          <div *ngIf="invoice.isAccepted =='REFUSED'  && invoice.clientId == clientId">
-            <p>you are refused the invoice : {{invoice.invoice}} from : {{invoice.providerName}}</p>
+          <div *ngIf="invoice.status =='REFUSED'  && invoice.clientId == clientId">
+            <p>you are refused the invoice : {{invoice.code}} from : {{invoice.companyName}}</p>
           </div>
-          <div *ngIf="invoice.isAccepted =='REFUSED'  && invoice.providerId == providerId">
-            <p>{{invoice.clientName }} has refused your invoice : {{invoice.invoice}}</p>
+          <div *ngIf="invoice.status =='REFUSED'  && invoice.companyId == companyId">
+            <p>{{invoice.clientName }} has refused your invoice : {{invoice.code}}</p>
           </div>
         </div>
       </div>
     </div>
     <span class="cdk-visually-hidden"></span>
     <span class="material-icons">messages</span>
+
+    <mat-icon (click) ="openInvetation()">person_add
+    </mat-icon>
+    <div class="notificationMenu" [class.opened]="openedInvetation">
+      <div class="menuContainer" *ngFor="let invetation of invetation$|async">
+        <div *ngIf="invetation.status == 'INWAITING' && invetation.company.id == companyId">
+          <p *ngIf="invetation.client "> you have sent client request to {{invetation.client.name}}</p>
+          <p *ngIf="invetation.provider">you have sent provider request to {{invetation.provider.name}}</p>
+          <button>cancel request</button>
+        </div>
+        <div *ngIf="invetation.status =='ACCEPTED'  && invetation.company.id == companyId">
+          <p *ngIf="invetation.client"> {{invetation.client.name}} is accepted your client request </p>
+          <p *ngIf="invetation.provider"> {{invetation.provider.name}} is accepted your provider request </p>
+        </div>
+        <div *ngIf="invetation.status =='REFUSED'  && invetation.company.id == companyId">
+          <p *ngIf="invetation.client"> {{invetation.client.name}} has refused your client request </p>
+          <p *ngIf="invetation.provider"> {{invetation.provider.name}} has refused your provider request </p>
+        </div>
+
+        <div *ngIf="invetation.status == 'INWAITING' && invetation.company.id != companyId">
+          <p *ngIf="invetation.client"> {{invetation.company.name}} has sent you client request </p>
+          <p *ngIf="invetation.provider"> {{invetation.company.name}} has sent you provider request </p>
+          <button mat-raised-button color="primary" (click)="requestResponse('ACCEPTED',invetation.id)">accept</button>
+          <button mat-raised-button color="warn" (click)="requestResponse('REFUSED',invetation.id)">refuse</button>
+        </div>
+        <div *ngIf="invetation.status =='ACCEPTED'  && invetation.company.id != companyId">
+          <p *ngIf="invetation.client"> you have accepted {{invetation.company.name}} client request </p>
+          <p *ngIf="invetation.provider"> you have accepted {{invetation.company.name}} provider request </p>
+        </div>
+        <div *ngIf="invetation.status =='REFUSED'  && invetation.company.id != companyId">
+          <p *ngIf="invetation.client"> you have refused {{invetation.company.name}} client request </p>
+          <p *ngIf="invetation.provider"> you have refused {{invetation.company.name}} provider request </p>
+        </div>
+      </div>
+    </div>
     {{user}}
     <button mat-raised-button color="warn"(click)="logout()" routerLink="guest">logout</button>
   </div>

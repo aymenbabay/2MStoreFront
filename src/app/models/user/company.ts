@@ -22,4 +22,5 @@ export class Company{
        user             ! : SignUp
        provider         ! : Provider
        client           ! : Client
+       isVisible        ! : String
 }

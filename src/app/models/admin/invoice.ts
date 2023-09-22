@@ -7,9 +7,13 @@ export class Invoice{
     tot_tva_invoice! : number
     prix_invoice_tot! : number
     prix_article_tot! : number
-    status = false
+    status! : String
     client! : Client
     company! : Company
-    createdDate! : Date
+    lastModifiedDate! : Date
+    clientId ! :number
+    clientName ! : string
+    companyId ! :number
+    companyName ! :string
 
 }

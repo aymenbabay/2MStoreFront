@@ -34,6 +34,7 @@ export class AddCompanyModalComponent implements OnInit {
        'margin':[''],
        'rate':[],
        'raters':[''],
+       'isVisible':['PUBLIC']
     })
   }
 ngOnInit(): void {
@@ -53,7 +54,8 @@ ngOnInit(): void {
       capital : this.data.entity.capital,
       margin : this.data.entity.margin,
       rate : this.data.entity.rate,
-      raters : this.data.entity.raters
+      raters : this.data.entity.raters,
+      isVisible : this.data.entity.isVisible
     })
     this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.logo}/company/${this.data.entity.user.username}`
     

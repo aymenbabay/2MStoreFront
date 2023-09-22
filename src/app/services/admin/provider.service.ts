@@ -11,8 +11,7 @@ import { ProviderId } from '../../store/actions/state.action';
   providedIn: 'root'
 })
 export class ProviderService {
- 
-  
+    
   update = false
   baseUrl="werehouse/provider/"
    
@@ -43,18 +42,21 @@ export class ProviderService {
     console.log(provider)
     return this.http.post(`${this.baseUrl}add`,provider)
   }
-
-  getAll():Observable<any>{
-    return this.http.get(`${this.baseUrl}get_all_real`)
-  }
     
   updateProvider(provider: Provider,id : number) :Observable<any>{
     return this.http.put(`${this.baseUrl}update/${id}`,provider)
   }
 
+  addAsProvider(id: number):Observable<any> {
+    return this.http.get(`${this.baseUrl}add_as_provider/${id}`)
+  }
 
-  addExistProvider(id: any) {
-    return this.http.get(`${this.baseUrl}add_exist/${id}`)
+  findAllProviderContaining(searchInput: String): Observable<Provider[]> {
+    return this.http.get<Provider[]>(`werehouse/client/get_all_provider_containing/${searchInput}`)
+  }
+
+  checkProvider(id: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.baseUrl}check_provider/${id}`)
   }
 
   getMyProviderId():Observable<number> {
@@ -69,10 +71,7 @@ export class ProviderService {
    getMyProviderid(){
     this.getMyProviderId().subscribe((x:number) =>{
       this.store.dispatch(new ProviderId(x))
-      
      })
-    //  this.store.select(providerIdSelector).subscribe(x=>{
-    //   })
     }
 
 

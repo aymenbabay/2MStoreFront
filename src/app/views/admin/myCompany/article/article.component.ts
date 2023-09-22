@@ -5,11 +5,7 @@ import { ArticleService } from '../../../../services/admin/article.service';
 import { Article } from '../../../../models/admin/Article';
 import { Observable } from 'rxjs';
 import { LoginService } from '../../../../services/guest/login/login.service';
-import { Store } from '@ngrx/store';
-import { StoreInterface } from '../../../../store/store';
-import { providerIdSelector } from '../../../../store/reducer/state.reducer';
 import { ProviderService } from '../../../../services/admin/provider.service';
-import { ProviderId } from '../../../../store/actions/state.action';
 import { ArticleModalComponent } from '../../../../modal/admin/article-modal/article-modal.component';
 
 
@@ -23,7 +19,7 @@ export class ArticleComponent implements OnInit{
   articles!:Observable<Article[]>
   table= false
   constructor(private dialog : MatDialog, private articleService: ArticleService, public loginService : LoginService,
-    private providerService : ProviderService , private store : Store<StoreInterface>){
+    private providerService : ProviderService){
   
   }
   sendMessage(): void {
@@ -67,7 +63,7 @@ export class ArticleComponent implements OnInit{
     this.providerService.getMeProviderId().subscribe(x =>{
       console.log(x)
       if (article.provider.id === x){
-        this.openArticleModal(article.article,"article")
+        this.openArticleModal(article,"article")
       } 
       else{
         this.openArticleModal(article,"companyArticle")

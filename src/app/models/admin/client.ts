@@ -18,4 +18,5 @@ export class Client{
     company! : Company
     providers! : Provider[];
     virtual! : boolean
+    myClient! : boolean
 }

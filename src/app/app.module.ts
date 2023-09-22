@@ -22,6 +22,7 @@ import { reducers } from './store/store';
 import { ArticleModalComponent } from './modal/admin/article-modal/article-modal.component';
 import { ProviderModalComponent } from './modal/admin/provider-modal/provider-modal.component';
 import { ClientModalComponent } from './modal/admin/client-modal/client-modal.component';
+import { InvoiceModalComponent } from './modal/admin/invoice-modal/invoice-modal.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ClientModalComponent } from './modal/admin/client-modal/client-modal.co
     InfoComponent,
     ArticleModalComponent,
     ProviderModalComponent,
-    ClientModalComponent
+    ClientModalComponent,
+    InvoiceModalComponent
   ],
   imports: [
     BrowserModule,

@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { CommandLine } from '../../models/admin/lineCommande';
 import { Article } from '../../models/admin/Article';
 import { Observable } from 'rxjs';
-import { Invoice } from '../../models/admin/invoice';
 import { InfoComponent } from '../../modal/admin/info/info.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Line } from '../../models/admin/Line';
+import { Invoice } from '../../models/admin/invoice';
 
 @Injectable({
   providedIn: 'root'
@@ -17,25 +17,16 @@ export class CommandLineService {
   
 
   baseUrl = "werehouse/commandline/"
-  clientName!:string
-  clientAddress!:string
-  clientPhone!:string
-  clientMatriculeFiscal!:string
-  providerMatriculeFiscal!:string
-  providerAddress!:string
-  providerPhone!:string
   factureCode! : Observable< number>
-  invoiceDate!:Date
-  invoiceId ! : number
   commandLine$: CommandLine[]=[];
-  line :Line[] = [];
   linee :Line[] = [];
   article$! :Article|null
   article! : Article
   qte =0
   update = false
   view = false
-  art! : FormData
+  invoice! : Invoice
+  go = false
   total = {"tottva":0,"totprice":0,"totgeneral":0}
   constructor(private http : HttpClient,private dialog : MatDialog) {
    // this.change() 
@@ -55,7 +46,6 @@ export class CommandLineService {
       }
        let newCommandLine  = new CommandLine();
       let newLine  = new Line();
-      console.log(newCommandLine)
       newCommandLine.article =  this.article.id
       newLine.article = {...this.article}
       
@@ -65,11 +55,8 @@ export class CommandLineService {
       newCommandLine.prixArticleTot = this.article.cost * this.article.margin * this.qte
       newLine.quantity = this.qte
       newCommandLine.quantity = this.qte
-     // newCommandLine.invoice = new Invoice()
       this.commandLine$.push(newCommandLine )
       this.linee.push(newLine)
-      console.log(newCommandLine )
-      console.log(newLine )
       let totTva = 0;
       let totPrice = 0;
       let totGeneral = 0;
@@ -83,7 +70,6 @@ export class CommandLineService {
       
       console.log(this.total.tottva+"total")
       console.log(this.commandLine$)
-      console.log(this.linee)
     }
   }
   
@@ -108,8 +94,7 @@ export class CommandLineService {
   }
 
   getCommandLines() :Observable<any>{
-    console.log(this.invoiceId)
-    return this.http.get(`${this.baseUrl}getcommandline/${this.invoiceId}`)
+    return this.http.get(`${this.baseUrl}getcommandline/${this.invoice.id}`)
   }
   
 }

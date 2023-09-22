@@ -3,18 +3,21 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Invoice } from '../../models/admin/invoice';
 import { Client } from '../../models/admin/client';
+import { Invetation } from '../../models/admin/Invetation';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceService {
+ 
 
     
   update = false
   invoiceUrl="werehouse/invoice/"
   clientInvoiceUrl ="werehouse/clientinvoice/"
   client!: Client;
-   
+  invoices$! : Observable<Invoice[]>
+  invoice! : Invoice
   constructor(private http: HttpClient) { }
 
 
@@ -46,10 +49,11 @@ export class InvoiceService {
   }
 
   getAllInvoiceNotAccepted():Observable<any>{
-    return this.http.get(`${this.clientInvoiceUrl}getnotaccepted`)
+    return this.http.get(`${this.invoiceUrl}getnotaccepted`)
   }
 
+
   InvoiceStatus(status: string, invoiceCode : number):Observable<any> {
-   return this.http.get(`${this.clientInvoiceUrl}response/${status}/${invoiceCode}`)
+   return this.http.get(`${this.invoiceUrl}response/${status}/${invoiceCode}`)
   }
 }

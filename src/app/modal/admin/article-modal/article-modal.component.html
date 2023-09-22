@@ -60,31 +60,7 @@
       <img *ngIf="imageUrl" height="100px" [src]="imageUrl" alt="Uploaded Image">
     </div>
 </div>
-<div class="companyArticle" *ngIf="type === 'companyArticle'">
 
-  <form [formGroup]="Form" (keydown.enter)="submit()" class="form">
-    <label for="libelle">libelle:</label>
-    <input type="text" formControlName="libelle" id="libelle" name="libelle">
-    
-    <label for="quantity">quantity:</label>
-    <input type="text" formControlName="quantity" id="quantity" name="quantity">
-    
-    <label for="margin">margin:</label>
-    <input type="text" formControlName="margin" id="margin" name="margin">
-     
-    <select type="number" formControlName="category" id="category" name="category" (change)="getSubcategories($event,0)">
-        <option value="">choose a category</option>
-        <option *ngFor="let i of categories$|async" value="{{i.id}}">{{i.libelle}}
-        </option>
-    </select>
-
-      <select *ngIf="subCategories$" type="number" formControlName="subCategory" id="SubCategory" name="subCategory" (change)="updateIds($event)">
-        <option value="">choose a sous category</option>
-        <option *ngFor="let i of subCategories$|async" value="{{i.id}}">{{i.libelle}}
-        </option>
-      </select>
-  </form>
-</div>
  <!-- -------------------------------------------------  add quantity  ----------------------------------------------------- -->
  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='Quantity'">
   <label for="libelle">libelle</label>

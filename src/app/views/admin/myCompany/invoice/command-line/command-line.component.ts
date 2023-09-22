@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit  } from '@angular/core';
 import { CommandLineService } from '../../../../../services/admin/command-line.service';
 import { CompanyService } from '../../../../../services/user/company/company.service';
 import { Company } from '../../../../../models/user/company';
-import { BehaviorSubject, EMPTY, Observable, map } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, map, of, switchMap } from 'rxjs';
 import { InvoiceService } from '../../../../../services/admin/invoice.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminComponent } from '../../../../../modal/admin/admin/admin.component';
@@ -33,54 +33,28 @@ export class CommandLineComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if(this.commandService.view){
-      this.currentDate = this.datePipe.transform(this.commandService.invoiceDate,'yyyy-MM-dd')||"";
+      this.currentDate = this.datePipe.transform(this.commandService.invoice.lastModifiedDate,'yyyy-MM-dd')||"";
+
       this.getCommandLines()
+      this.facture$ = this.commandService.factureCode;
+      this.company$ = of(this.commandService.invoice.company)
+      this.client = this.commandService.invoice.client
+      this.total.totgeneral = this.commandService.invoice.prix_invoice_tot
+      this.total.totprice = this.commandService.invoice.prix_article_tot
+      this.total.tottva = this.commandService.invoice.tot_tva_invoice
     }else{
       this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')||"";
+      this.client = this.invoiceService.client 
+      this.facture$ = this.invoiceService.getInvoices();
+      this.company$ = this.companyServce.getMe()
     }
-    console.log(this.commandService.view)
-   this.client = this.invoiceService.client
-   console.log(this.client)
-    this.getMe()
-    this.getInvoice()
+  
   }
 
   getCommandLines(){
     this.commandService.getCommandLines().subscribe(x =>{
       this.commandLine$ = x
-      let y = x.prixArticleTot
-      this.total.totprice = this.total.totprice+y;
-      console.log(x[0].prixArticleTot+" "+y)
-
     })
-  }
-
-  getMe(){
-    if(!this.commandService.view){
-      this.company$ = this.companyServce.getMe()
-    }else{
-      // const currentValue = this.company$$.getValue()
-      // const newCompany : (Company) ={
-      //   ...currentValue,
-      //   address: this.commandService.providerAddress,
-      //  matfisc: this.commandService.providerMatriculeFiscal,
-      //  phone : this.commandService.providerPhone,
-       
-      // }
-      // console.log("get me else")
-      // this.company$$.next(
-      //   newCompany
-      // )
-    }
-   // this.company$.subscribe(x => this.getInvoice())
-  }
-
-  getInvoice(){
-    if(this.commandService.view){
-      this.facture$ = this.commandService.factureCode;
-    }else
-    this.facture$ = this.invoiceService.getInvoices();
-
   }
 
   addLine(entity : CommandLine|null){
@@ -125,7 +99,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
         }, 100);
       }
      
-      this.commandLine$ = this.commandService.line = this.commandService.commandLine$ = []
+      this.commandLine$ = this.commandService.commandLine$ = []
       this.commandService.article$! = new Article()
       this.router.navigate(["/my-company/invoice"])
     })
@@ -137,8 +111,9 @@ export class CommandLineComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
-    this.commandService.line = this.commandService.commandLine$=[]
+    console.log("en destroy line command")
+    this.commandService.view = false
+     this.commandService.commandLine$=[]
      this.commandService.total={'totgeneral':0,'totprice':0,'tottva':0}
   }
 }

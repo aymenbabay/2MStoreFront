@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, filter, map ,combineLatest} from 'rxjs';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { Invoice } from '../../../../models/admin/invoice';
 import { InvoiceService } from '../../../../services/admin/invoice.service';
+import { Store } from '@ngrx/store';
+import { clientIdSelector, companyIdSelector, providerIdSelector } from '../../../../store/reducer/state.reducer';
+import { Router } from '@angular/router';
+import { CommandLineService } from '../../../../services/admin/command-line.service';
 
 @Component({
   selector: 'app-invoice',
@@ -12,33 +16,44 @@ import { InvoiceService } from '../../../../services/admin/invoice.service';
 })
 export class InvoiceComponent implements OnInit {
 
-  invoices$!:Observable<Invoice[]>
-  invoices!:Observable<Invoice[]>
+ invoices$!:Observable<Invoice[]>
   me = false
   provider = true
-  constructor(private dialog : MatDialog, private invoiceService: InvoiceService){
+  providerInvoices! : Invoice[]
+  clientInvoices! : Invoice[]
+  constructor(private dialog : MatDialog, private invoiceService: InvoiceService, private store : Store,
+    private router : Router, private commandLineService : CommandLineService){
    
   }
 
   ngOnInit(): void {
     this.getAllInvoices()
-    this.getAllMyInvoicesAsProvider()
   }
   
   getAllInvoices(){
-    this.invoices$ = this.invoiceService.getAllInvoices()
+   this.invoices$ = this.invoiceService.invoices$
     this.me = false
-    this.invoices$.subscribe(data =>console.log(data))
+    this.getAllMyInvoiceAsProvider()
+   
   
   }
 
-  getAllMyInvoice(){
-    this.provider = true
-    this.ngOnInit()
+  getAllMyInvoiceAsProvider() {
+    this.provider = true;
+    this.store.select(clientIdSelector).subscribe(clientId => {
+      this.store.select(companyIdSelector).subscribe(companyId => {
+        this.invoices$.subscribe((invoices: Invoice[]) => {
+          console.log(clientId +" "+companyId)
+          this.clientInvoices = invoices.filter(invoice => invoice.clientId === clientId);
+          this.providerInvoices = invoices.filter(invoice => invoice.companyId === companyId);
+          console.log("Client Invoices: ", this.clientInvoices);
+          console.log("Provider Invoices: ", this.providerInvoices);
+        });
+      });
+    });
   }
-  getAllMyInvoicesAsProvider(){
-    this.invoices = this.invoiceService.getAllInvoiceAsProvider()
-  }
+ 
+
   openInvoiceModal(invoice : Invoice|null){
     let type = 'invoice'
     const dialogRef = this.dialog.open(AdminComponent,
@@ -53,18 +68,21 @@ export class InvoiceComponent implements OnInit {
       }
      });
   }
+ 
+  getAllMyInvoicesAsProvider(){
+    this.provider = true
+  }
 
   getInvoiceAsClient(){
     this.provider = false
-    this.invoices = this.invoiceService.getInvoiceAClient()
-    console.log("clicked"+this.invoices$)
 
   }
 
   updateInvoiceServer(invoice : Invoice){
-    this.invoiceService.update = true
+    this.commandLineService.view = true
+    this.commandLineService.invoice = invoice
     console.log(invoice.id)
-    this.openInvoiceModal(invoice)
+    this.router.navigate(['/my-company/invoice/command'])
   }
 
    deleteInvoiceServer( name: number, id : number){

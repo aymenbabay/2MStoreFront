@@ -18,6 +18,14 @@ export class ClientId{
     }
 }
 
+export class CompanyId{
+    type : string = Provider.Company
+    payload : any
+
+    constructor(payload:any){
+        this.payload = payload
+    }
+}
 export class Init{
     type : string = Provider.Init
    

@@ -14,8 +14,6 @@ export class AdminGuard  {
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     this.token = localStorage.getItem('jwt')??''
-    
-    console.log("mreguel1111")
     if(this.token){
       const decodeToken = jwt_decode<any>(this.token)
       decodeToken.Authorization.forEach((element:any) =>{

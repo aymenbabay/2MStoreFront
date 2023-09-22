@@ -11,7 +11,6 @@ import { clientIdSelector } from '../../store/reducer/state.reducer';
   providedIn: 'root'
 })
 export class ClientService {
-  
  
   update = false
   baseUrl="werehouse/client/"
@@ -25,16 +24,16 @@ export class ClientService {
     return this.http.get(`${this.baseUrl}get_all_my`)
   }
 
-  getAllClients():Observable<Client[]>{
-    return this.http.get<Client[]>(`${this.baseUrl}get_all`)
+  getAllClientContaining(variable : string): Observable<Client[]> {
+   return this.http.get<Client[]>(`${this.baseUrl}get_all_containing/${variable}`)
   }
 
   addClient(client : Client):Observable<any>{
     console.log(client)
     return this.http.post(`${this.baseUrl}add`,client)
   }
-  addExistClient(id: any) {
-    return this.http.get(`${this.baseUrl}add_exist/${id}`)
+  addAsClient(id: number):Observable<any> {
+    return this.http.get(`${this.baseUrl}add_as_client/${id}`)
   }
     
   updateClient(client: Client, id:number) :Observable<any>{
@@ -45,8 +44,14 @@ export class ClientService {
     return this.http.get(`${this.baseUrl}get_all_my_provider`)
   }
 
+  checkClient(id: number):Observable<boolean> {
+    return this.http.get<boolean>(`${this.baseUrl}checkClient/${id}`)
+  }
+
+
   getMyClientId() {
     this.getMyClientid().subscribe(x =>{
+      console.log("dispatching client service"+x)
       this.sotre.dispatch(new ClientId(x))
     })
   }

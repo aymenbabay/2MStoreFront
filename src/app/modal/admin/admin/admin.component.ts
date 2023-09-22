@@ -384,7 +384,7 @@ ngOnInit(): void {
          this.router.navigate(["/my-company/invoice/command"])
       });
       this.subscriptions.add(mySubsc)
-
+      this.commandLineService.go = true
     }
     break;
 

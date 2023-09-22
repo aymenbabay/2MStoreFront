@@ -1,13 +1,15 @@
 
-<button mat-raised-button color="primary" *ngIf="loginService.isAdmin" (click)="openClientModal(null)">add client</button>
-<select mat-raised-button color="primary" (change)="addExistClient($event)" >
-  <option value="">-select client-</option>
-  <option  *ngFor="let i of clients$|async"  value="{{i.id}}" >{{i.name}}
-</select>
+<button mat-raised-button color="primary" *ngIf="loginService.isAdmin && !search" (click)="openClientModal(null)">add client</button>
+<br>
+<button mat-raised-button color="primary" *ngIf="search" (click)="backToMyClients()">back tyo my clients</button>
+<br>
+<div class="search-container">
+  <input type="search" name="searchQuery" id="searchQuery" #searchInput placeholder="Search...">
+  <i class="fas fa-search" id="searchIcon" (click)="getAllClientContaining(searchInput.value)"></i>
+</div>
+<br>
+<div>
 
-
-
-<div *ngIf="clients | async as clients">
     <table>
       <thead>
         <tr>
@@ -25,8 +27,9 @@
           <th  *ngIf="loginService.isAdmin">Actions</th> 
         </tr> 
       </thead>
-      <tbody *ngIf="clients.length > 0 " >
-         <tr *ngFor="let client of clients; index as i"> 
+
+        <tbody *ngIf="!search && (MyClients | async) as MyClient" >
+          <tr *ngFor="let client of MyClient; index as i"> 
             <td>{{client.name}}</td>
             <td>{{client.code}}</td>
             <td>{{client.nature}}</td>
@@ -41,14 +44,37 @@
             <td *ngIf="loginService.isAdmin"> 
               <mat-icon color="warn" style="font-size: 24px;" (click)="deleteClientServer( client.name,client.id)">delete</mat-icon>
               <mat-icon color="accent" style="font-size: 24px;" *ngIf="client.virtual ==true || client.id" (click)="updateClientServer(client)">update</mat-icon>
-  
-  
+              
+              
             </td>
            
           </tr>
-      </tbody>
-    </table>
+        </tbody>
+     
+
+        <tbody *ngIf="search && (clients$ | async) as clients " > 
+          <tr *ngFor="let client of clients; index as i"> 
+            <td>{{client.name}}</td>
+             <td>{{client.code}}</td>
+             <td>{{client.nature}}</td>
+             <td>{{client.credit}}</td>
+             <td>{{client.mvt}}</td>
+             <td>{{client.phone}}</td>
+             <td>{{client.email}}</td>
+             <td>{{client.address}}</td>
+             <td>{{client.bankaccountnumber}}</td>
+             <td>{{client.matfisc}}</td>
+             <td>{{client.indestrySector}}</td>
+             <td>
+                <button mat-raised-button color="primary" *ngIf="!client.myClient" (click)="addAsClient(client.id)">add as client</button>
+                <button mat-raised-button color="primary" *ngIf="client.myClient">view profil</button>
+           
+
+            
+            </td>
+            </tr>
+         </tbody>
+      </table>
     
-  
-  </div>
+    </div>
   

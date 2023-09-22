@@ -2,6 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Company } from '../../../models/user/company';
+import { Store } from '@ngrx/store';
+import { companyIdSelector } from '../../../store/reducer/state.reducer';
+import { CompanyId } from '../../../store/actions/state.action';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +14,7 @@ export class CompanyService {
 
   update = false
   baseUrl = "werehouse/company/"
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private store : Store) { }
 
 addCompany(data:FormData):Observable<any>{
   console.log(JSON.stringify(data));
@@ -42,5 +45,20 @@ rate(x: number, id: number) :Observable<any>{
 return this.http.get(`${this.baseUrl}rate/${id}/${x}`)
 }
 
+getMyCompanyId() {
+  this.getMyCompanyid().subscribe(x =>{
+    
+    console.log("dispatching company service"+x)
+    this.store.dispatch(new CompanyId(x))
+  })
+}
+
+getMyCompanyid():Observable<number>{
+  return this.http.get<number>(`${this.baseUrl}get_my_company_id`)
+}
+
+getMycompanyid():Observable<number>{
+  return this.store.select(companyIdSelector)
+}
 
 }

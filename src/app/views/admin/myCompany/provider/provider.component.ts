@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, forkJoin, map, switchMap } from 'rxjs';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { ProviderService } from '../../../../services/admin/provider.service';
 import { Provider } from '../../../../models/admin/provider';
@@ -20,14 +20,14 @@ export class ProviderComponent implements OnInit {
   providers$!:Observable<Provider[]>
   allproviders$!: Observable<Provider[]>
   myProviderId!: number
-  constructor(private dialog : MatDialog, private providerService: ProviderService, public loginService : LoginService, private store : Store){
+  search = false
+  constructor(private dialog : MatDialog, private providerService: ProviderService, public loginService : LoginService,
+     private store : Store){
    
   }
 
   ngOnInit(): void {
     this.getAllProviders()
-    this.getAllMyProviders()
-    this.getAll()
     this.providerService.getMyProviderid()
     this.store.select(providerIdSelector).subscribe(x =>{
       this.myProviderId = x
@@ -35,21 +35,45 @@ export class ProviderComponent implements OnInit {
     })
   this.providerService.update = false
   }
-  getAll(){
-    this.allproviders$ = this.providerService.getAll()
-  }
-
+ 
   getAllProviders(){
     this.providers$ = this.providerService.getAllMyProviders()
     this.providers$.subscribe(x =>{
       console.log(x[0])
     })
   }
-  
-  getAllMyProviders(){
-    // this.providers = this.providerService.getAllMyVirtualProviders()
-    // this.providers.subscribe((x:Provider[]) => console.log(x[1]))
 
+  getAllProviderContaining(searchInput : String){
+    this.search = true;
+   this.allproviders$ = this.providerService.findAllProviderContaining(searchInput).pipe(
+    switchMap((providers) => {
+      // Create an array of observables for checking client status
+      const observables = providers.map(provider => {
+        return this.providerService.checkProvider(provider.id).pipe(
+          map(isYours => ({
+            ...provider,
+            myProvider: isYours
+          }))
+        );
+      });
+
+      // Combine all observables into a single observable
+      return forkJoin(observables);
+    })) 
+  }
+
+  addAsProvider(id : number){
+    console.log(id)
+    this.providerService.addAsProvider(id).subscribe()
+  }
+
+  backToMyProviders(){
+    this.search = false
+  }
+
+  remove(){
+    this.allproviders$ = EMPTY
+    console.log("clicked")
   }
 
   openProviderModal(entity : Provider|null){
@@ -65,17 +89,6 @@ export class ProviderComponent implements OnInit {
         this.ngOnInit()
       }
      });
-  }
-
-  
-  addExistProvider($event:any){
-    const conf = window.confirm(`are you sure to delete ${name} !!`)
-    if(conf){
-      this.providerService.addExistProvider($event.target.value).subscribe(x =>{
-        this.ngOnInit()
-      })
-    }
-
   }
 
   updateProvider(provider : Provider){

@@ -6,16 +6,15 @@ import { AdminLayoutComponent } from './layoutes/admin-layout/admin-layout.compo
 import { GuestLayoutComponent } from './layoutes/guest-layout/guest-layout.component';
 import { UserLayoutComponent } from './layoutes/user-layout/user-layout.component';
 import { HasCompanyGuard } from './guards/has-company.guard';
-import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   {path: '', redirectTo: '/guest', pathMatch: 'full'},
 
   {path:"guest",component:GuestLayoutComponent,
   canActivateChild:[AuthchildGuard],
-    children:[
-      {path:'', loadChildren:()=>import('./views/guest/login/login.module').then(m=>m.LoginModule)}
-    ]},
+  children:[
+    {path:'', loadChildren:()=>import('./views/guest/login/login.module').then(m=>m.LoginModule)}
+  ]},
 
   {path:"my-company",component:AdminLayoutComponent,
   canActivateChild:[HasCompanyGuard],
@@ -28,6 +27,7 @@ const routes: Routes = [
   children:[
     {path:'',loadChildren:()=>import('./views/user/home/home.module').then(m=>m.HomeModule)},
   ]},
+  
   {path: '**', redirectTo: '/guest', pathMatch: 'full'}
 ];
 

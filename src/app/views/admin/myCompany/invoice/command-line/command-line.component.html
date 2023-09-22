@@ -24,17 +24,11 @@
         </div>
     </div>
     <h2>Client:</h2>
-    <div class="client" *ngIf="client && (facture$|async) as facture$">
+    <div class="client" *ngIf="client">
         <p> name:    {{client.name}}</p>
         <p> address: {{client.address}}</p>
         <p> phone:   {{client.phone}}</p>
         <p> matricule:   {{client.matfisc}}</p>
-    </div>
-    <div *ngIf="commandService.clientName">
-      <p> name:    {{commandService.clientName}}</p>
-      <p> address: {{commandService.clientAddress}}</p>
-      <p> phone:   {{commandService.clientPhone}}</p>
-      <p> matricule:   {{commandService.clientMatriculeFiscal}}</p>
     </div>
     <div>
         <table>

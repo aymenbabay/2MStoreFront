@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Client } from '../../../../models/admin/client';
-import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, forkJoin, map, switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientService } from '../../../../services/admin/client.service';
 import { LoginService } from '../../../../services/guest/login/login.service';
@@ -14,35 +13,57 @@ import { ClientModalComponent } from '../../../../modal/admin/client-modal/clien
 })
 export class ClientComponent implements OnInit {
 
-  clients!:Observable<Client[]>
-  clients$!:Observable<Client[]>
-
+  MyClients!:Observable<Client[]>
+  clients$:Observable<Client[]> = EMPTY
+  search = false
+  isClientResult = false
   constructor(private dialog : MatDialog, private clientService: ClientService, public loginService : LoginService){
 
   }
 
   ngOnInit(): void {
     this.getAllMyClients()
-    this.getAllClients()
   }
 
   getAllMyClients(){
-    this.clients = this.clientService.getAllMyClients()
+    this.MyClients = this.clientService.getAllMyClients()
 
   }
 
-  getAllClients(){
-    this.clients$ = this.clientService.getAllClients()
-    this.clients$.subscribe(x => console.log(x))
-  }
+  getAllClientContaining(value : string){
+    this.search = true
+   // this.clients$ = this.clientService.getAllClientContaining(event)
+   this.clients$ = this.clientService.getAllClientContaining(value).pipe(
+      switchMap(clients => {
+        // Create an array of observables for checking client status
+        const observables = clients.map(client => {
+          return this.clientService.checkClient(client.id).pipe(
+            map(isYours => ({
+              ...client,
+              myClient: isYours
+            }))
+          );
+        });
 
-  addExistClient($event:any){
-    const conf = window.confirm(`are you sure to add ${$event.target.value} !!`)
-    if(conf){
-      this.clientService.addExistClient($event.target.value).subscribe(x =>{
-        this.ngOnInit()
+        // Combine all observables into a single observable
+        return forkJoin(observables);
       })
-    }
+    );
+  }
+    
+  addAsClient(id : number){
+    this.clientService.addAsClient(id).subscribe();
+  }
+  
+
+  isClient(client : Client) {
+    
+    this.clientService.checkClient(client.id).subscribe()
+  }
+
+
+  backToMyClients(){
+    this.search = false
   }
 
 

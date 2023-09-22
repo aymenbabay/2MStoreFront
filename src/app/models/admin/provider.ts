@@ -15,5 +15,6 @@ export class Provider{
     company! : Company
     virtual ! : boolean
     email!: string
+    myProvider!: boolean
 
 }

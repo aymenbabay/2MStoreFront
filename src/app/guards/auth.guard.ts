@@ -11,8 +11,6 @@ export class AuthGuard  {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       let has = localStorage.getItem('jwt')
-     // let has = localStorage.getItem('has_company')
-      console.log(has)
       if(has){
         return true;
         

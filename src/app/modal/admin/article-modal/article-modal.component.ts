@@ -55,18 +55,7 @@ export class ArticleModalComponent implements OnInit{
                       'image':[],
                     })
       break;
-                    case 'companyArticle':
-                      this.Form = this.fb.group({
-                        'libelle':[''],
-                        'code':[''],
-                        'quantity':[],
-                        'margin':[],
-                        'category':[],
-                        'subCategory':[],
-                        'id':[]
-                      })
-      break;
-                   
+                     
       case 'Quantity':
         this.Form = fb.group({
          'libelle': [''],
@@ -84,7 +73,7 @@ export class ArticleModalComponent implements OnInit{
   case 'Quantity':
     this.type = this.data.type
     this.Form.setValue({
-      libelle: this.data.entity.article.libelle,
+      libelle: this.data.entity.libelle,
       quantity:0,
       id: this.data.entity.id
     })
