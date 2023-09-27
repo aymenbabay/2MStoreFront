@@ -62,13 +62,8 @@ export class ArticleComponent implements OnInit{
     this.articleService.update = true
     this.providerService.getMeProviderId().subscribe(x =>{
       console.log(x)
-      if (article.provider.id === x){
-        this.openArticleModal(article,"article")
-      } 
-      else{
-        this.openArticleModal(article,"companyArticle")
-
-      }
+      this.openArticleModal(article,"article")
+      
     })
   }
 

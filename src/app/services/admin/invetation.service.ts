@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Invetation } from '../../models/admin/Invetation';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Observable } from 'rxjs'
 @Injectable({
   providedIn: 'root'
 })
 export class InvetationService {
+
  
 
   baseUrl = 'werehouse/invetation/'
@@ -17,5 +18,9 @@ export class InvetationService {
 
   requestResponse(status: string, invetationId: number):Observable<any> {
     return this.http.get(`${this.baseUrl}response/${status}/${invetationId}`)
+  }
+
+  cancelRequestOrDeleteFriend(id: number): Observable<any>{
+    return this.http.get(`${this.baseUrl}cancel/${id}`)
   }
 }

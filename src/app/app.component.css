@@ -2,6 +2,7 @@
 .conatiner{
 display: flex;
 flex-direction: column;
+height: 90hv;
 }
 
 .nav_bar{
@@ -14,6 +15,10 @@ flex-direction: column;
 .fas{
   margin-left: -15px ;
   padding-top: 5px;
+}
+
+.mat-icon{
+  margin-right: 10px;
 }
 
 .menuContainer{
@@ -40,4 +45,114 @@ flex-direction: column;
 
 p{
   font-size: 12px;
+}
+
+
+
+.messenger_container {
+  position: absolute;
+  bottom: 1%;
+  right: 1%;
+  width: 350px;
+  height: 500px;
+  background: #f4f9fd;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  border-radius: 10px 10px 0px 0;
+  
+}
+
+
+.new_message_container {
+  position: relative;
+}
+.new_message_input {
+  margin: 0 40px;
+  margin-bottom: 10px;
+  width: calc(100% - 80px);
+  height: 60px;
+  color: #676f7a;
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid #d5deeb;
+  border-radius: 15px;
+  box-shadow: 0px 2px 20px 5px rgba(10, 145, 219, 0.05);
+  padding: 0 60px 0 20px;
+  z-index: 2;
+}
+
+.new_message_input:focus {
+  outline: none;
+  color: #676f7a;
+}
+
+.messages_container {
+  flex-grow: 1;
+  margin: 4px 3px;
+  overflow-y: scroll;
+}
+
+
+.message_left_container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.message_left_paragraph {
+  background: #ffffff;
+  border: 1px solid #d5deeb;
+  border-radius: 8px 8px 8px 0px;
+  padding: 20px 13px;
+  color: #545c68;
+  min-width: 60px;
+}
+
+.message_right_container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.message_right_paragraph {
+  background: linear-gradient(168.68deg, #0052c9 1.12%, #0a91db 100%);
+  border: 1px solid #d5deeb;
+  border-radius: 8px 8px 8px 0px;
+  padding: 20px 13px;
+  color: #ffffff;
+  min-width: 60px;
+}
+
+
+.send_message_button {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 50px;
+  top: 10px;
+  box-shadow: 0px 2px 20px 5px rgba(10, 145, 219, 0.05);
+  background: linear-gradient(180deg, #ff9519 0%, #ffba6a 100%);
+  border-radius: 8px;
+  transition: 0.5s;
+}
+
+.send_message_button_image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.display_none{
+  display: none;
+}
+
+.head_conversation{
+  background-color: green;
+  border-radius: 10px 10px 0px 0;
+  height: 50px;
+  width: 100%;
+}
+
+.close_conversation:hover{
+  cursor: pointer;
 }

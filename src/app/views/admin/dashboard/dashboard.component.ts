@@ -57,6 +57,7 @@ providerId = 0
  getMyCompany(){
 this.companyService.getMe().subscribe(x => {
   this.company$ = x
+  console.log(x)
 })
  }
 

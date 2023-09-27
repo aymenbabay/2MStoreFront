@@ -43,7 +43,8 @@
             <td>{{client.indestrySector}}</td>
             <td *ngIf="loginService.isAdmin"> 
               <mat-icon color="warn" style="font-size: 24px;" (click)="deleteClientServer( client.name,client.id)">delete</mat-icon>
-              <mat-icon color="accent" style="font-size: 24px;" *ngIf="client.virtual ==true || client.id" (click)="updateClientServer(client)">update</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;" *ngIf="client.virtual ==true || client.id == myClientId" (click)="updateClientServer(client)">update</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;" *ngIf="client.virtual ==false && client.id != myClientId" (click)="visitClient(client)">person</mat-icon>
               
               
             </td>

@@ -9,8 +9,6 @@ import { Invetation } from '../../models/admin/Invetation';
   providedIn: 'root'
 })
 export class InvoiceService {
- 
-
     
   update = false
   invoiceUrl="werehouse/invoice/"
@@ -52,6 +50,9 @@ export class InvoiceService {
     return this.http.get(`${this.invoiceUrl}getnotaccepted`)
   }
 
+  cancelInvoice(id: number):Observable<any> {
+  return this.http.get(`${this.invoiceUrl}cancel_invoice/${id}`)
+  }
 
   InvoiceStatus(status: string, invoiceCode : number):Observable<any> {
    return this.http.get(`${this.invoiceUrl}response/${status}/${invoiceCode}`)

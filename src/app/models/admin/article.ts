@@ -20,7 +20,6 @@ export class Article{
     subCategory  !:SubCategory
      provider     !:Provider
      image        !:string
-     company      !:Company|null
-     article      !:Article|null
+     company      !:Company
      sharedPoint  !:string
 }

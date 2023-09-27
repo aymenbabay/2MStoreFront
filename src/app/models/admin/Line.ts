@@ -6,13 +6,8 @@ export class Line {
     quantity       ! :number
     totTva         ! :number
     prixArticleTot ! :number
-   // invoice        ! :Invoice
+    invoice        ! :Invoice
     article        ! :Article
-    articleLibelle        ! :string
-    articleCost           ! :number
-    articleTva            ! :number
-    articleMargin           ! :number
-    articleUnit         ! : string
-    articleCode     ! : string
+   
 
 }

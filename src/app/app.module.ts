@@ -23,6 +23,7 @@ import { ArticleModalComponent } from './modal/admin/article-modal/article-modal
 import { ProviderModalComponent } from './modal/admin/provider-modal/provider-modal.component';
 import { ClientModalComponent } from './modal/admin/client-modal/client-modal.component';
 import { InvoiceModalComponent } from './modal/admin/invoice-modal/invoice-modal.component';
+import { CommandLineModalComponent } from './modal/admin/command-line-modal/command-line-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { InvoiceModalComponent } from './modal/admin/invoice-modal/invoice-modal
     ArticleModalComponent,
     ProviderModalComponent,
     ClientModalComponent,
-    InvoiceModalComponent
+    InvoiceModalComponent,
+    CommandLineModalComponent
   ],
   imports: [
     BrowserModule,

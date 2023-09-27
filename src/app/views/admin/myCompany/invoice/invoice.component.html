@@ -18,7 +18,7 @@
       <tbody >
          <tr *ngFor="let invoice of providerInvoices; index as i"> 
            <td>{{invoice.code}}</td>
-           <td >{{invoice.clientName}}</td>
+           <td >{{invoice.client.name}}</td>
             <td>{{invoice.tot_tva_invoice}}</td>
             <td>{{invoice.prix_invoice_tot}}</td>
             <td>{{invoice.lastModifiedDate |date:'dd/MM/yyyy' }}</td>
@@ -46,7 +46,7 @@
       <tbody  >
          <tr *ngFor="let invoice of clientInvoices; index as i"> 
            <td>{{invoice.code}}</td>
-           <td >{{invoice.companyName}}</td>
+           <td >{{invoice.company.name}}</td>
             <td>{{invoice.tot_tva_invoice}}</td>
             <td>{{invoice.prix_invoice_tot}}</td>
             <td>{{invoice.lastModifiedDate |date:'dd/MM/yyyy' }}</td>

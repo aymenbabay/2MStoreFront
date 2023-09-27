@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { clientIdSelector, companyIdSelector, providerIdSelector } from '../../../../store/reducer/state.reducer';
 import { Router } from '@angular/router';
 import { CommandLineService } from '../../../../services/admin/command-line.service';
+import { InvoiceModalComponent } from '../../../../modal/admin/invoice-modal/invoice-modal.component';
 
 @Component({
   selector: 'app-invoice',
@@ -28,6 +29,9 @@ export class InvoiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllInvoices()
+    if(this.commandLineService.view){
+      console.log(this.commandLineService.invoice$)
+    }
   }
   
   getAllInvoices(){
@@ -44,8 +48,8 @@ export class InvoiceComponent implements OnInit {
       this.store.select(companyIdSelector).subscribe(companyId => {
         this.invoices$.subscribe((invoices: Invoice[]) => {
           console.log(clientId +" "+companyId)
-          this.clientInvoices = invoices.filter(invoice => invoice.clientId === clientId);
-          this.providerInvoices = invoices.filter(invoice => invoice.companyId === companyId);
+          this.clientInvoices = invoices.filter(invoice => invoice.client.id === clientId);
+          this.providerInvoices = invoices.filter(invoice => invoice.company.id === companyId);
           console.log("Client Invoices: ", this.clientInvoices);
           console.log("Provider Invoices: ", this.providerInvoices);
         });
@@ -56,7 +60,7 @@ export class InvoiceComponent implements OnInit {
 
   openInvoiceModal(invoice : Invoice|null){
     let type = 'invoice'
-    const dialogRef = this.dialog.open(AdminComponent,
+    const dialogRef = this.dialog.open(InvoiceModalComponent,
       {
         data: { invoice, type },
         enterAnimationDuration:'1000ms',
@@ -79,8 +83,9 @@ export class InvoiceComponent implements OnInit {
   }
 
   updateInvoiceServer(invoice : Invoice){
-    this.commandLineService.view = true
-    this.commandLineService.invoice = invoice
+    this.commandLineService.view = false
+    console.log( this.commandLineService.view)
+    this.commandLineService.invoice$ = invoice
     console.log(invoice.id)
     this.router.navigate(['/my-company/invoice/command'])
   }

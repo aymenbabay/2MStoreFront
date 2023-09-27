@@ -2,15 +2,12 @@ import { Company } from "../user/company"
 import { Article } from "./Article"
 
 export class Inventory{
-    id!: number
-    current_quantity!: number
-    out_quantity!: number
-    in_quantity!: number
-    libelle_article!: string
-    articleCode!: string
-    bestClient!: number
-    articleCost!: number
-    articleSelling!: number
-    company       !:Company
-    companyArticle !:Article
+    id                  !: number
+    out_quantity        !: number
+    in_quantity         !: number
+    bestClient          !: number
+	articleCost         !: number
+	articleSelling      !: number
+    company             !: Company
+    article             !: Article
 }

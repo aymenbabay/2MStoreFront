@@ -85,20 +85,7 @@ export class ArticleModalComponent implements OnInit{
         this.Add = "update"
         this.getSubcategories("any",this.data.entity.category.id)
         this.categoryId = this.data.entity.category.id;
-        this.subCategoryId = this.data.entity.subCategory.id;
-            if(this.data.type==='companyArticle'){
-              this.Form.setValue({
-                libelle: this.data.entity.article.libelle,
-                code: this.data.entity.article.code,
-              quantity: this.data.entity.quantity,
-              margin: this.data.entity.article.margin,
-              id: this.data.entity.article.id,
-              category: this.data.entity.category.id,
-              subCategory: this.data.entity.subCategory.id,
-            })
-          
-          }
-          else{
+        this.subCategoryId = this.data.entity.subCategory.id;  
             this.Form.setValue({
               libelle: this.data.entity.libelle,
               code: this.data.entity.code,
@@ -119,7 +106,7 @@ export class ArticleModalComponent implements OnInit{
           
           this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.image}/article/${this.data.entity.provider.company.user.username}`
           
-        }
+        
           }
       }
   }
@@ -136,8 +123,7 @@ export class ArticleModalComponent implements OnInit{
     getSubcategories($event:any, id:number){
       if(id===0){
   
-        console.log($event.target.value)
-        this.subCategories$ = this.sousCategoryService.getAllByCategoryId($event.target.value)
+        this.subCategories$ = this.sousCategoryService.getAllByCategoryId($event.target.value.id)
       }else{
         this.subCategories$ = this.sousCategoryService.getAllByCategoryId(id)
   
@@ -151,10 +137,7 @@ export class ArticleModalComponent implements OnInit{
           this.articleService.addQuantity(this.Form.value.quantity,this.Form.value.id).subscribe()
           break;
           default :
-          let Id
-          this.providerService.getMeProviderId().subscribe(x=>{Id = x})
           console.log(this.data.entity)
-          if(this.Add === 'Add' || (this.Add === 'update' && Id === this.data.entity.provider.id)){
 
             let body = {
               
@@ -174,7 +157,7 @@ export class ArticleModalComponent implements OnInit{
         subCategory: this.Form.value.subCategory
         
       }
-        if(this.Add === "Add"){
+       
 
           if(this.Form.value.provider ){
             body.provider = {id:this.Form.value.provider}
@@ -185,7 +168,7 @@ export class ArticleModalComponent implements OnInit{
           if(this.Form.value.subCategory){
             body.subCategory = {id:this.Form.value.subCategory}
           }
-        }
+        
         
       
         this.formData.append('article',JSON.stringify(body))
@@ -197,21 +180,8 @@ export class ArticleModalComponent implements OnInit{
           console.log(body)
           this.articleService.addArticle(this.formData).subscribe()
         }
-      }
-      else{
-        console.log(this.Form.value)
-        this.Form.setValue({
-          libelle: this.Form.value.libelle,
-          code: this.Form.value.code,
-          quantity: this.Form.value.quantity,
-          margin: this.Form.value.margin,
-          id: this.Form.value.id,
-          category: {id:this.categoryId},
-          subCategory: {id:this.subCategoryId},
-        })
-        console.log(this.Form.value)
-        this.articleService.UpdateCompanyArticle(this.Form.value).subscribe()
-      }
+      
+     
     }
       this.close("article")
     }

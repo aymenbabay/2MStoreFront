@@ -19,17 +19,17 @@ export class CommandLineService {
   baseUrl = "werehouse/commandline/"
   factureCode! : Observable< number>
   commandLine$: CommandLine[]=[];
-  linee :Line[] = [];
   article$! :Article|null
-  article! : Article
+  //article! : Article
   qte =0
   update = false
   view = false
-  invoice! : Invoice
+  invoice$! : Invoice
   go = false
+
   total = {"tottva":0,"totprice":0,"totgeneral":0}
   constructor(private http : HttpClient,private dialog : MatDialog) {
-   // this.change() 
+   console.log(this.invoice$)
   }
 
   change(){
@@ -37,7 +37,7 @@ export class CommandLineService {
       console.log(this.article$.id+"command line service ")
       for(let i = 0; i<this.commandLine$.length; i++){
 
-       if(this.commandLine$[i].article === this.article.id){
+       if(this.commandLine$[i].article.id === this.article$.id){
          console.log(this.article$.id+"article id")
          let message = `this article ${this.article$.libelle} is already added`
        this.openInfoModal(message)
@@ -45,18 +45,11 @@ export class CommandLineService {
        }
       }
        let newCommandLine  = new CommandLine();
-      let newLine  = new Line();
-      newCommandLine.article =  this.article.id
-      newLine.article = {...this.article}
-      
-      newLine.totTva =  this.article$.tva * this.qte * (this.article.cost * this.article.margin /100)
-      newCommandLine.totTva = this.article$.tva * this.qte * (this.article.cost * this.article.margin /100)
-      newLine.prixArticleTot = this.article.cost * this.article.margin * this.qte
-      newCommandLine.prixArticleTot = this.article.cost * this.article.margin * this.qte
-      newLine.quantity = this.qte
+      newCommandLine.article =  this.article$
+      newCommandLine.totTva = this.article$.tva * this.qte * (this.article$.cost * this.article$.margin /100)
+      newCommandLine.prixArticleTot = this.article$.cost * this.article$.margin * this.qte
       newCommandLine.quantity = this.qte
       this.commandLine$.push(newCommandLine )
-      this.linee.push(newLine)
       let totTva = 0;
       let totPrice = 0;
       let totGeneral = 0;
@@ -94,7 +87,7 @@ export class CommandLineService {
   }
 
   getCommandLines() :Observable<any>{
-    return this.http.get(`${this.baseUrl}getcommandline/${this.invoice.id}`)
+    return this.http.get(`${this.baseUrl}getcommandline/${this.invoice$.id}`)
   }
   
 }

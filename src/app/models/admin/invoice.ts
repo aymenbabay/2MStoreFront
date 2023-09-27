@@ -11,9 +11,5 @@ export class Invoice{
     client! : Client
     company! : Company
     lastModifiedDate! : Date
-    clientId ! :number
-    clientName ! : string
-    companyId ! :number
-    companyName ! :string
 
 }

@@ -2,50 +2,77 @@
 <div class="container">
 
   <div class="nav_bar" *ngIf="logedIn">
-    <div>
-      <input type="search" name="" id=""  ><i class="fas fa-search"></i>
-    </div>
+    
     <div> 
       <mat-icon  matBadge="4" matBadgeColor="warn" (click) = "openNotification()">notifications</mat-icon>
       <div class="notificationMenu" [class.opened]="openedNotification">
         <div class="menuContainer" *ngFor="let invoice of invoice$|async">
-          <div *ngIf="invoice.status== 'INWAITING' && invoice.clientId == clientId">
-            <p>{{invoice.companyName}} send an invoice code : {{invoice.code}}</p>
+          <div *ngIf="invoice.status== 'INWAITING' && invoice.client.id == clientId">
+            <p>{{invoice.company.name}} send an invoice code : {{invoice.code}}</p>
             <div>
               <button  mat-raised-button color="accent" (click)="review(invoice)">review</button>
               <button  mat-raised-button color="primary" (click)="InvoiceStatus('ACCEPT',invoice.code)">accept</button>
               <button  mat-raised-button color="warn" (click)="InvoiceStatus('REFUSE',invoice.code)">reject</button>
             </div>
           </div>
-          <div *ngIf="invoice.status == 'INWAITING' && invoice.companyId == companyId">
-            <p> you have sent an invoice code : {{invoice.code}} to {{invoice.clientName}}</p>
+          
+          <div *ngIf="invoice.status == 'INWAITING' && invoice.company.id == companyId">
+            <p> you have sent an invoice code : {{invoice.code}} to {{invoice.client.name}}</p>
+            <button mat-raised-button color="warn" (click)="cancelInvoice(invoice.id)">cancel</button>
+            <button mat-raised-button color="warn" (click)="updateInvoice(invoice)">update invoice</button>
           </div>
-          <div *ngIf="invoice.status =='ACCEPTED'  && invoice.companyId == companyId">
-            <p> {{invoice.clientName}} is accepted your invoice :  {{invoice.code}} </p>
+          <div *ngIf="invoice.status =='ACCEPTED'  && invoice.company.id == companyId">
+            <p> {{invoice.client.name}} is accepted your invoice :  {{invoice.code}} </p>
           </div>
-          <div *ngIf="invoice.status =='ACCEPTED'  && invoice.clientId == clientId">
-            <p> you are accepted  invoice :  {{invoice.code}} from {{invoice.companyName}} </p>
+          <div *ngIf="invoice.status =='ACCEPTED'  && invoice.client.id == clientId">
+            <p> you are accepted  invoice :  {{invoice.code}} from {{invoice.company.name}} </p>
           </div>
-          <div *ngIf="invoice.status =='REFUSED'  && invoice.clientId == clientId">
-            <p>you are refused the invoice : {{invoice.code}} from : {{invoice.companyName}}</p>
+          <div *ngIf="invoice.status == 'ACCEPTED' ">
+            
+            <button mat-raised-button color="warn" (click)="review(invoice)">check</button>
           </div>
-          <div *ngIf="invoice.status =='REFUSED'  && invoice.companyId == companyId">
-            <p>{{invoice.clientName }} has refused your invoice : {{invoice.code}}</p>
+          <div *ngIf="invoice.status =='REFUSED'  && invoice.client.id == clientId">
+            <p>you are refused the invoice : {{invoice.code}} from : {{invoice.company.name}}</p>
+          </div>
+          <div *ngIf="invoice.status =='REFUSED'  && invoice.company.id == companyId">
+            <p>{{invoice.client.name }} has refused your invoice : {{invoice.code}}</p>
           </div>
         </div>
       </div>
     </div>
     <span class="cdk-visually-hidden"></span>
-    <span class="material-icons">messages</span>
+    <mat-icon class="material-icons" (click)="openConversation()">messages</mat-icon>
+    <div *ngFor="let conversation of conversations" class="notificationMenu" [class.opened]="openedConversation">
+      <p *ngIf="conversation.user1.username === user" (click)="openMessanger(conversation.user2.username)">disc with {{conversation.user2.username}}</p>
+      <p *ngIf="conversation.user1.username !== user" (click)="openMessanger(conversation.user1.username)">disc with {{conversation.user1.username}}</p>
+    </div>
 
-    <mat-icon (click) ="openInvetation()">person_add
-    </mat-icon>
+    <div class='messenger_container ' id="messenger_container" *ngIf="messageService.show">
+      <div class="head_conversation" (click)="closeMessanger()">
+       <p class="close_conversation" style="font-size: 20px;">
+        x
+       </p>
+      </div>
+      <div class='messages_container ' id='messages_container'>
+        <div *ngFor="let i of messageService.messages">
+           <p *ngIf="i.sender===user" class="message_right_container">{{i.content}}</p> 
+           <p *ngIf="i.sender!==user" class="message_left_container">{{i.content}}</p> 
+        </div>
+    </div>
+    <div class='new_message_container ' id='new_message'>
+        <input class='new_message_input' id='new_message_input' #message type='text' placeholder="Type your message..." (keyup.enter)="sendMessageButton(message)">
+        <button class='send_message_button' id='send_message_button' (click)="sendMessageButton(message)">
+            <img class='send_message_button_image' src='../../assets/images/sendMessageButton.png'>
+        </button>
+    </div>
+  </div>
+    <mat-icon (click) ="openInvetation()">person_add</mat-icon>
     <div class="notificationMenu" [class.opened]="openedInvetation">
       <div class="menuContainer" *ngFor="let invetation of invetation$|async">
         <div *ngIf="invetation.status == 'INWAITING' && invetation.company.id == companyId">
           <p *ngIf="invetation.client "> you have sent client request to {{invetation.client.name}}</p>
           <p *ngIf="invetation.provider">you have sent provider request to {{invetation.provider.name}}</p>
-          <button>cancel request</button>
+          <button mat-raised-button color="warn" (click)="cancelRequestOrDeleteFriend(invetation.id)">cancel request</button>
         </div>
         <div *ngIf="invetation.status =='ACCEPTED'  && invetation.company.id == companyId">
           <p *ngIf="invetation.client"> {{invetation.client.name}} is accepted your client request </p>
@@ -75,5 +102,7 @@
     {{user}}
     <button mat-raised-button color="warn"(click)="logout()" routerLink="guest">logout</button>
   </div>
-  <router-outlet></router-outlet>
+  
+
+<router-outlet></router-outlet>
 </div>

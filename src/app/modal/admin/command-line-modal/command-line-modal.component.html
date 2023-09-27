@@ -1,0 +1,19 @@
+
+<div class="container">
+  <div class="title">
+    <h1>Add Article</h1>
+  </div>
+<form [formGroup]="Form" (keydown.enter)="submit()" class="form">
+    <label for="libelle" aria-required="true">libelle</label>
+    <select type="text" formControlName="libelle" id="libelle" name="libelle">
+      <option value="">choose a article</option>
+      <option *ngFor="let i of article$|async" value="{{i.code}}">{{i.libelle}}
+      </option>
+    </select>
+    <input type="number" aria-required="true" formControlName="quantity">
+  </form>
+  <div class="button" mat-dialog-actions>
+    <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" class="submit">OK</button>
+  </div>
+</div>

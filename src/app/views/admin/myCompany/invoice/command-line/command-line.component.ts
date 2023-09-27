@@ -6,12 +6,13 @@ import { BehaviorSubject, EMPTY, Observable, map, of, switchMap } from 'rxjs';
 import { InvoiceService } from '../../../../../services/admin/invoice.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminComponent } from '../../../../../modal/admin/admin/admin.component';
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Article } from '../../../../../models/admin/Article';
 import { CommandLine } from '../../../../../models/admin/lineCommande';
 import { Client } from '../../../../../models/admin/client';
 import { DatePipe } from '@angular/common';
 import { Line } from '../../../../../models/admin/Line';
+import { CommandLineModalComponent } from '../../../../../modal/admin/command-line-modal/command-line-modal.component';
 //import { saveAs } from 'file-saver';
 
 @Component({
@@ -21,27 +22,42 @@ import { Line } from '../../../../../models/admin/Line';
 })
 export class CommandLineComponent implements OnInit, OnDestroy {
 
-   company$$ = new BehaviorSubject<Company|undefined>(undefined);
+  private navigationStartSubscription: any;
+  private navigationEndSubscription: any;
   company$: Observable<Company> = EMPTY
   facture$: Observable<number> = EMPTY
   client! : Client
-  commandLine$: Line[]=[]
+  commandLine$: CommandLine[]=[]
   currentDate!: string;
   total = {"tottva":0,"totprice":0,"totgeneral":0}
   constructor(public commandService : CommandLineService, private companyServce : CompanyService,private router : Router,
-     private invoiceService: InvoiceService, private dialog : MatDialog, private datePipe: DatePipe){}
+     private invoiceService: InvoiceService, private dialog : MatDialog, private datePipe: DatePipe){
+      // this.navigationStartSubscription = router.events.subscribe((event) => {
+      //   if (event instanceof NavigationStart) {
+      //     console.log("en event start line command");
+      //     this.resetCommandData();
+      //   }
+      // });
+  
+      this.navigationEndSubscription = router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          console.log("en event end line command");
+          this.resetCommandData();
+        }
+      });
+     }
 
   ngOnInit(): void {
-    if(this.commandService.view){
-      this.currentDate = this.datePipe.transform(this.commandService.invoice.lastModifiedDate,'yyyy-MM-dd')||"";
-
+    if(this.commandService.view || this.commandService.invoice$ != null ){
+      this.currentDate = this.datePipe.transform(this.commandService.invoice$.lastModifiedDate,'yyyy-MM-dd')||"";
+      console.log(this.commandService.invoice$.code)
       this.getCommandLines()
-      this.facture$ = this.commandService.factureCode;
-      this.company$ = of(this.commandService.invoice.company)
-      this.client = this.commandService.invoice.client
-      this.total.totgeneral = this.commandService.invoice.prix_invoice_tot
-      this.total.totprice = this.commandService.invoice.prix_article_tot
-      this.total.tottva = this.commandService.invoice.tot_tva_invoice
+      this.facture$ = of(this.commandService.invoice$.code);
+      this.company$ = of(this.commandService.invoice$.company)
+      this.client = this.commandService.invoice$.client
+      this.total.totgeneral = this.commandService.invoice$.prix_invoice_tot
+      this.total.totprice = this.commandService.invoice$.prix_article_tot
+      this.total.tottva = this.commandService.invoice$.tot_tva_invoice
     }else{
       this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')||"";
       this.client = this.invoiceService.client 
@@ -49,17 +65,20 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       this.company$ = this.companyServce.getMe()
     }
   
+    console.log(this.commandService.view)
   }
 
   getCommandLines(){
     this.commandService.getCommandLines().subscribe(x =>{
       this.commandLine$ = x
+      this.commandService.commandLine$ = x
+      console.log(x)
     })
   }
 
   addLine(entity : CommandLine|null){
     let type = "command"
-    const dialogRef = this.dialog.open(AdminComponent,
+    const dialogRef = this.dialog.open(CommandLineModalComponent,
       {
         data: { entity, type },
         enterAnimationDuration:'1000ms',
@@ -69,7 +88,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       if (result !== "undefined") {
 
     this.commandService.change()
-    this.commandLine$ = this.commandService.linee;
+    this.commandLine$ = this.commandService.commandLine$;
     console.log(this.commandLine$)
     this.total = this.commandService.total
       }
@@ -99,21 +118,28 @@ export class CommandLineComponent implements OnInit, OnDestroy {
         }, 100);
       }
      
-      this.commandLine$ = this.commandService.commandLine$ = []
+      this.commandLine$ = []
+      this.commandService.commandLine$ = []
       this.commandService.article$! = new Article()
       this.router.navigate(["/my-company/invoice"])
     })
   }
 
-  updateLineServer(line: Line){
+  updateLineServer(line: CommandLine){
     this.commandService.update = true
     //this.addLine(line)
   }
 
-  ngOnDestroy(): void {
-    console.log("en destroy line command")
-    this.commandService.view = false
-     this.commandService.commandLine$=[]
-     this.commandService.total={'totgeneral':0,'totprice':0,'tottva':0}
+ 
+  ngOnDestroy() {
+   // this.navigationStartSubscription.unsubscribe();
+    this.navigationEndSubscription.unsubscribe();
+  }
+
+  private resetCommandData() {
+     this.commandLine$ = [];
+     this.commandService.commandLine$ = []
+     this.total = { 'totgeneral': 0, 'totprice': 0, 'tottva': 0 };
+     this.commandService.total = { 'totgeneral': 0, 'totprice': 0, 'tottva': 0 };
   }
 }

@@ -12,6 +12,7 @@ import { clientIdSelector } from '../../store/reducer/state.reducer';
 })
 export class ClientService {
  
+ 
   update = false
   baseUrl="werehouse/client/"
   constructor(private http: HttpClient, private sotre : Store) { }
@@ -48,6 +49,9 @@ export class ClientService {
     return this.http.get<boolean>(`${this.baseUrl}checkClient/${id}`)
   }
 
+  getAllMyClientContaining(value: string): Observable<Client[]> {
+   return this.http.get<Client[]>(`${this.baseUrl}get_all_my_containing/${value}`)
+  }
 
   getMyClientId() {
     this.getMyClientid().subscribe(x =>{

@@ -3,10 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoginService } from '../../../services/guest/login/login.service';
-import { CompanyService } from '../../../services/user/company/company.service';
-import { ProviderService } from '../../../services/admin/provider.service';
-import { ClientService } from '../../../services/admin/client.service';
+import { AppComponent } from '../../../app.component';
 
+import jwt_decode from 'jwt-decode';
 
 declare const FB: any;
 
@@ -24,7 +23,9 @@ export class LoginComponent implements OnInit{
     alert(event)
   }
   loginForm : FormGroup
-  constructor(private loginService : LoginService, public fb : FormBuilder, private datePipe : DatePipe, private router : Router){
+  constructor(private loginService : LoginService, public fb : FormBuilder, private datePipe : DatePipe, private router : Router,
+    private appComponent : AppComponent
+    ){
     this.loginForm = this.fb.group({
       'username':[null, Validators.required],
       'password':[null, Validators.required]
@@ -59,7 +60,8 @@ export class LoginComponent implements OnInit{
     localStorage.setItem('jwt',token)
     console.log(val)
     this.router.navigate(["user"]) 
-  
+    this.appComponent.logedIn = true
+    this.appComponent.user = jwt_decode<any>(token).sub
  })
   }
 

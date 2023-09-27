@@ -25,7 +25,7 @@
     </div>
     <h2>Client:</h2>
     <div class="client" *ngIf="client">
-        <p> name:    {{client.name}}</p>
+        <input value="{{client.name}}">
         <p> address: {{client.address}}</p>
         <p> phone:   {{client.phone}}</p>
         <p> matricule:   {{client.matfisc}}</p>
@@ -64,12 +64,12 @@
             </tbody>
               <tbody *ngIf="commandService.view">
                 <tr *ngFor="let line of commandLine$; index as i"> 
-                  <td>{{line.articleLibelle}}</td>
-                  <td>{{line.articleCode}}</td>
+                  <td>{{line.article.libelle}}</td>
+                  <td>{{line.article.code}}</td>
                   <td>{{line.quantity}}</td>
-                  <td>{{line.articleUnit}}</td>
-                  <td>{{line.articleTva/100|percent}}</td>
-                  <td>{{line.articleCost*line.articleMargin/100|currency: ' DT '}}</td>
+                  <td>{{line.article.unit}}</td>
+                  <td>{{line.article.tva/100|percent}}</td>
+                  <td>{{line.article.cost*line.article.margin/100|currency: ' DT '}}</td>
                   <td>{{line.totTva|currency: ' DT '}}</td>
                   <td>{{line.prixArticleTot|currency: ' DT '}}</td>
         

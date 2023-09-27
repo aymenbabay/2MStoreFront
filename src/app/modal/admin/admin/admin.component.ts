@@ -104,27 +104,6 @@ export class AdminComponent implements OnInit, OnDestroy {
                   })
                 break;
 
-                case 'invoice':
-                  this.Form = fb.group({
-                    'name': [''],
-                    'code': [''],
-                    'nature': [''],
-                    'credit': [''],
-                    'mvt': [''],
-                    'phone': [''],
-                    'address': [''],
-                    'email': [''],
-                    'id': ['']
-                  })
-                  break;
-
-                  case "command":
-                    this.Form = fb.group({
-                      'libelle': [''],
-                      'quantity': [0]
-                    })
-                    break
-
                   default:
                     console.log("sal")
     break;
@@ -219,33 +198,6 @@ ngOnInit(): void {
                 })
                 break
 
-          case 'invoice':
-            this.getAllClient();
-            if(this.invoiceService.update){
-              this.Form.setValue({
-                name: this.data.entity.name,
-                code: this.data.entity.code,
-                nature: this.data.entity.nature,
-                credit: this.data.entity.credit,
-                mvt: this.data.entity.mvt,
-                phone: this.data.entity.phone,
-                address: this.data.entity.address,
-                email: this.data.entity.email,
-                id: this.data.entity.id
-              })
-            }
-              break;
-
-              case "command":
-                this.getAllArticle();
-                if(this.commandLineService.update){
-                  console.log(this.data.entity)
-                  this.Form.setValue({
-                    libelle: this.data.entity.codeArticle,
-                    quantity: this.data.entity.quantity
-                  })
-                }
-                break;
             default:
               this.Form.setValue({
                 undefined
@@ -298,14 +250,9 @@ ngOnInit(): void {
     });
   }
 
-  getAllClient(){
-    this.client$ = this.clientService.getAllMyClients();
-    this.client$.subscribe(data =>console.log(data))
-  }
+ 
 
-  getAllArticle(){
-    this.article$ = this.articleService.getAllArticles(0)
-  }
+ 
 
   // ----------------------------------------submit---------------------------------------------------
  submit(){
@@ -365,51 +312,8 @@ ngOnInit(): void {
       break;
 
 
-    case 'invoice':
-    if (this.invoiceService.update) {
-      this.invoiceService.updateInvoice(this.Form.value.code).subscribe()
-    } else {
-      const mySubsc = this.client$
-      .pipe(
-        switchMap(clients => {
-          const selectedClient =  clients.find(client => client.id.toString() === this.Form.value.name);
-          if (selectedClient) {
-            this.invoiceService.client =selectedClient
-          }
-          return selectedClient ? of(selectedClient) : EMPTY;
-        })
-      )
-      .subscribe(selectedClient => {
-        console.log('selectedClient:', selectedClient);
-         this.router.navigate(["/my-company/invoice/command"])
-      });
-      this.subscriptions.add(mySubsc)
-      this.commandLineService.go = true
-    }
-    break;
-
-    case "command":
-
-      if(this.Form.value.quantity != 0 && !this.commandLineService.update){
-
-        this.article$.pipe(
-          switchMap(articles => {
-            const selectedArticle = articles.find(article => article.code.toString() === this.Form.value.libelle);
-            if(selectedArticle){
-              this.commandLineService.article$ =selectedArticle
-              this.commandLineService.article = selectedArticle
-              this.commandLineService.qte = this.Form.value.quantity
-            }
-            return selectedArticle ? of(selectedArticle) : EMPTY;
-          })
-          ).subscribe(selectedArticle => {
-            console.log('selectedClient:', selectedArticle.article);
-          });
-        }else{
-this.commandLineService.update = false
-        }
-
-      break;
+    
+  
   }
   this.close("saved successfully")
 }
@@ -455,9 +359,7 @@ close(status : string){
               case 'sous-category':
                 this.sousCategoryService.update = false
                 break;
-                case 'command':
-                  this.commandLineService.update = false
-                  break
+               
                 default:
                   break
   }

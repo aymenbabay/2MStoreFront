@@ -97,39 +97,9 @@
 
 
 
-  <!-- -------------------------------------------------  invoice  ----------------------------------------------------- -->
-  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='invoice'">
-    <label for="name">name</label>
-    <select type="text" formControlName="name" id="name" name="name">
-      <option value="">choose a client</option>
-      <option *ngFor="let i of client$|async" value="{{i.id}}">{{i.name}}
-      </option>
-    </select>
-    <div *ngIf="'invoicee'">
+  
 
-      <input type="text" formControlName="code" hidden id="code" name="code">
-      <input type="text" formControlName="nature" hidden id="nature" name="nature">
-      <input type="number" formControlName="credit" hidden id="credit" name="credit">
-      <input type="number" formControlName="mvt" hidden id="mvt" name="mvt">
-      <input type="text" formControlName="phone" hidden id="phone" name="phone">
-      <input type="text" formControlName="address" hidden id="address" name="address">
-      <input type="text" formControlName="email" hidden id="email" name="email">
-      <input type="number" formControlName="id" hidden id="id" name="id">
-
-    </div>
-  </form>
-
-  <!-- -------------------------------------------------  command line  ----------------------------------------------------- -->
-  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='command'">
-    <label for="libelle" aria-required="true">libelle</label>
-    <select type="text" formControlName="libelle" id="libelle" name="libelle">
-      <option value="">choose a article</option>
-      <option *ngFor="let i of article$|async" value="{{i.code}}">{{i.libelle}}
-      </option>
-    </select>
-    <input type="number" aria-required="true" formControlName="quantity">
-  </form>
-
+  
 
   <div *ngIf="type !== 'invoice' && type !== 'command' && type !== 'Quantity' && type !== 'articleFromExistProvider'">
 

@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { Position } from '@cloudinary/url-gen/qualifiers';
 import { ClientService } from '../../../services/admin/client.service';
 import { ProviderService } from '../../../services/admin/provider.service';
+import { AppComponent } from '../../../app.component';
+import { MessageService } from '../../../services/user/message.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html', 
@@ -23,8 +25,9 @@ export class HomeComponent implements OnDestroy, OnInit{
   company$ : Observable<Company[]> = EMPTY
   sig = signal(1)
   constructor(public dialog: MatDialog, private companyService : CompanyService, private articleService : ArticleService,
-     private router : Router, private providerService : ProviderService, private clientService : ClientService){
-
+     private router : Router, private providerService : ProviderService, private clientService : ClientService,
+      private messageService : MessageService){
+    
   }
 
   ngOnInit(): void {
@@ -54,8 +57,14 @@ export class HomeComponent implements OnDestroy, OnInit{
     // });
   }
 
+  openMessanger(userName : string){
+    this.messageService.receiver = userName;
+    this.messageService.show = true
+    this.messageService.getAllMyMessage().subscribe(x =>this.messageService.messages=x)
+  }
   getRandomArticleWithRandomCompany(){
     this.article$ = this.articleService.getRandomArticleWithRandomCompany()
+    this.article$.subscribe(x =>console.log(x))
   }
   check(){
     this.s= this.companyService.checkCompany().subscribe(x =>{
@@ -73,6 +82,7 @@ export class HomeComponent implements OnDestroy, OnInit{
 
   getAllCompany(){
    this.company$ =  this.companyService.getAllCompany()
+   this.company$.subscribe(x =>console.log(x))
   }
 
   toCompanyPage($event:any){

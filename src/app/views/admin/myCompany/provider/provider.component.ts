@@ -60,6 +60,7 @@ export class ProviderComponent implements OnInit {
       // Combine all observables into a single observable
       return forkJoin(observables);
     })) 
+    this.allproviders$.subscribe(x => console.log(x))  
   }
 
   addAsProvider(id : number){
@@ -94,6 +95,10 @@ export class ProviderComponent implements OnInit {
   updateProvider(provider : Provider){
     this.providerService.update = true
     this.openProviderModal(provider)
+  }
+
+  visitProvider(provider : Provider){
+    console.log("visit provider "+ provider.name)
   }
 
   deleteProvider( name: String, id : number){

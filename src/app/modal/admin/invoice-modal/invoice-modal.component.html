@@ -1,4 +1,13 @@
-<form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='invoice'">
+
+<div class="container">
+  <div class="title">
+    <h1>Add Invoice</h1>
+  </div>
+<form [formGroup]="Form" (keydown.enter)="submit()" class="form">
+  <div class="search-container">
+    <input type="search" name="searchQuery" id="searchQuery" #searchInput placeholder="Search...">
+    <i class="fas fa-search" id="searchIcon" (click)="getAllMyClientContaining(searchInput.value)"></i>
+  </div>
     <label for="name">name</label>
     <select type="text" formControlName="name" id="name" name="name">
       <option value="">choose a client</option>
@@ -18,3 +27,8 @@
 
     </div>
   </form>
+  <div class="button" mat-dialog-actions>
+    <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" class="submit">OK</button>
+  </div>
+</div>

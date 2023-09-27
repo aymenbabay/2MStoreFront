@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ClientService } from '../../../../services/admin/client.service';
 import { LoginService } from '../../../../services/guest/login/login.service';
 import { ClientModalComponent } from '../../../../modal/admin/client-modal/client-modal.component';
+import { clientIdSelector } from '../../../../store/reducer/state.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-client',
@@ -17,12 +19,18 @@ export class ClientComponent implements OnInit {
   clients$:Observable<Client[]> = EMPTY
   search = false
   isClientResult = false
-  constructor(private dialog : MatDialog, private clientService: ClientService, public loginService : LoginService){
+  myClientId! : number
+  constructor(private dialog : MatDialog, private clientService: ClientService, public loginService : LoginService,
+    private store : Store){
 
   }
 
   ngOnInit(): void {
     this.getAllMyClients()
+    this.store.select(clientIdSelector).subscribe(x =>{
+      this.myClientId = x
+      console.log(x)
+    })
   }
 
   getAllMyClients(){
@@ -32,7 +40,6 @@ export class ClientComponent implements OnInit {
 
   getAllClientContaining(value : string){
     this.search = true
-   // this.clients$ = this.clientService.getAllClientContaining(event)
    this.clients$ = this.clientService.getAllClientContaining(value).pipe(
       switchMap(clients => {
         // Create an array of observables for checking client status
@@ -89,6 +96,9 @@ export class ClientComponent implements OnInit {
     this.openClientModal(client)
   }
 
+  visitClient(client : Client){
+    console.log("visit this client "+client.name)
+  }
   deleteClientServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
