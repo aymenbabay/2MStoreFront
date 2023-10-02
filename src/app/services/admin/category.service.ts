@@ -18,8 +18,8 @@ export class CategoryService {
   deleteCategory(id: number):Observable<any>{
     return  this.http.delete(`${this.baseUrl}delete/${id}`)
   }
-  getAllCategories():Observable<Category[]>{
-    return this.http.get<Category[]>(`${this.baseUrl}getbycompany`)
+  getAllCategories(id : number):Observable<Category[]>{
+    return this.http.get<Category[]>(`${this.baseUrl}getbycompany/${id}`)
   }
 
   addCategory(category : FormData):Observable<any>{

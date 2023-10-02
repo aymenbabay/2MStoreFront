@@ -9,6 +9,7 @@ import { ClientService } from '../../../../services/admin/client.service';
 import { Store } from '@ngrx/store';
 import { providerIdSelector } from '../../../../store/reducer/state.reducer';
 import { ProviderModalComponent } from '../../../../modal/admin/provider-modal/provider-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-provider',
@@ -22,7 +23,7 @@ export class ProviderComponent implements OnInit {
   myProviderId!: number
   search = false
   constructor(private dialog : MatDialog, private providerService: ProviderService, public loginService : LoginService,
-     private store : Store){
+     private store : Store, private router : Router){
    
   }
 
@@ -99,6 +100,7 @@ export class ProviderComponent implements OnInit {
 
   visitProvider(provider : Provider){
     console.log("visit provider "+ provider.name)
+    this.router.navigate([`user/company/${provider.company.id}`])
   }
 
   deleteProvider( name: String, id : number){
@@ -111,14 +113,7 @@ export class ProviderComponent implements OnInit {
 
   }
 
-  deleteMyProvider(name:string, id: number){
-    const conf = window.confirm(`are you sure to delete ${name} !!`)
-    if(conf){
-      this.providerService.deleteMyProvider(id).subscribe(x =>{
-        this.ngOnInit()
-      })
-    }
-  }
+
 
 
 

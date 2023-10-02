@@ -7,6 +7,7 @@ import { LoginService } from '../../../../services/guest/login/login.service';
 import { ClientModalComponent } from '../../../../modal/admin/client-modal/client-modal.component';
 import { clientIdSelector } from '../../../../store/reducer/state.reducer';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client',
@@ -21,7 +22,7 @@ export class ClientComponent implements OnInit {
   isClientResult = false
   myClientId! : number
   constructor(private dialog : MatDialog, private clientService: ClientService, public loginService : LoginService,
-    private store : Store){
+    private store : Store, private router : Router){
 
   }
 
@@ -98,6 +99,7 @@ export class ClientComponent implements OnInit {
 
   visitClient(client : Client){
     console.log("visit this client "+client.name)
+    this.router.navigate([`user/company/${client.company.id}`])
   }
   deleteClientServer( name: String, id : number){
     const conf = window.confirm(`are you sure to delete ${name} !!`)

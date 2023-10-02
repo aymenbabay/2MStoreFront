@@ -24,6 +24,8 @@ import { ProviderModalComponent } from './modal/admin/provider-modal/provider-mo
 import { ClientModalComponent } from './modal/admin/client-modal/client-modal.component';
 import { InvoiceModalComponent } from './modal/admin/invoice-modal/invoice-modal.component';
 import { CommandLineModalComponent } from './modal/admin/command-line-modal/command-line-modal.component';
+import { CategoryModalComponent } from './modal/admin/category-modal/category-modal.component';
+import { SubCategoryModalComponent } from './modal/admin/sub-category-modal/sub-category-modal.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { CommandLineModalComponent } from './modal/admin/command-line-modal/comm
     ProviderModalComponent,
     ClientModalComponent,
     InvoiceModalComponent,
-    CommandLineModalComponent
+    CommandLineModalComponent,
+    CategoryModalComponent,
+    SubCategoryModalComponent
   ],
   imports: [
     BrowserModule,

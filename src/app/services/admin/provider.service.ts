@@ -23,9 +23,6 @@ export class ProviderService {
     return  this.http.delete(`${this.baseUrl}delete/${id}`)
   }
 
-  deleteMyProvider(id: number):Observable<any>{
-    return  this.http.delete(`${this.baseUrl}delete_my/${id}`)
-  }
 
   getAllProviders():Observable<any>{
     return this.http.get(`${this.baseUrl}get_all`)

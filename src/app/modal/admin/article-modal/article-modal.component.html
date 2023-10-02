@@ -34,7 +34,18 @@
       <textarea formControlName="discription" id="discription" name="discription">
     </textarea>
     <input type="number" formControlName="id" hidden id="id" name="id">
+    <div>
+
+      <label for="isVisible">PUBLIC</label>
+      <input type="radio" value="PUBLIC" formControlName="isVisible" id="isVisible" name="isVisible">
     
+    <label for="isVisible">ONLY ME</label>
+    <input type="radio" value="ONLY_ME" formControlName="isVisible" id="isVisible" name="isVisible">
+    
+    <label for="isVisible">CLIENT</label>
+    <input type="radio" value="CLIENT" formControlName="isVisible" id="isVisible" name="isVisible">
+    
+  </div>
     <select *ngIf="providers$" type="string" formControlName="provider" id="provider" name="provider">
         <option value="">choose provider</option>
         <option *ngFor="let i of providers$|async" value="{{i.id}}">{{i.name}}

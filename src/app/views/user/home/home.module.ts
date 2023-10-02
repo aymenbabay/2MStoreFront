@@ -10,6 +10,7 @@ import { AddCompanyModalComponent } from '../../../modal/user/add-company-modal/
 import { CompanyComponent } from '../../../components/admin/company/company.component';
 import { AllCompanyComponent } from '../../../components/user/all-company/all-company.component';
 import { ProfilComponent } from '../../../components/user/profil/profil.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [ 
@@ -25,7 +26,8 @@ import { ProfilComponent } from '../../../components/user/profil/profil.componen
     FontAwesomeModule,
      FormsModule,
      ReactiveFormsModule,
-     MatButtonModule
+     MatButtonModule,
+     MatIconModule,
   ]
 })
 export class HomeModule { }

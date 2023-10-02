@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Category } from '../../../../models/admin/category';
 import { CategoryService } from '../../../../services/admin/category.service';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
+import { CategoryModalComponent } from '../../../../modal/admin/category-modal/category-modal.component';
 
 @Component({
   selector: 'app-category',
@@ -22,13 +23,14 @@ export class CategoryComponent implements OnInit {
   }
   
   getAllCategorys(){
-    this.categories = this.categoryService.getAllCategories()
+    this.categories = this.categoryService.getAllCategories(0)
+    this.categories.subscribe(x =>console.log(x))
   
   }
 
   openCategoryModal(entity : Category|null){
     let type = 'category'
-    const dialogRef = this.dialog.open(AdminComponent,
+    const dialogRef = this.dialog.open(CategoryModalComponent,
       {
         data: { entity, type },
         enterAnimationDuration:'1000ms',

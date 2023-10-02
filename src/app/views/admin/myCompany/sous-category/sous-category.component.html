@@ -18,7 +18,7 @@
             <td *ngIf="sous_category.category">{{sous_category.category.libelle}}</td>
             <td *ngIf="!sous_category.category ">without categ</td>
             <td *ngIf="!sous_category.image">without img</td>
-            <td *ngIf="sous_category.image"><img class="img" src="http://localhost:8080/werehouse/image/{{sous_category.image}}/subcategory/{{sous_category.company.user}}"
+            <td *ngIf="sous_category.image"><img class="img" src="http://localhost:8080/werehouse/image/{{sous_category.image}}/subcategory/{{sous_category.company.user.username}}"
               alt="download"></td>
             <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteSousCategoryServer( sous_category.libelle,sous_category.id)">delete</mat-icon>
               <mat-icon color="accent" style="font-size: 24px;" (click)="updateSousCategoryServer(sous_category)">update</mat-icon>

@@ -7,8 +7,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SousCategoryService {
- 
-
   
   update = false
   baseUrl="werehouse/subcategory/"
@@ -32,7 +30,7 @@ export class SousCategoryService {
     return this.http.put(`${this.baseUrl}update`,sous_category)
   }
 
-  getAllByCategoryId(categoryId: number): Observable<SubCategory[]> {
-    return this.http.get<SubCategory[]>(`${this.baseUrl}${categoryId}`)
+  getAllByCategoryId(categoryId: number, companyId : number): Observable<SubCategory[]> {
+    return this.http.get<SubCategory[]>(`${this.baseUrl}${categoryId}/${companyId}`)
   }
 }

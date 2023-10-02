@@ -53,6 +53,7 @@ export class ArticleModalComponent implements OnInit{
                       'subCategory': [],
                       'id': [],
                       'image':[],
+                      'isVisible' :[]
                     })
       break;
                      
@@ -102,6 +103,7 @@ export class ArticleModalComponent implements OnInit{
             category: this.data.entity.category.id,
             subCategory: this.data.entity.subCategory.id,
             image: this.data.entity.image,
+            isVisible : this.data.entity.isVisible
           })
           
           this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.image}/article/${this.data.entity.provider.company.user.username}`
@@ -112,7 +114,7 @@ export class ArticleModalComponent implements OnInit{
   }
 
   getAllCategory(){
-    this.categories$ = this.categoryService.getAllCategories()
+    this.categories$ = this.categoryService.getAllCategories(0)
     this.categories$.subscribe(data =>console.log(data))
    }
 
@@ -122,10 +124,10 @@ export class ArticleModalComponent implements OnInit{
 
     getSubcategories($event:any, id:number){
       if(id===0){
-  
-        this.subCategories$ = this.sousCategoryService.getAllByCategoryId($event.target.value.id)
+  console.log(" id and subcatregory id "+$event.target.value)
+        this.subCategories$ = this.sousCategoryService.getAllByCategoryId($event.target.value,0)
       }else{
-        this.subCategories$ = this.sousCategoryService.getAllByCategoryId(id)
+        this.subCategories$ = this.sousCategoryService.getAllByCategoryId(id,0)
   
       }
   
@@ -154,8 +156,8 @@ export class ArticleModalComponent implements OnInit{
         id: this.Form.value.id,
         category: this.Form.value.category,
         provider: this.Form.value.provider,
-        subCategory: this.Form.value.subCategory
-        
+        subCategory: this.Form.value.subCategory,
+        isVisible: this.Form.value.isVisible
       }
        
 

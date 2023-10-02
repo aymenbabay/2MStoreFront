@@ -5,6 +5,10 @@ import { EMPTY, Observable } from 'rxjs';
 import { Company } from '../../../models/user/company';
 import { ArticleService } from '../../../services/admin/article.service';
 import { Article } from '../../../models/admin/Article';
+import { Category } from '../../../models/admin/category';
+import { SubCategory } from '../../../models/admin/sub-category';
+import { CategoryService } from '../../../services/admin/category.service';
+import { SousCategoryService } from '../../../services/admin/sous-category.service';
 
 @Component({
   selector: 'app-company',
@@ -15,11 +19,15 @@ export class CompanyComponent implements OnInit {
   id!:number|0
   company$! : Company
   article$ : Observable<Article[]> = EMPTY
-constructor(private activatedRoute: ActivatedRoute, private companyService : CompanyService, private articleService : ArticleService){}
+  category$! : Observable<Category[]>
+  subCategory$! : Observable<SubCategory[]>
+constructor(private activatedRoute: ActivatedRoute, private companyService : CompanyService, private articleService : ArticleService,
+  private categoryService : CategoryService, private subCategoryService : SousCategoryService){}
 
 ngOnInit(): void {
   this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')??'');
   this.getCompany()
+  this.getAllCategories()
   this.getAllArticleByCompanyId()
 }
 
@@ -31,8 +39,21 @@ getCompany(){
   }
 }
 
+getAllCategories(){
+  this.category$ = this.categoryService.getAllCategories(this.id)
+}
+
+getAllSubCategories(categoryId : number, companyId : number){
+  console.log(categoryId, companyId)
+  this.subCategory$ = this.subCategoryService.getAllByCategoryId(categoryId, companyId);
+  this.article$ = this.articleService.getAllArticleByCategory(categoryId,companyId);
+}
 getAllArticleByCompanyId(){
-  this.article$ = this.articleService.getAllArticles(this.id)
+  this.article$ = this.articleService.getAllArticlesByCompanyId(this.id)
+}
+
+getAllBySubCategory(subCategoryId : number, companyId : number){
+  this.article$ = this.articleService.getAllArticleBySubCategoryId(subCategoryId, companyId)
 }
 
 }

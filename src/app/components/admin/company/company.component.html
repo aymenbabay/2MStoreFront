@@ -2,14 +2,48 @@
   <div class="company" *ngIf="company$">
 
   <img src="http://localhost:8080/werehouse/image/{{company$.logo}}/company/{{company$.user.username}}" alt="download">
-    {{company$.name}}
-    {{company$.code}}
-    {{company$.address}}
-    {{company$.phone}}
-    {{company$.email}}
-    {{company$.indestrySector}}
+    name: {{company$.name}}
+    code: {{company$.code}}
+    address: {{company$.address}} 
+    phone: {{company$.phone}}
+    email: {{company$.email}}
+    sector: {{company$.indestrySector}}
   </div>
-  <div class="article" *ngFor="let article of article$|async">
-    {{article.libelle}}
+
+  <div class="categories" *ngFor="let category of category$ |async">
+    <p (click) ="getAllSubCategories(category.id,category.company.id)"> {{category.libelle}}</p>
+    <div>
+      <img *ngIf="category.image" class="categoryImg" (click) ="getAllSubCategories(category.id,category.company.id)"
+      src="http://localhost:8080/werehouse/image/{{category.image}}/category/{{category.company.user.username}}" alt="download">
+    </div>
+  </div>
+  <div class="subCategories" *ngFor="let subCategory of subCategory$| async">
+    <p (click)="getAllBySubCategory(subCategory.id,subCategory.company.id)">{{subCategory.libelle}}</p>
+    <div>
+      <img *ngIf="subCategory.image" class="categoryImg" (click)="getAllBySubCategory(subCategory.id,subCategory.company.id)"
+      src="http://localhost:8080/werehouse/image/{{subCategory.image}}/subcategory/{{subCategory.company.user.username}}" alt="download">
+    </div>
+  </div>
+    <div class="card" >
+      <div *ngFor="let article of article$ | async" class="article popup"
+                                 [attr.data-disc]="'discription: '+article.discription">
+        <div class="articlei" >
+          <div class="image">
+             <img *ngIf="article.image" class="articleImg" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.sharedPoint}}" alt="download">
+             <p *ngIf="!article.image">without image</p>
+          </div>
+          <div class="information">
+            <div class="_1">
+              <p>Libelle: {{article.libelle}}
+              <p>
+              <p>Code: {{article.quantity}}
+              <p>
+              <p>Selling Price: {{(article.cost+article.cost*article.tva/100)+article.cost*article.margin/100|currency:'Dt '}}
+              <p>
+            </div>
+        </div>
+      </div>
+     
+    </div>
   </div>
 </div>

@@ -46,9 +46,8 @@ export class AdminComponent implements OnInit, OnDestroy {
    formData = new FormData()
   constructor(private ref: MatDialogRef<AdminComponent>, public fb: FormBuilder,
     private articleService: ArticleService, @Inject(MAT_DIALOG_DATA) public data: { entity: any, type: string },
-    private router: Router, private clientService : ClientService, private categoryService : CategoryService,
-    private sousCategoryService : SousCategoryService, private commandLineService : CommandLineService,
-    private providerService : ProviderService, private workerService : WorkerService, private invoiceService : InvoiceService
+     private categoryService : CategoryService,
+    private sousCategoryService : SousCategoryService, private providerService : ProviderService, private workerService : WorkerService,
     ) {
       this.type = data.type
       switch (data.type){
@@ -61,14 +60,6 @@ export class AdminComponent implements OnInit, OnDestroy {
         })
 
         break;
-
-        case 'category':
-          this.Form = fb.group({
-            'libelle': [''],
-            'code': [''],
-            'id': ['']
-          })
-          break;
        
             case 'sous-category':
               this.Form = fb.group({
@@ -124,19 +115,7 @@ ngOnInit(): void {
 
     break;
 
-    case 'category':
-      if(this.categoryService.update){
-        this.Add = "update"
-        this.Form.setValue({
-          libelle: this.data.entity.libelle,
-          code: this.data.entity.code,
-          id: this.data.entity.id
-        })
-        this.imageUrl=`http://localhost:8080/werehouse/image/${this.data.entity.image}/category/${this.data.entity.company.user.username}`
-    
-      }
-      break;
-     
+   
         case 'sous-category':
 
         this.getAllCategory()
@@ -208,7 +187,7 @@ ngOnInit(): void {
 }
   }
   getAllCategory(){
-   this.categories$ = this.categoryService.getAllCategories()
+   this.categories$ = this.categoryService.getAllCategories(0)
    this.categories$.subscribe(data =>console.log(data))
   }
 
@@ -232,9 +211,9 @@ ngOnInit(): void {
     if(id===0){
 
       console.log($event.target.value)
-      this.subCategories$ = this.sousCategoryService.getAllByCategoryId($event.target.value)
+      this.subCategories$ = this.sousCategoryService.getAllByCategoryId($event.target.value,0)
     }else{
-      this.subCategories$ = this.sousCategoryService.getAllByCategoryId(id)
+      this.subCategories$ = this.sousCategoryService.getAllByCategoryId(id,0)
 
     }
 
@@ -263,16 +242,6 @@ ngOnInit(): void {
     this.articleService.addQuantity(this.Form.value.quantity, this.Form.value.id).subscribe()
     break;
 
-    case 'category':
-      const category = this.Form.value
-      this.formData.append('categoryDto', JSON.stringify(category))
-      this.formData.append('file', this.file)
-    if (this.categoryService.update) {
-      this.categoryService.updateCategory(this.formData).subscribe()
-    } else {
-      this.categoryService.addCategory(this.formData).subscribe()
-    }
-    break;
     case 'sous-category':
       let bodysous= {
           
@@ -347,9 +316,6 @@ close(status : string){
   this.ref.close(status)
   switch (this.data.type){
    
-        case 'category':
-          this.categoryService.update = false
-          break
           case 'provider':
             this.providerService.update = false
             break

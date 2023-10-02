@@ -63,7 +63,7 @@
         <td>{{provider.bankaccountnumber}}</td>
        <td>
         <button *ngIf="provider.myProvider" >view profil</button>
-        <button *ngIf="!provider.myProvider" (click)="addAsProvider(provider.id)">add as prvider</button>
+        <mat-icon color="primary" *ngIf="!provider.myProvider" (click)="addAsProvider(provider.id)">add as prvider</mat-icon>
        </td>
         
        </tr>

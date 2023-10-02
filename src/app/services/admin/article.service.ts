@@ -10,10 +10,8 @@ import { FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class ArticleService {
-  UpdateCompanyArticle(form: Article) :Observable<any>{
-    return this.http.put(`${this.baseUrl}updatecompanyarticle`,form)
-  }
-
+ 
+ 
   update = false
   baseUrl="werehouse/article/"
 
@@ -56,4 +54,21 @@ export class ArticleService {
   getAllArticlesByProviderId(value: any):Observable<Article[]> {
     return this.http.get<Article[]>(`${this.baseUrl}getAllProvidersArticleByProviderId/${value}`)
   }
+
+  getAllArticlesByCompanyId(id: number):Observable<Article[]>{
+    return this.http.get<Article[]>(`${this.baseUrl}get_all_articles/${id}`)
+  }
+
+
+  getAllArticleByCategory(categoryId: number, companyId: number): Observable<Article[]> {
+    return this.http.get<Article[]>(`${this.baseUrl}category/${categoryId}/${companyId}`)
+  }
+
+  getAllArticleBySubCategoryId(subCategoryId: number, companyId: number): Observable<Article[]> {
+    return this.http.get<Article[]>(`${this.baseUrl}sub_category/${subCategoryId}/${companyId}`)
+  }
+  UpdateCompanyArticle(form: Article) :Observable<any>{
+    return this.http.put(`${this.baseUrl}updatecompanyarticle`,form)
+  }
+
 }

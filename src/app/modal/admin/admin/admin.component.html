@@ -21,18 +21,7 @@
 
 
  
-  <!-- -------------------------------------------------  category  ----------------------------------------------------- -->
-  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='category'">
-    <label for="libelle">libelle</label>
-    <input type="text" formControlName="libelle" id="libelle" name="libelle">
-
-    <label for="code">code</label>
-    <input type="text" formControlName="code" id="code" name="code">
-
-    <input type="number" formControlName="id" hidden id="id" name="id">
-
-  </form>
-
+  
   <!-- -------------------------------------------------  sous category  ----------------------------------------------------- -->
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='sous-category'">
     <label for="libelle">libelle</label>
