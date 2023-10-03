@@ -5,7 +5,7 @@
         <p>Current Date: {{ currentDate }}</p>
         <div *ngIf="!commandService.view">
 
-          <mat-icon color="accent" style="font-size: 24px;" (click)="addLine(null)">add</mat-icon>
+          <mat-icon color="accent" style="font-size: 24px;" (click)="addLine(null,-1)">add</mat-icon>
           <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'pdf-save-client',client.id)">save</mat-icon>
           <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'pdf-save',client.id)">save pdf</mat-icon>
           <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'save-client',client.id)">send</mat-icon>
@@ -56,8 +56,8 @@
                   <td>{{line.article.cost*line.article.margin/100|currency: ' DT '}}</td>
                   <td>{{line.totTva|currency: ' DT '}}</td>
                   <td>{{line.prixArticleTot|currency: ' DT '}}</td>
-                  <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteLineServer( line.article.code,line.id)">delete</mat-icon>
-                    <mat-icon color="accent" style="font-size: 24px;" (click)="updateLineServer(line)">update</mat-icon>  
+                  <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteLine(line, i)">delete</mat-icon>
+                    <mat-icon color="accent" style="font-size: 24px;" (click)="addLine(line,i)">update</mat-icon>  
                   </td>
                 </tr>
          

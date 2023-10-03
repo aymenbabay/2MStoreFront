@@ -19,7 +19,7 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
 
 
   constructor(private ref: MatDialogRef<CommandLineModalComponent>, public fb: FormBuilder, private articleService : ArticleService,
-     @Inject(MAT_DIALOG_DATA) public data: { entity: any, type: string }, private commandLineService : CommandLineService){
+     @Inject(MAT_DIALOG_DATA) public data: { entity: any, type: string, index : number }, private commandLineService : CommandLineService){
       this.Form = fb.group({
         'libelle': [''],
         'quantity': [0]
@@ -30,11 +30,12 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
       this.getAllArticle();
       if(this.commandLineService.update){
         console.log(this.data.entity)
-        this.Form.setValue({
-          libelle: this.data.entity.codeArticle,
-          quantity: this.data.entity.quantity
+        this.Form = this.fb.group({
+          'libelle': this.data.entity.article.code,
+          'quantity': this.data.entity.quantity
         })
       }
+      
      }
 
      getAllArticle(){
@@ -42,7 +43,7 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
     }
 
     submit(){
-      if(this.Form.value.quantity != 0){
+      if(this.Form.value.quantity != 0 && this.data.entity.index === -1){
 
         this.article$.pipe(
           switchMap(articles => {
@@ -56,17 +57,23 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
           ).subscribe(selectedArticle => {
             console.log('selected article:', selectedArticle);
           });
-        }else{
-this.commandLineService.update = false
         }
         
-  this.close("saved successfully")
+        if(this.data.entity.index !== -1){
+          console.log(this.data.index)
+         let newLine =  this.commandLineService.commandLine$[this.data.index]
+         newLine.quantity = this.Form.value.quantity
+         this.commandLineService.commandLine$[this.data.index] = newLine
+         this.commandLineService.article$ = newLine.article
+        // this.commandLineService.change()
+        }
+        
+    this.close("saved successfully")
     }
 
     close(status : string){
       
   this.ref.close(status)
-      this.commandLineService.update = false
     }
 
     ngOnDestroy(): void {

@@ -84,22 +84,14 @@ export class InvoiceComponent implements OnInit {
 
   updateInvoiceServer(invoice : Invoice){
     this.commandLineService.view = false
+    this.commandLineService.update = true
     console.log( this.commandLineService.view)
     this.commandLineService.invoice$ = invoice
     console.log(invoice.id)
     this.router.navigate(['/my-company/invoice/command'])
   }
 
-   deleteInvoiceServer( name: number, id : number){
-    const conf = window.confirm(`are you sure to delete ${name} !!`)
-    if(conf){
-       this.invoiceService.deleteInvoice(id).subscribe(data =>{
-         this.getAllInvoices()
-
-       })
-    }
-
-  }
+ 
 
 
 

@@ -75,12 +75,21 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       console.log(x)
     })
   }
-
-  addLine(entity : CommandLine|null){
+  
+  addLine(entity : CommandLine|null, index : number){
     let type = "command"
+    if(entity != null){
+      this.commandService.update = true
+      console.log("ist update cv"+ this.commandService.update)
+     
+    }else{
+      
+      this.commandService.update = false
+    }
+    console.log(index)
     const dialogRef = this.dialog.open(CommandLineModalComponent,
       {
-        data: { entity, type },
+        data: { entity, type, index },
         enterAnimationDuration:'1000ms',
          exitAnimationDuration:'1000ms'
       });
@@ -95,13 +104,23 @@ export class CommandLineComponent implements OnInit, OnDestroy {
      });
   }
 
-  deleteLineServer(line: string, id:number){
-
+  deleteLine(line : CommandLine, id:number){
+    
+    const conf = window.confirm(`are you sure to delete it !!`)
+    if(conf){
+      this.commandService.commandLine$.splice(id,1)
+      this.total.totprice = this.total.totprice - line.prixArticleTot;
+      this.total.tottva = this.total.tottva - line.totTva;
+      this.total.totgeneral = this.total.totprice + line.totTva;
+      console.log(this.commandService.commandLine$)
+     // this.commandLine$.splice(id,1)
+      console.log(this.commandLine$)
+      console.log(this.total)
+    }
   }
   
   addInvoice(code:number, type :string, clientId:number){ 
   
-    console.log(code+" "+ clientId + " " + type)
     this.commandService.addInvoice(code,type,clientId).subscribe(x =>{
       console.log(x)
       if(type==="pdf-save-client"){
@@ -125,10 +144,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
     })
   }
 
-  updateLineServer(line: CommandLine){
-    this.commandService.update = true
-    //this.addLine(line)
-  }
+
 
  
   ngOnDestroy() {

@@ -19,9 +19,7 @@ export class InvoiceService {
   constructor(private http: HttpClient) { }
 
 
-  deleteInvoice(id: number):Observable<any>{
-    return  this.http.delete(`${this.invoiceUrl}delete/${id}`)
-  }
+ 
   getAllInvoices():Observable<any>{
     return this.http.get(`${this.invoiceUrl}getMyByCompany`)
   }
