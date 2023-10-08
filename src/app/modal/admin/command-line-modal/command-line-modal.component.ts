@@ -22,17 +22,21 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
      @Inject(MAT_DIALOG_DATA) public data: { entity: any, type: string, index : number }, private commandLineService : CommandLineService){
       this.Form = fb.group({
         'libelle': [''],
-        'quantity': [0]
+        'quantity': [0], 
+        'discount' : [0]
       })
+      console.log(data)
      }
 
      ngOnInit(){
       this.getAllArticle();
+      console.log(this.data.entity)
       if(this.commandLineService.update){
         console.log(this.data.entity)
         this.Form = this.fb.group({
           'libelle': this.data.entity.article.code,
-          'quantity': this.data.entity.quantity
+          'quantity': this.data.entity.quantity,
+          'discount': this.data.entity.discount
         })
       }
       
@@ -43,7 +47,8 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
     }
 
     submit(){
-      if(this.Form.value.quantity != 0 && this.data.entity.index === -1){
+      console.log(this.data)
+      if(this.Form.value.quantity != 0 && this.data.index === -1){
 
         this.article$.pipe(
           switchMap(articles => {
@@ -51,6 +56,7 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
             if(selectedArticle){
               this.commandLineService.article$ =selectedArticle
               this.commandLineService.qte = this.Form.value.quantity
+              this.commandLineService.discount = this.Form.value.discount
             }
             return selectedArticle ? of(selectedArticle) : EMPTY;
           })
@@ -58,14 +64,13 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
             console.log('selected article:', selectedArticle);
           });
         }
-        
-        if(this.data.entity.index !== -1){
+
+        if(this.data.index !== -1){
           console.log(this.data.index)
          let newLine =  this.commandLineService.commandLine$[this.data.index]
          newLine.quantity = this.Form.value.quantity
          this.commandLineService.commandLine$[this.data.index] = newLine
          this.commandLineService.article$ = newLine.article
-        // this.commandLineService.change()
         }
         
     this.close("saved successfully")

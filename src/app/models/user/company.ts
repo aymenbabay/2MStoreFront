@@ -1,13 +1,11 @@
 import { Client } from "../admin/client"
 import { Provider } from "../admin/provider"
 import { SignUp } from "./signup"
-import { User } from "./user"
 
 export class Company{
       id                ! : number
       name              ! : string
       code              ! : string
-      codecp              ! : string
       matfisc           ! :string
       address           ! :string
       phone            ! : string

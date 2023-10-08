@@ -85,10 +85,7 @@ export class HomeComponent implements OnDestroy, OnInit{
    this.company$.subscribe(x =>console.log(x))
   }
 
-  toCompanyPage($event:any){
-    this.router.navigate(['/user/company/'+$event.target.value])
-    console.log($event.target.value)
-  }
+
   ngOnDestroy(): void {
     if(this.s){
       this.s.unsubscribe()

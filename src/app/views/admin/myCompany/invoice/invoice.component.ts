@@ -20,43 +20,19 @@ export class InvoiceComponent implements OnInit {
  invoices$!:Observable<Invoice[]>
   me = false
   provider = true
-  providerInvoices! : Invoice[]
-  clientInvoices! : Invoice[]
   constructor(private dialog : MatDialog, private invoiceService: InvoiceService, private store : Store,
     private router : Router, private commandLineService : CommandLineService){
    
   }
 
   ngOnInit(): void {
-    this.getAllInvoices()
+    this.getAllMyInvoicesAsProvider()
     if(this.commandLineService.view){
       console.log(this.commandLineService.invoice$)
     }
   }
   
-  getAllInvoices(){
-   this.invoices$ = this.invoiceService.invoices$
-    this.me = false
-    this.getAllMyInvoiceAsProvider()
-   
-  
-  }
 
-  getAllMyInvoiceAsProvider() {
-    this.provider = true;
-    this.store.select(clientIdSelector).subscribe(clientId => {
-      this.store.select(companyIdSelector).subscribe(companyId => {
-        this.invoices$.subscribe((invoices: Invoice[]) => {
-          console.log(clientId +" "+companyId)
-          this.clientInvoices = invoices.filter(invoice => invoice.client.id === clientId);
-          this.providerInvoices = invoices.filter(invoice => invoice.company.id === companyId);
-          console.log("Client Invoices: ", this.clientInvoices);
-          console.log("Provider Invoices: ", this.providerInvoices);
-        });
-      });
-    });
-  }
- 
 
   openInvoiceModal(invoice : Invoice|null){
     let type = 'invoice'
@@ -68,22 +44,24 @@ export class InvoiceComponent implements OnInit {
       });
      dialogRef.afterClosed().subscribe(result => {
       if (result !== "undefined") {
-        this.getAllInvoices()
+        this.getAllMyInvoicesAsProvider()
       }
      });
   }
  
   getAllMyInvoicesAsProvider(){
     this.provider = true
+    this.invoices$ = this.invoiceService.getAllInvoiceAsProvider()
   }
 
   getInvoiceAsClient(){
     this.provider = false
+    this.invoices$ = this.invoiceService.getInvoiceAClient()
 
   }
 
   updateInvoiceServer(invoice : Invoice){
-    this.commandLineService.view = false
+    this.commandLineService.view = true
     this.commandLineService.update = true
     console.log( this.commandLineService.view)
     this.commandLineService.invoice$ = invoice

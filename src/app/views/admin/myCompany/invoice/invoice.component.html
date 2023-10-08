@@ -3,12 +3,13 @@
 <button mat-raised-button color="primary" (click)="getInvoiceAsClient()">get invoice as client</button>
 <button mat-raised-button color="primary" (click)="getAllMyInvoicesAsProvider()">get all my invoice as provider</button>
 <div >
-  <div *ngIf="provider">
+  <div >
     <table>
       <thead>
         <tr>
           <th> code </th>
-          <th > provider </th>
+          <th *ngIf="provider" > client </th>
+          <th *ngIf="!provider" > provider </th>
           <th>TT tva</th>
           <th>TT prix </th> 
           <th>date</th>
@@ -16,9 +17,10 @@
         </tr>
       </thead>
       <tbody >
-         <tr *ngFor="let invoice of providerInvoices; index as i"> 
+         <tr *ngFor="let invoice of invoices$ |async; index as i"> 
            <td>{{invoice.code}}</td>
-           <td >{{invoice.client.name}}</td>
+           <td *ngIf="provider">{{invoice.client.name}}</td>
+           <td *ngIf="!provider">{{invoice.company.name}}</td>
             <td>{{invoice.tot_tva_invoice}}</td>
             <td>{{invoice.prix_invoice_tot}}</td>
             <td>{{invoice.lastModifiedDate |date:'dd/MM/yyyy' }}</td>
@@ -32,30 +34,7 @@
       </tbody>
     </table>
   </div>
-  <div *ngIf="!provider">
-    <table>
-      <thead>
-        <tr>
-          <th> code </th>
-          <th > client </th>
-          <th>TT tva</th>
-          <th>TT prix </th> 
-          <th>date</th>
-        </tr>
-      </thead>
-      <tbody  >
-         <tr *ngFor="let invoice of clientInvoices; index as i"> 
-           <td>{{invoice.code}}</td>
-           <td >{{invoice.company.name}}</td>
-            <td>{{invoice.tot_tva_invoice}}</td>
-            <td>{{invoice.prix_invoice_tot}}</td>
-            <td>{{invoice.lastModifiedDate |date:'dd/MM/yyyy' }}</td>
-          
-           
-          </tr>
-      </tbody>
-    </table>
-  </div>
+ 
 </div>
 
   

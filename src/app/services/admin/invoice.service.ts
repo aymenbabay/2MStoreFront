@@ -41,7 +41,7 @@ export class InvoiceService {
   }
 
   getInvoiceAClient(): Observable<Invoice[]> {
-    return this.http.get<Invoice[]>(`${this.invoiceUrl}getAsClient`)
+    return this.http.get<Invoice[]>(`${this.invoiceUrl}getMyInvoiceAsClient`)
   }
 
   getAllInvoiceNotAccepted():Observable<any>{

@@ -8,6 +8,7 @@ export class CommandLine{
    quantity               ! :number
    totTva                 ! :number
    prixArticleTot         ! :number
-    article                ! :Article
-    Invoice                ! :Invoice
+    article               ! :Article
+    Invoice               ! :Invoice
+    discount              ! :number
 }

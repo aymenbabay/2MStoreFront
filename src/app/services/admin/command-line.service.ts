@@ -5,7 +5,6 @@ import { Article } from '../../models/admin/Article';
 import { Observable } from 'rxjs';
 import { InfoComponent } from '../../modal/admin/info/info.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Line } from '../../models/admin/Line';
 import { Invoice } from '../../models/admin/invoice';
 
 @Injectable({
@@ -22,10 +21,12 @@ export class CommandLineService {
   qte =0
   update = false
   view = false
-  invoice$! : Invoice
+  invoice$! : Invoice |null
   go = false
 
   total = {"tottva":0,"totprice":0,"totgeneral":0}
+  discount!: number;
+  globalDiscount!: number;
   constructor(private http : HttpClient,private dialog : MatDialog) {
    console.log(this.invoice$)
   }
@@ -47,9 +48,10 @@ export class CommandLineService {
 
         let newCommandLine  = new CommandLine();
         newCommandLine.article =  this.article$
-        newCommandLine.totTva = this.article$.tva * this.qte * (this.article$.cost * this.article$.margin /100)
-        newCommandLine.prixArticleTot = this.article$.cost * this.article$.margin * this.qte
+        newCommandLine.totTva = this.article$.tva * this.qte * this.article$.cost /100
+        newCommandLine.prixArticleTot = (this.article$.cost + ((this.article$.cost * this.article$.tva /100)+(this.article$.cost * this.article$.margin /100)-(this.article$.cost * this.discount/100))) * this.qte
         newCommandLine.quantity = this.qte
+        newCommandLine.discount = this.discount
         this.commandLine$.push(newCommandLine )
       }
       let totTva = 0;
@@ -63,6 +65,7 @@ export class CommandLineService {
         }
         totTva += this.commandLine$[i].totTva;
         totPrice += this.commandLine$[i].prixArticleTot;
+        totPrice = totPrice - totPrice*this.globalDiscount/100
       }
       totGeneral = totPrice + totTva;
       
@@ -95,7 +98,11 @@ export class CommandLineService {
   }
 
   getCommandLines() :Observable<any>{
-    return this.http.get(`${this.baseUrl}getcommandline/${this.invoice$.id}`)
+    let id;
+    if(this.invoice$ !== null){
+      id = this.invoice$.id
+    }
+    return this.http.get(`${this.baseUrl}getcommandline/${id}`)
   }
   
 }

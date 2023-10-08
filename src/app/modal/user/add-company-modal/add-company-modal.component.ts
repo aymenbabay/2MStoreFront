@@ -23,7 +23,6 @@ export class AddCompanyModalComponent implements OnInit {
     this.companyForm = fb.group({
       'name':[''],
       'code':[''],
-      'codecp':[''],
        'matfisc':[''],
        'address':[''],
        'phone':[''],
@@ -44,7 +43,6 @@ ngOnInit(): void {
     this.companyForm.setValue({
       name : this.data.entity.name,
       code : this.data.entity.code,
-      codecp : this.data.entity.codecp,
       matfisc : this.data.entity.matfisc,
       address : this.data.entity.address,
       phone : this.data.entity.phone,
