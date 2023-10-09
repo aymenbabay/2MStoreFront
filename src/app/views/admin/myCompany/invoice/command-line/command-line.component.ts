@@ -29,7 +29,6 @@ export class CommandLineComponent implements OnInit, OnDestroy {
   factureCode$: Observable<number> = EMPTY
   client! : Client
   currentDate!: string;
-  //total = {"tottva":0,"totprice":0,"totgeneral":0}
   companyId! :number
   constructor(public commandService : CommandLineService, private companyServce : CompanyService,private router : Router,
      private invoiceService: InvoiceService, private dialog : MatDialog, private datePipe: DatePipe, private store : Store){
@@ -37,7 +36,6 @@ export class CommandLineComponent implements OnInit, OnDestroy {
 
       this.navigationStartSubscription =  router.events.subscribe((event) =>{
         if(event instanceof NavigationStart){
-          console.log("an event start line command")
           this.resetCommandData()
         }
       })
@@ -55,6 +53,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       this.commandService.total.totgeneral = this.commandService.invoice$.prix_invoice_tot
       this.commandService.total.totprice = this.commandService.invoice$.prix_article_tot
       this.commandService.total.tottva = this.commandService.invoice$.tot_tva_invoice
+      this.commandService.globalDiscount = this.commandService.invoice$.discount
     }else{
       this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')||"";
       this.client = this.invoiceService.client 
@@ -146,9 +145,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
     })
   }
 
-  calculateDiscount(value : any){
-    console.log(value)
-    this.commandService.globalDiscount = value
+  calculateDiscount(){
     this.commandService.change()
   }
 
@@ -162,11 +159,8 @@ export class CommandLineComponent implements OnInit, OnDestroy {
      this.commandService.commandLine$ = []
      this.commandService.invoice$ = null
      this.commandService.total = { 'totgeneral': 0, 'totprice': 0, 'tottva': 0 };
+     this.commandService.globalDiscount = 0
      this.commandService.view = false
      this.commandService.update = false
-     console.log(this.commandService.commandLine$)
-     console.log(this.commandService.total)
-     console.log(this.commandService.view)
-     console.log(this.commandService.update)
   }
 }

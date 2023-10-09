@@ -54,7 +54,7 @@
               <td>{{line.quantity}}</td>
               <td>{{line.article.unit}}</td>
               <td>{{line.article.tva/100|percent}}</td>
-              <td>{{line.article.cost*line.article.margin/100|currency: ' DT '}}</td>
+              <td>{{line.article.cost + line.article.cost*line.article.margin/100|currency: ' DT '}}</td>
               <td>{{line.totTva|currency: ' DT '}}</td>
               <td>{{line.prixArticleTot|currency: ' DT '}}</td>
               <td *ngIf="line.discount || companyId === company$.id">{{line.discount}}</td>
@@ -69,7 +69,7 @@
         
         <div class="total" *ngIf="commandService.total">
           <div class="discount">
-            <input type="number" #inputv (keyup)="calculateDiscount(inputv.value)">
+            <input type="number" [(ngModel)]="commandService.globalDiscount" (keyup)="calculateDiscount()">
           </div>
           <div> 
             <p>total tva: {{commandService.total.tottva|currency: ' DT '}}</p>

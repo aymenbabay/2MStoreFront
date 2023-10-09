@@ -50,7 +50,7 @@ export class CommandLineService {
   
   addInvoice(code:number, type: string, clientId:number) :Observable<Blob>{
   console.log(this.commandLine$)
-    return this.http.post(`${this.baseUrl}${type}/${code}/${clientId}`,this.commandLine$,{responseType:'blob'});
+    return this.http.post(`${this.baseUrl}${type}/${code}/${clientId}/${this.globalDiscount}`,this.commandLine$,{responseType:'blob'});
   }
 
 
