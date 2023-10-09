@@ -29,7 +29,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
   factureCode$: Observable<number> = EMPTY
   client! : Client
   currentDate!: string;
-  total = {"tottva":0,"totprice":0,"totgeneral":0}
+  //total = {"tottva":0,"totprice":0,"totgeneral":0}
   companyId! :number
   constructor(public commandService : CommandLineService, private companyServce : CompanyService,private router : Router,
      private invoiceService: InvoiceService, private dialog : MatDialog, private datePipe: DatePipe, private store : Store){
@@ -52,9 +52,9 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       this.factureCode$ = of(this.commandService.invoice$.code);
       this.company$ = of(this.commandService.invoice$.company)
       this.client = this.commandService.invoice$.client
-      this.total.totgeneral = this.commandService.invoice$.prix_invoice_tot
-      this.total.totprice = this.commandService.invoice$.prix_article_tot
-      this.total.tottva = this.commandService.invoice$.tot_tva_invoice
+      this.commandService.total.totgeneral = this.commandService.invoice$.prix_invoice_tot
+      this.commandService.total.totprice = this.commandService.invoice$.prix_article_tot
+      this.commandService.total.tottva = this.commandService.invoice$.tot_tva_invoice
     }else{
       this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')||"";
       this.client = this.invoiceService.client 
@@ -106,7 +106,6 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       if (result !== "undefined") {
 
     this.commandService.change()
-    this.total = this.commandService.total
       }
      });
   }
@@ -116,11 +115,11 @@ export class CommandLineComponent implements OnInit, OnDestroy {
     const conf = window.confirm(`are you sure to delete it !!`)
     if(conf){
       this.commandService.commandLine$.splice(id,1)
-      this.total.totprice = this.total.totprice - line.prixArticleTot;
-      this.total.tottva = this.total.tottva - line.totTva;
-      this.total.totgeneral = this.total.totprice + line.totTva;
+      this.commandService.total.totprice = this.commandService.total.totprice - line.prixArticleTot;
+      this.commandService.total.tottva = this.commandService.total.tottva - line.totTva;
+      this.commandService.total.totgeneral = this.commandService.total.totprice + line.totTva;
       console.log(this.commandService.commandLine$)
-      console.log(this.total)
+      
     }
   }
   
@@ -143,13 +142,14 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       }
      
       this.commandService.commandLine$ = []
-      this.commandService.article$! = new Article()
       this.router.navigate(["/my-company/invoice"])
     })
   }
 
   calculateDiscount(value : any){
+    console.log(value)
     this.commandService.globalDiscount = value
+    this.commandService.change()
   }
 
 
@@ -161,7 +161,6 @@ export class CommandLineComponent implements OnInit, OnDestroy {
   private resetCommandData() {
      this.commandService.commandLine$ = []
      this.commandService.invoice$ = null
-     this.total = { 'totgeneral': 0, 'totprice': 0, 'tottva': 0 };
      this.commandService.total = { 'totgeneral': 0, 'totprice': 0, 'tottva': 0 };
      this.commandService.view = false
      this.commandService.update = false

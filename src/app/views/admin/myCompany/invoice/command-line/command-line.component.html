@@ -67,14 +67,14 @@
           </table>
         </div>
         
-        <div class="total" *ngIf="total">
+        <div class="total" *ngIf="commandService.total">
           <div class="discount">
             <input type="number" #inputv (keyup)="calculateDiscount(inputv.value)">
           </div>
           <div> 
-            <p>total tva: {{total.tottva|currency: ' DT '}}</p>
-            <p>total price: {{total.totprice| currency: ' DT ' }}</p>
-            <p>total general: {{total.totgeneral|currency: ' DT '}}</p>
+            <p>total tva: {{commandService.total.tottva|currency: ' DT '}}</p>
+            <p>total price: {{commandService.total.totprice| currency: ' DT ' }}</p>
+            <p>total general: {{commandService.total.totgeneral|currency: ' DT '}}</p>
           </div>
     </div>
 

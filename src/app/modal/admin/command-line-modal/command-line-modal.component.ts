@@ -5,6 +5,7 @@ import { CommandLineService } from '../../../services/admin/command-line.service
 import { ArticleService } from '../../../services/admin/article.service';
 import { Article } from '../../../models/admin/Article';
 import { Observable, switchMap, of, EMPTY, Subscription} from 'rxjs'
+import { CommandLine } from '../../../models/admin/lineCommande';
 @Component({
   selector: 'app-command-line-modal',
   templateUrl: './command-line-modal.component.html',
@@ -47,21 +48,24 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
     }
 
     submit(){
-      console.log(this.data)
+      
       if(this.Form.value.quantity != 0 && this.data.index === -1){
-
         this.article$.pipe(
           switchMap(articles => {
             const selectedArticle = articles.find(article => article.code.toString() === this.Form.value.libelle);
             if(selectedArticle){
-              this.commandLineService.article$ =selectedArticle
-              this.commandLineService.qte = this.Form.value.quantity
-              this.commandLineService.discount = this.Form.value.discount
+        const commandLine =new CommandLine()
+        commandLine.article = selectedArticle
+        commandLine.quantity = this.Form.value.quantity
+        commandLine.discount = this.Form.value.discount
+        if(this.Form.value.discount === undefined){
+          commandLine.discount = 0
+        }
+        this.commandLineService.commandLine$.push(commandLine)
             }
             return selectedArticle ? of(selectedArticle) : EMPTY;
           })
           ).subscribe(selectedArticle => {
-            console.log('selected article:', selectedArticle);
           });
         }
 
@@ -70,9 +74,7 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
          let newLine =  this.commandLineService.commandLine$[this.data.index]
          newLine.quantity = this.Form.value.quantity
          this.commandLineService.commandLine$[this.data.index] = newLine
-         this.commandLineService.article$ = newLine.article
         }
-        
     this.close("saved successfully")
     }
 
