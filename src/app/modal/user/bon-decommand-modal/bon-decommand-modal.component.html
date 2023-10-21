@@ -1,0 +1,16 @@
+<div class="container">
+    <form [formGroup]="bonCommandForm" (keyup.enter)="submit()">
+      <label for="quantity">Quantity</label>
+      <input type="number" formControlName="quantity" id="quantity" name="quantity" required>
+
+      <label for="comment">Comment</label>
+      <textarea type="text" formControlName="comment" id="comment" name="comment"></textarea>
+  
+    
+      <div class="button" mat-dialog-actions>
+        <button mat-raised-button color="warn" class="cancel" (click)="close()">cancel</button>
+        <button mat-raised-button color="primary" (click)="submit()" class="submit">add more</button>
+        <button mat-raised-button color="primary" (click)="send()" class="submit">it's ok</button>
+      </div>
+    </form>
+  </div>

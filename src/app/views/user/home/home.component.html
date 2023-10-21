@@ -27,6 +27,7 @@
        <p> Quantity dispo: {{article.quantity}} </p>
        <p> Discription: {{article.discription}} </p>
        <button mat-raised-button color="primary" (click)="openMessanger(article.provider.company.user.username)">send message</button>
+       <button mat-raised-button color="accent" (click)="addToCart(article.provider.company, article)">add to cart</button>
       </div>
 
     </div>

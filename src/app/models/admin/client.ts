@@ -6,8 +6,6 @@ export class Client{
     id!: number
     name!: string
     code!: string
-    mvt!: number
-    credit!: number
     nature!: string
     bankaccountnumber! :string
     matfisc ! :string

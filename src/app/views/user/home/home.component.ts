@@ -7,11 +7,10 @@ import { Article } from '../../../models/admin/Article';
 import { ArticleService } from '../../../services/admin/article.service';
 import { Company } from '../../../models/user/company';
 import { Router } from '@angular/router';
-import { Position } from '@cloudinary/url-gen/qualifiers';
 import { ClientService } from '../../../services/admin/client.service';
 import { ProviderService } from '../../../services/admin/provider.service';
-import { AppComponent } from '../../../app.component';
 import { MessageService } from '../../../services/user/message.service';
+import { PurchaseOrderModalComponent } from '../../../modal/user/bon-decommand-modal/bon-decommand-modal.component';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html', 
@@ -26,7 +25,7 @@ export class HomeComponent implements OnDestroy, OnInit{
   sig = signal(1)
   constructor(public dialog: MatDialog, private companyService : CompanyService, private articleService : ArticleService,
      private router : Router, private providerService : ProviderService, private clientService : ClientService,
-      private messageService : MessageService){
+      private messageService : MessageService ){
     
   }
 
@@ -51,16 +50,22 @@ export class HomeComponent implements OnDestroy, OnInit{
         enterAnimationDuration:'1000ms',
          exitAnimationDuration:'1000ms'
       });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(`Dialog result: ${result}`);
-    // });
   }
 
   openMessanger(userName : string){
     this.messageService.receiver = userName;
     this.messageService.show = true
     this.messageService.getAllMyMessage().subscribe(x =>this.messageService.messages=x)
+  }
+
+  addToCart(company : Company, article : Article){
+    const dialogRef = this.dialog.open(PurchaseOrderModalComponent,
+      {
+        data : {company,article},
+        enterAnimationDuration:'1000ms',
+         exitAnimationDuration:'1000ms'
+      });
+    
   }
   getRandomArticleWithRandomCompany(){
     this.article$ = this.articleService.getRandomArticleWithRandomCompany()

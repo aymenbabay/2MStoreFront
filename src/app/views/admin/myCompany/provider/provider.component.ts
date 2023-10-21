@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { providerIdSelector } from '../../../../store/reducer/state.reducer';
 import { ProviderModalComponent } from '../../../../modal/admin/provider-modal/provider-modal.component';
 import { Router } from '@angular/router';
+import { ProviderCompany } from '../../../../models/admin/ProviderCompany';
 
 @Component({
   selector: 'app-provider',
@@ -18,7 +19,7 @@ import { Router } from '@angular/router';
 })
 export class ProviderComponent implements OnInit {
 
-  providers$!:Observable<Provider[]>
+  providers$!:Observable<ProviderCompany[]>
   allproviders$!: Observable<Provider[]>
   myProviderId!: number
   search = false

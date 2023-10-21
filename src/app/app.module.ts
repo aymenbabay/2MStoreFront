@@ -26,6 +26,7 @@ import { InvoiceModalComponent } from './modal/admin/invoice-modal/invoice-modal
 import { CommandLineModalComponent } from './modal/admin/command-line-modal/command-line-modal.component';
 import { CategoryModalComponent } from './modal/admin/category-modal/category-modal.component';
 import { SubCategoryModalComponent } from './modal/admin/sub-category-modal/sub-category-modal.component';
+import { PurchaseOrderModalComponent } from './modal/user/bon-decommand-modal/bon-decommand-modal.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { SubCategoryModalComponent } from './modal/admin/sub-category-modal/sub-
     InvoiceModalComponent,
     CommandLineModalComponent,
     CategoryModalComponent,
-    SubCategoryModalComponent
+    SubCategoryModalComponent,
+    PurchaseOrderModalComponent
   ],
   imports: [
     BrowserModule,

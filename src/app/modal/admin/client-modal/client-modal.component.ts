@@ -21,8 +21,6 @@ export class ClientModalComponent implements OnInit {
         'bankaccountnumber':[''],
         'indestrySector':[''],
         'matfisc':[''],
-        'credit': [''],
-        'mvt': [''],
         'phone': [''],
         'address': [''],
         'email': [''],
@@ -39,8 +37,6 @@ export class ClientModalComponent implements OnInit {
         bankaccountnumber : this.data.entity.bankaccountnumber,
         indestrySector : this.data.entity.indestrySector,
         matfisc : this.data.entity.matfisc,
-        credit: this.data.entity.credit,
-        mvt: this.data.entity.mvt,
         phone: this.data.entity.phone,
         address: this.data.entity.address,
         email: this.data.entity.email,
@@ -52,7 +48,7 @@ export class ClientModalComponent implements OnInit {
   submit(){
     if (this.clientService.update) {
       console.log(this.Form.value.id)
-      this.clientService.updateClient(this.Form.value, this.Form.value.id).subscribe()
+      this.clientService.updateClient(this.Form.value).subscribe()
     } else {
       this.clientService.addClient(this.Form.value).subscribe()
     }

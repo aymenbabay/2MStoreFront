@@ -40,8 +40,8 @@ export class ProviderService {
     return this.http.post(`${this.baseUrl}add`,provider)
   }
     
-  updateProvider(provider: Provider,id : number) :Observable<any>{
-    return this.http.put(`${this.baseUrl}update/${id}`,provider)
+  updateProvider(provider: Provider) :Observable<any>{
+    return this.http.put(`${this.baseUrl}update`,provider)
   }
 
   addAsProvider(id: number):Observable<any> {
@@ -49,7 +49,7 @@ export class ProviderService {
   }
 
   findAllProviderContaining(searchInput: String): Observable<Provider[]> {
-    return this.http.get<Provider[]>(`werehouse/client/get_all_provider_containing/${searchInput}`)
+    return this.http.get<Provider[]>(`${this.baseUrl}get_all_provider_containing/${searchInput}`)
   }
 
   checkProvider(id: number): Observable<boolean> {

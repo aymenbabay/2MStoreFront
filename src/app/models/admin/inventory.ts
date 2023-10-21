@@ -8,6 +8,8 @@ export class Inventory{
     bestClient          !: number
 	articleCost         !: number
 	articleSelling      !: number
+    discountOut         !: number
+    discountIn          !: number
     company             !: Company
     article             !: Article
 }

@@ -22,8 +22,6 @@ export class ProviderModalComponent implements OnInit {
         'indestrySector': [''],
         'code': [''],
         'nature': [''],
-        'credit': [''],
-        'mvt': [''],
         'phone': [''],
         'address': [''],
         'email': [''],
@@ -44,8 +42,6 @@ ngOnInit(): void {
       bankaccountnumber: this.data.entity.bankaccountnumber,
       indestrySector: this.data.entity.indestrySector,
     nature: this.data.entity.nature,
-    credit: this.data.entity.credit,
-    mvt: this.data.entity.mvt,
     phone: this.data.entity.phone,
     address: this.data.entity.address,
     email: this.data.entity.email,
@@ -57,7 +53,7 @@ ngOnInit(): void {
 
 submit(){
   if (this.providerService.update) {
-    this.providerService.updateProvider(this.Form.value,this.Form.value.id).subscribe()
+    this.providerService.updateProvider(this.Form.value).subscribe()
   } else {
     this.providerService.addProvider(this.Form.value).subscribe()
   }

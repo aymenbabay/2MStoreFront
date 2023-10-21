@@ -8,6 +8,7 @@ import { ClientModalComponent } from '../../../../modal/admin/client-modal/clien
 import { clientIdSelector } from '../../../../store/reducer/state.reducer';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
+import { ClientCompany } from '../../../../models/admin/ClientCompnay';
 
 @Component({
   selector: 'app-client',
@@ -16,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class ClientComponent implements OnInit {
 
-  MyClients!:Observable<Client[]>
+  MyClients!:Observable<ClientCompany[]>
   clients$:Observable<Client[]> = EMPTY
   search = false
   isClientResult = false
@@ -36,7 +37,6 @@ export class ClientComponent implements OnInit {
 
   getAllMyClients(){
     this.MyClients = this.clientService.getAllMyClients()
-
   }
 
   getAllClientContaining(value : string){
@@ -46,11 +46,13 @@ export class ClientComponent implements OnInit {
         // Create an array of observables for checking client status
         const observables = clients.map(client => {
           return this.clientService.checkClient(client.id).pipe(
-            map(isYours => ({
+            map(isYours => {
+              console.log(isYours);
+              return {
               ...client,
-              myClient: isYours
-            }))
-          );
+              myClient: isYours}
+            })
+            );
         });
 
         // Combine all observables into a single observable

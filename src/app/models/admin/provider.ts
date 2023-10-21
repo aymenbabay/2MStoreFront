@@ -9,8 +9,6 @@ export class Provider{
     phone ! :string
     address ! :string
     indestrySector ! :string
-    mvt!: number
-    credit!: number
     nature!: string
     company! : Company
     virtual ! : boolean

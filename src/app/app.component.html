@@ -4,6 +4,9 @@
   <div class="nav_bar" *ngIf="logedIn">
     
     <div> 
+      <mat-icon>shopping_cart</mat-icon>
+      <mat-icon>check</mat-icon>
+
       <mat-icon  matBadge="4" matBadgeColor="warn" (click) = "openNotification()">notifications</mat-icon>
       <div class="notificationMenu" [class.opened]="openedNotification">
         <div class="menuContainer" *ngFor="let invoice of invoice$|async">

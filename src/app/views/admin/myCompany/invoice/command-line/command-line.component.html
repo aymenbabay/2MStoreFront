@@ -68,7 +68,7 @@
         </div>
         
         <div class="total" *ngIf="commandService.total">
-          <div class="discount">
+          <div class="discount" *ngIf="commandService.globalDiscount !== 0 || company$.id === companyId">
             <input type="number" [(ngModel)]="commandService.globalDiscount" (keyup)="calculateDiscount()">
           </div>
           <div> 

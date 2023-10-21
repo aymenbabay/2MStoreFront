@@ -37,8 +37,8 @@ export class ClientService {
     return this.http.get(`${this.baseUrl}add_as_client/${id}`)
   }
     
-  updateClient(client: Client, id:number) :Observable<any>{
-    return this.http.put(`${this.baseUrl}update/${id}`,client)
+  updateClient(client: Client) :Observable<any>{
+    return this.http.put(`${this.baseUrl}update`,client)
   }
 
   getAllMyProvider():Observable<any>{
