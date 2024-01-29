@@ -11,4 +11,4 @@ export const lineCommandGuardGuard: CanActivateChildFn = (childRoute, state) => 
   }
   router.navigate(['my-company/invoice'])
   return false;
-};
+}

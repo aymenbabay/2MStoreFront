@@ -11,5 +11,6 @@ export class Invoice{
     client! : Client
     company! : Company
     lastModifiedDate! : Date
-    discount! : number
+    discount        ! :number
+    paid                !:boolean;
 }

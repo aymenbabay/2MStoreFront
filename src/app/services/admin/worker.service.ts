@@ -8,13 +8,12 @@ import { Vacation } from '../../models/admin/vacation';
   providedIn: 'root'
 })
 export class WorkerService {
- 
   update = false
   baseUrl="werehouse/worker/"
-   
+  
   constructor(private http: HttpClient) { }
-
-
+  
+  
   deleteWorker(id: number):Observable<any>{
     return  this.http.delete(`${this.baseUrl}delete/${id}`)
   }
@@ -23,7 +22,7 @@ export class WorkerService {
   }
 
   addWorker(worker : Worker):Observable<any>{
-    //en cas d'erreur peut etre Worker 
+    //en cas d'erreur peut etre new Worker 
     return this.http.post(`${this.baseUrl}add`,worker)
   }
 
@@ -34,8 +33,13 @@ export class WorkerService {
   updateWorker(worker: Worker) :Observable<any>{
     return this.http.put(`${this.baseUrl}update`,worker)
   }
-
+  
   getWorkerHistory(id: number): Observable<Vacation[]> {
-   return this.http.get<Vacation[]>(`${this.baseUrl}history/${id}`)
+    return this.http.get<Vacation[]>(`${this.baseUrl}history/${id}`)
   }
+  
+  searchWorker(entity: string) :Observable<any>{
+    return this.http.get(`${this.baseUrl}get/${entity}`)
+  }
+ 
 }

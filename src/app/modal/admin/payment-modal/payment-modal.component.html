@@ -1,0 +1,89 @@
+
+<div class="content">
+
+  <form [formGroup]="Form" class="form" *ngIf="type =='choise'">
+    
+    <label for="cash">cash</label>
+    <input type="radio" formControlName="cash" id="cash" name="cash" (click)="submitChoise('cash')">
+
+    <label for="check">check</label>
+    <input type="radio" formControlName="check" id="check" name="check"(click)="submitChoise('check')" >
+    
+    <label for="bill">bill</label>
+    <input type="radio" formControlName="bill" id="bill" name="bill" (click)="submitChoise('bill')">
+    
+    <label for="bank">bank</label>
+    <input type="radio" formControlName="bank" id="bank" name="bank" (click)="submitChoise('bank')">
+  </form>
+
+    <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type =='cash'">
+    
+    <label for="amount">amount</label>
+    <input type="text" formControlName="amount" id="amount" name="amount">
+
+    <label for="invoicecode">invoice code</label>
+    <input type="text" formControlName="invoicecode" id="invoicecode" name="invoicecode" readonly>
+    
+    <label for="clientname">client</label>
+    <input type="text" formControlName="clientname" id="clientname" name="clientname" readonly>
+    
+    <label for="solde">montant</label>
+    <input type="text" formControlName="solde" id="solde" name="solde" readonly>
+
+  </form>
+
+  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type =='check'||type =='bill'">
+    
+    <label for="number">N° check</label>
+    <input type="text" formControlName="number" id="number" name="number" >
+    
+    <label for="amount">amount</label>
+    <input type="text" formControlName="amount" id="amount" name="amount">
+
+    <label for="invoicecode">invoice code</label>
+    <input type="text" formControlName="invoicecode" id="invoicecode" name="invoicecode" readonly>
+
+    <label for="delay">deadline</label>
+    <input type="date" formControlName="delay" id="delay" name="delay">
+    
+    <label for="solde">montant</label>
+    <input type="text" formControlName="solde" id="solde" name="solde" readonly>
+    
+    <label for="agency">agency</label>
+    <input type="text" formControlName="agency" id="agency" name="agency" >
+    
+    <label for="clientname">client</label>
+    <input type="text" formControlName="clientname" id="clientname" name="clientname" readonly>
+    
+    
+    <label for="bankaccount">bank account</label>
+    <input type="text" formControlName="bankaccount" id="bankaccount" name="bankaccount" >
+    
+  </form>
+
+  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type =='bank'">
+    
+    <label for="amount">amount</label>
+    <input type="text" formControlName="amount" id="amount" name="amount">
+    
+    <label for="transaction">transaction N°</label>
+    <input type="text" formControlName="transaction" id="transaction" name="transaction">
+    
+    <label for="agency">agency</label>
+    <input type="text" formControlName="agency" id="agency" name="agency">
+    
+    <label for="invoicecode">invoice code</label>
+    <input type="text" formControlName="invoicecode" id="invoicecode" name="invoicecode" readonly>
+    
+    <label for="solde">montant</label>
+    <input type="text" formControlName="solde" id="solde" name="solde" readonly>
+
+    <label for="clientname">client</label>
+    <input type="text" formControlName="clientname" id="clientname" name="clientname" readonly>
+  </form>
+
+  <div class="button" mat-dialog-actions *ngIf="type != 'choise'">
+    <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" class="submit">OK</button>
+  </div>
+</div>

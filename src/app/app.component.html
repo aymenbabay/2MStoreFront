@@ -2,12 +2,27 @@
 <div class="container">
 
   <div class="nav_bar" *ngIf="logedIn">
-    
+     
     <div> 
-      <mat-icon>shopping_cart</mat-icon>
+      <mat-icon (click)="openShopping()">shopping_cart</mat-icon>
+      <div class="notificationMenu" [class.opened]="openedShopping">
+        <div class="menuContainer" *ngFor="let shopping of shopping$ |async">
+         
+           <div *ngFor="let purchaseOrder of shopping.lines">
+            
+            
+            <p *ngIf="shopping.client !=null">{{shopping.client.name}} wants {{purchaseOrder.article.libelle}}</p>
+            <p *ngIf="shopping.pclient !=null">{{shopping.pclient.user.username}} wants {{purchaseOrder.article.libelle}}</p>
+            
+           </div>
+        
+
+        </div>
+      </div>
+
       <mat-icon>check</mat-icon>
 
-      <mat-icon  matBadge="4" matBadgeColor="warn" (click) = "openNotification()">notifications</mat-icon>
+      <mat-icon  matBadge="4" matBadgeColor="warn" (click) ="openNotification()">notifications</mat-icon>
       <div class="notificationMenu" [class.opened]="openedNotification">
         <div class="menuContainer" *ngFor="let invoice of invoice$|async">
           <div *ngIf="invoice.status== 'INWAITING' && invoice.client.id == clientId">
@@ -75,30 +90,36 @@
         <div *ngIf="invetation.status == 'INWAITING' && invetation.company.id == companyId">
           <p *ngIf="invetation.client "> you have sent client request to {{invetation.client.name}}</p>
           <p *ngIf="invetation.provider">you have sent provider request to {{invetation.provider.name}}</p>
+          <p *ngIf="invetation.user">you have sent worker request to {{invetation.user.username}}</p>
           <button mat-raised-button color="warn" (click)="cancelRequestOrDeleteFriend(invetation.id)">cancel request</button>
         </div>
         <div *ngIf="invetation.status =='ACCEPTED'  && invetation.company.id == companyId">
-          <p *ngIf="invetation.client"> {{invetation.client.name}} is accepted your client request </p>
-          <p *ngIf="invetation.provider"> {{invetation.provider.name}} is accepted your provider request </p>
+          <p *ngIf="invetation.client"> {{invetation.client.name}} accepted your client request </p>
+          <p *ngIf="invetation.provider"> {{invetation.provider.name}} accepted your provider request </p>
+          <p *ngIf="invetation.user">{{invetation.user.username}} accepted your worker request </p>
         </div>
         <div *ngIf="invetation.status =='REFUSED'  && invetation.company.id == companyId">
           <p *ngIf="invetation.client"> {{invetation.client.name}} has refused your client request </p>
           <p *ngIf="invetation.provider"> {{invetation.provider.name}} has refused your provider request </p>
+          <p *ngIf="invetation.user">has refused your worker request </p>
         </div>
-
+        
         <div *ngIf="invetation.status == 'INWAITING' && invetation.company.id != companyId">
           <p *ngIf="invetation.client"> {{invetation.company.name}} has sent you client request </p>
           <p *ngIf="invetation.provider"> {{invetation.company.name}} has sent you provider request </p>
-          <button mat-raised-button color="primary" (click)="requestResponse('ACCEPTED',invetation.id)">accept</button>
-          <button mat-raised-button color="warn" (click)="requestResponse('REFUSED',invetation.id)">refuse</button>
+          <p *ngIf="invetation.company.name">has sent you worker request </p>
+          <button mat-raised-button color="primary" (click)="requestResponse('ACCEPTED',invetation)">accept</button>
+          <button mat-raised-button color="warn" (click)="requestResponse('REFUSED',invetation)">refuse</button>
         </div>
         <div *ngIf="invetation.status =='ACCEPTED'  && invetation.company.id != companyId">
           <p *ngIf="invetation.client"> you have accepted {{invetation.company.name}} client request </p>
           <p *ngIf="invetation.provider"> you have accepted {{invetation.company.name}} provider request </p>
+          <p *ngIf="invetation.user"> you have accepted {{invetation.company.name}} worker request </p>
         </div>
         <div *ngIf="invetation.status =='REFUSED'  && invetation.company.id != companyId">
           <p *ngIf="invetation.client"> you have refused {{invetation.company.name}} client request </p>
           <p *ngIf="invetation.provider"> you have refused {{invetation.company.name}} provider request </p>
+          <p *ngIf="invetation.provider"> you have refused {{invetation.company.name}} worker request </p>
         </div>
       </div>
     </div>
@@ -108,4 +129,5 @@
   
 
 <router-outlet></router-outlet>
+
 </div>

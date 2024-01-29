@@ -25,7 +25,7 @@
       </div>
       <h2>Client:</h2>
       <div class="client" *ngIf="client">
-        <input value="{{client.name}}">
+        <input [readOnly]="companyId !==company$.id" value="{{client.name}}">
         <p> address: {{client.address}}</p>
         <p> phone:   {{client.phone}}</p>
         <p> matricule:   {{client.matfisc}}</p>

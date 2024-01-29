@@ -261,14 +261,7 @@ ngOnInit(): void {
       this.sousCategoryService.addSousCategory(this.formData).subscribe()
     }
     break;
-    case 'worker':
-    if (this.workerService.update) {
-      this.workerService.updateWorker(this.Form.value).subscribe()
-    } else {
-      this.workerService.addWorker(this.Form.value).subscribe()
-    }
-    break;
-
+   
     case 'vacation':
       this.Form.setValue({
         startdate: this.Form.value.startdate,
@@ -319,9 +312,7 @@ close(status : string){
           case 'provider':
             this.providerService.update = false
             break
-            case 'worker':
-              this.workerService.update = false
-              break
+           
               case 'sous-category':
                 this.sousCategoryService.update = false
                 break;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PurchaseOrder } from '../../models/user/purchaseOrder';
+import { PurchaseOrderLine } from '../../models/user/purchaseOrderLine';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'
 
@@ -9,12 +9,17 @@ import { Observable } from 'rxjs'
 export class PurchaseOrderService {
 
   baseUrl = 'werehouse/order/'
-  orderList: PurchaseOrder[] = [];
+  orderList: PurchaseOrderLine[] = [];
 
   constructor(private http : HttpClient) { }
 
   addToCart():Observable<any>{
+    console.log(this.orderList)
     return this.http.post(`${this.baseUrl}`,this.orderList)
+  }
+
+  getOrder():Observable<any>{
+    return this.http.get(`${this.baseUrl}get_order`)
   }
 
 }

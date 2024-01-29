@@ -3,7 +3,10 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import {  Router } from '@angular/router';
 import { loginResponse } from '../../../interface/loginResponse';
 import { RegisterService } from '../../../services/guest/register/register.service';
+import { AppComponent } from '../../../app.component';
 
+
+import jwt_decode from 'jwt-decode';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -14,7 +17,7 @@ export class RegisterComponent {
   usernam :string = 'usernam'
   registerForm : FormGroup
   checkpassword = false
-  constructor( public fb : FormBuilder, private registerService : RegisterService, private router : Router){
+  constructor( public fb : FormBuilder, private registerService : RegisterService, private router : Router, private appComponent : AppComponent){
     this.registerForm = this.fb.group({
       'username':[null, [Validators.required, Validators.minLength(5)]],
       'password':[null, [Validators.required, Validators.minLength(8)]],
@@ -54,6 +57,8 @@ export class RegisterComponent {
    this.registerService.signUp(val).subscribe((data:loginResponse) => {
     let token = data['token'];
     localStorage.setItem('jwt',token)
+   this.appComponent.logedIn = true
+    this.appComponent.user = jwt_decode<any>(token).sub
     this.router.navigate(['/home'])
    }, (error) =>{
     console.log(error)

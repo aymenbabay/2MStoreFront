@@ -1,31 +1,20 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import jwt_decode from 'jwt-decode';
-import { LoginService } from '../services/guest/login/login.service';
-@Injectable({
-  providedIn: 'root'
-})
-export class AdminGuard  {
-  isAdmin: boolean = false
-  token! : string
-  constructor(){}
-  canActivate(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.token = localStorage.getItem('jwt')??''
-    if(this.token){
-      const decodeToken = jwt_decode<any>(this.token)
-      decodeToken.Authorization.forEach((element:any) =>{
-        this.isAdmin = element.authority === 'admin'? true: this.isAdmin
-        console.log(this.isAdmin)
-      })
-    }
-    if(this.isAdmin){
-      return true;
-    }
-    return false
 
-  }
+import { inject } from '@angular/core';
+import jwt_decode from 'jwt-decode';
+import { Router, CanActivateFn } from '@angular/router';
+
+export const AdminGuard :CanActivateFn = (childRoute, state) => {
+  const router = inject(Router)
+  let token;
+  token = localStorage.getItem('jwt')??''
+    const decodeToken = jwt_decode<any>(token)
+    console.log(decodeToken.Authorization[0].authority)
+   if(decodeToken.Authorization[0].authority === "ADMIN"){
+    return true
+   }
+   
+   router.navigate(['user'])
+  return false
+  
   
 }

@@ -9,6 +9,8 @@ import { clientIdSelector, companyIdSelector, providerIdSelector } from '../../.
 import { Router } from '@angular/router';
 import { CommandLineService } from '../../../../services/admin/command-line.service';
 import { InvoiceModalComponent } from '../../../../modal/admin/invoice-modal/invoice-modal.component';
+import { PaymentModalComponent } from '../../../../modal/admin/payment-modal/payment-modal.component';
+import { InvetationService } from '../../../../services/admin/invetation.service';
 
 @Component({
   selector: 'app-invoice',
@@ -20,7 +22,7 @@ export class InvoiceComponent implements OnInit {
  invoices$!:Observable<Invoice[]>
   me = false
   provider = true
-  constructor(private dialog : MatDialog, private invoiceService: InvoiceService, private store : Store,
+  constructor(private dialog : MatDialog, private invoiceService: InvoiceService, private store : Store,private invetationService : InvetationService,
     private router : Router, private commandLineService : CommandLineService){
    
   }
@@ -52,6 +54,7 @@ export class InvoiceComponent implements OnInit {
   getAllMyInvoicesAsProvider(){
     this.provider = true
     this.invoices$ = this.invoiceService.getAllInvoiceAsProvider()
+    this.invoices$.subscribe(x =>console.log(x))
   }
 
   getInvoiceAsClient(){
@@ -67,6 +70,16 @@ export class InvoiceComponent implements OnInit {
     this.commandLineService.invoice$ = invoice
     console.log(invoice.id)
     this.router.navigate(['/my-company/invoice/command'])
+  }
+
+  paymentInvoice(invoice : Invoice){
+    // open payment modal
+    const dialogRef =  this.dialog.open(PaymentModalComponent,{
+      data : {invoice},
+      enterAnimationDuration:'1000ms',
+      exitAnimationDuration:'1000ms'
+    }
+      )
   }
 
  

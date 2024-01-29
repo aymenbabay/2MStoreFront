@@ -4,11 +4,8 @@ import { Company } from '../../../models/user/company';
 import { CompanyService } from '../../../services/user/company/company.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddCompanyModalComponent } from '../../../modal/user/add-company-modal/add-company-modal.component';
-import { Store } from '@ngrx/store';
-import { StoreInterface } from '../../../store/store';
-import { ProviderId } from '../../../store/actions/state.action';
-import { providerIdSelector } from '../../../store/reducer/state.reducer';
-import { ProviderService } from '../../../services/admin/provider.service';
+import { ClientService } from '../../../services/admin/client.service';
+import { InvoiceService } from '../../../services/admin/invoice.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +15,7 @@ import { ProviderService } from '../../../services/admin/provider.service';
 export class DashboardComponent implements OnInit {
 
 isAdmin = false
+role = ""
 company$! : Company
 rating =0
 stars = [1,2,3,4,5]
@@ -32,12 +30,11 @@ providerId = 0
   
   }
 
+  
 
 
- admin():boolean{
+ admin(){
  this.isAdmin = this.loginService.admin()
- console.log(this.isAdmin)
- return this.isAdmin
  }
 
  openDialog(entity : Company, type : string) {

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { WorkerService } from '../../../../services/admin/worker.service';
 import { Worker } from '../../../../models/admin/worker';
 import { LoginService } from '../../../../services/guest/login/login.service';
+import { WorkerModalComponent } from '../../../../modal/admin/worker-modal/worker-modal.component';
+import { User } from '../../../../models/user/user';
+import { SignUp } from '../../../../models/user/signup';
 
 @Component({
   selector: 'app-worker',
@@ -14,11 +16,12 @@ import { LoginService } from '../../../../services/guest/login/login.service';
 export class WorkerComponent implements OnInit {
 
   workers!:Observable<Worker[]>
-  worker$!:Worker
+  worker$!:Worker[];
+  user$ !:Observable<SignUp[]>
+  type = "worker"
   entity = ""
 
-  constructor(private dialog : MatDialog, private workerService: WorkerService,
-              private loginService : LoginService){
+  constructor(private dialog : MatDialog, private workerService: WorkerService, private loginService : LoginService){
    
   }
 
@@ -32,20 +35,34 @@ export class WorkerComponent implements OnInit {
   
   }
 
-  searchUser(){
-    this.loginService.searchUser(this.entity).subscribe(x => {this.worker$ = x
-    console.log(x)})
-
+  searchWorker(type : string){
+    switch(type){
+      case 'worker':
+        this.type = "worker"
+        this.workerService.searchWorker(this.entity).subscribe(x => {
+          this.worker$ = x
+        })
+        break;
+      
+      case 'user' :
+        this.type = "user"
+        this.user$ = this.loginService.searchUser(this.entity)
+      
+      }
+    
   }
+
+  
 
   addWorker(){
-    this.workerService.addWorker(this.worker$).subscribe()
+    this.workerService.addWorker(this.worker$[0]).subscribe()
   }
 
-  openWorkerModal(entity:Worker,type : string){
-    const dialogRef = this.dialog.open(AdminComponent,
+  openWorkerModal(type : string, user : SignUp|null){
+    console.log(user)
+    const dialogRef = this.dialog.open(WorkerModalComponent,
       {
-        data: { entity, type },
+        data: { type, user },
         enterAnimationDuration:'1000ms',
          exitAnimationDuration:'1000ms'
       });
@@ -58,11 +75,11 @@ export class WorkerComponent implements OnInit {
 
   UpdateWorkerServer(worker : Worker){
     this.workerService.update = true
-    this.openWorkerModal(worker,"worker")
+   // this.openWorkerModal(worker,"worker")
   }
 
   addVacation(worker:Worker){
-    this.openWorkerModal(worker,"vacation")
+   // this.openWorkerModal(worker,"vacation")
   }
 
   deleteWorkerServer( name: String, id : number){

@@ -55,14 +55,13 @@ export class LoginComponent implements OnInit{
 
   onSubmit(){
   const val = this.loginForm.value
- this.loginService.login(val).subscribe((data) =>{
-    let token = data['token'];
-    localStorage.setItem('jwt',token)
-    console.log(val)
-    this.router.navigate(["user"]) 
-    this.appComponent.logedIn = true
-    this.appComponent.user = jwt_decode<any>(token).sub
- })
+ this.loginService.login(val).subscribe(data =>{
+  let token = data['token'];
+  localStorage.setItem('jwt',token)
+  this.router.navigate(["user"]) 
+  this.appComponent.logedIn = true
+  this.appComponent.user = jwt_decode<any>(token).sub
+})
   }
 
 

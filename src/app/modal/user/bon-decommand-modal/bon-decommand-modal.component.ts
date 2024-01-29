@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Company } from '../../../models/user/company';
 import { Article } from '../../../models/admin/Article';
 import { PurchaseOrderService } from '../../../services/user/purchase-order.service';
-import { PurchaseOrder } from '../../../models/user/purchaseOrder';
+import { PurchaseOrderLine } from '../../../models/user/purchaseOrderLine';
 import { Client } from '../../../models/admin/client';
 
 @Component({
@@ -24,11 +24,13 @@ export class PurchaseOrderModalComponent {
       'comment' : ['']
     })
   }
-
+//a verifier pour le commentaire de company
   submit(){
-    const order = new PurchaseOrder()
-    order.articles.push(this.data.article)
-    order.company = this.data.company
+    const order = new PurchaseOrderLine()
+    console.log(this.data.article)
+    console.log(this.bonCommandForm.value)
+    order.article = this.data.article
+   // order.company = this.data.company
     order.quantity = this.bonCommandForm.value.quantity
     order.comment = this.bonCommandForm.value.comment
     console.log(order)

@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Renderer2 } from '@angular/core';
 
 import jwt_decode from 'jwt-decode';
 import { InvoiceService } from './services/admin/invoice.service';
@@ -15,6 +15,10 @@ import { Invetation } from './models/admin/Invetation';
 import { InvetationService } from './services/admin/invetation.service';
 import { MessageService } from './services/user/message.service';
 import { Message } from './models/user/message';
+import { LoginService } from './services/guest/login/login.service';
+import { PurchaseOrderLine } from './models/user/purchaseOrderLine';
+import { PurchaseOrderService } from './services/user/purchase-order.service';
+import { PurchaseOrder } from './models/user/PurchaseOrder';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,8 +29,10 @@ export class AppComponent implements OnInit{
   openedNotification = false
   openedInvetation = false
   openedConversation = false
+  openedShopping = false
   invoice$! : Observable<Invoice[]>
   invetation$! : Observable<Invetation[]>
+  shopping$! : Observable<PurchaseOrder[]>
   companyId! : number
   clientId! : number
   conversations : any[]=[]
@@ -34,37 +40,43 @@ export class AppComponent implements OnInit{
   logedIn = false
 constructor(private invoiceService : InvoiceService, private store : Store, private companyService : CompanyService,
   private clientService : ClientService, private router: Router, private commandService : CommandLineService,
-   private invetationService: InvetationService, public messageService : MessageService
+   private invetationService: InvetationService, public messageService : MessageService, private loginService : LoginService, private purchaseOrderService : PurchaseOrderService
   ){
-
+    
    
 }
 
 ngOnInit(): void {
   let token = localStorage.getItem('jwt') ?? ''
     if(token){
-      console.log("token ")
+      console.log("token "+token)
       this.user = jwt_decode<any>(token).sub 
+      console.log("authority" +jwt_decode<any>(token).Authorization[0].authority)
       this.logedIn = true
-      
-      this.companyService.getMyCompanyId()
-      this.clientService.getMyClientId()
+      if(jwt_decode<any>(token).Authorization[0].authority !== "USER"){
+
+        this.companyService.getMyCompanyId()
+        this.clientService.getMyClientId()
+      }
       this.invoiceService.invoices$ = this.invoice$ = this.invoiceService.getAllInvoiceNotAccepted()
     this.invetation$ = this.invetationService.getAllInvetations()
-    
     this.store.select(companyIdSelector).subscribe(x => {
     this.companyId = x
-    console.log(x+"company id")
   })
   this.store.select(clientIdSelector).subscribe(x =>{
     this.clientId = x
-    console.log(x+"client id")
   })
   this.getAllMyConversation()
+  this.shopping$ = this.purchaseOrderService.getOrder()
+  this.shopping$.subscribe(x=>console.log(x))
 }
 }
 
 
+
+openShopping(){
+  this.openedShopping = !this.openedShopping
+}
 
 openNotification(){
   this.openedNotification = !this.openedNotification
@@ -83,10 +95,20 @@ InvoiceStatus(status : string,invoiceCode : number){
   this.invoiceService.InvoiceStatus(status,invoiceCode).subscribe()
 }
 
-requestResponse(status : string,invetationId:number){
-  console.log(status,invetationId)
+requestResponse(status : string,invetation:Invetation){
+  console.log(status,invetation.id)
   this.openedInvetation = false
-    this.invetationService.requestResponse(status, invetationId).subscribe(x =>console.log(x))
+    this.invetationService.requestResponse(status, invetation.id).subscribe(x =>{
+      console.log(x)
+      if(invetation.user != null){
+        this.loginService.refreshToken().subscribe(data =>{
+          let token = data['token'];
+          localStorage.setItem('jwt',token)
+          this.router.navigate(["/my-company"])
+        })
+      }
+    }
+      )
  
 }
 

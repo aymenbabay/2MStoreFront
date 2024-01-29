@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="title">
+      <h1>{{Add}} {{type}}</h1>
+    </div>
+<!-- -------------------------------------------------  worker  ----------------------------------------------------- -->
+ <form [formGroup]="Form" (keydown.enter)="submit()" class="form" >
+    <label for="name">name</label>
+    <input type="text" formControlName="name" [readonly]="type==='exist'" id="name" name="name">
+
+    <label for="phone">phone</label>
+    <input type="text" formControlName="phone" [readonly]="type==='exist'" id="phone" name="phone">
+
+    <label for="email">email</label>
+    <input type="text" formControlName="email" [readonly]="type==='exist'" id="email" name="email">
+
+    <label for="address">address</label>
+    <input type="text" formControlName="address" [readonly]="type==='exist'" id="address" name="address">
+
+    <label for="salary">salary</label>
+    <input type="number" formControlName="salary" id="salary" name="salary">
+
+    <label for="jobtitle">job title</label>
+    <input type="text" formControlName="jobtitle" id="jobtitle" name="jobtitle">
+
+    <label for="department">department</label>
+    <input type="text" formControlName="department" id="department" name="department">
+
+    <label for="totdayvacation">tot day vacation</label>
+    <input type="number" formControlName="totdayvacation" id="totdayvacation" name="totdayvacation">
+
+    <label for="statusvacation">status</label>
+    <input type=boolean formControlName="statusvacation" id="statusvacation" name="statusvacation">
+
+    <input type="number" formControlName="id" hidden id="id" name="id">
+
+  </form>
+
+  <div class="button" mat-dialog-actions>
+    <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" class="submit">OK</button>
+  </div>
+</div>
+
+
+

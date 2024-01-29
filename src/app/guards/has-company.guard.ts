@@ -1,37 +1,19 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+
 import jwt_decode from 'jwt-decode';
 import { LoginService } from '../services/guest/login/login.service';
+import { CanActivateChildFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class HasCompanyGuard  {
-  isAdmin = false
-  constructor(private router : Router, private loginService : LoginService){}
-  canActivateChild(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      let has_company = localStorage.getItem('has_company')
-    
-      const token = localStorage.getItem('jwt')
-      if(token){
-
-        const decodedToken = jwt_decode<any>(token);
-        localStorage.setItem('user',decodedToken.sub)
-        decodedToken.Authorization.forEach((element:any) => {
-          this.isAdmin = element.authority === 'admin' ? true : this.isAdmin;
-          this.loginService.isAdmin = this.isAdmin
-          console.log(this.isAdmin)
-        })
-      }
-      if(has_company==='true' || this.isAdmin ){
-        return true;
-        
-      }
-      this.router.navigate(['user'])
-      return false;
+export const HasCompanyGuard: CanActivateChildFn = (childRoute, state) => {
+   const loginService = inject(LoginService);
+   const router = inject(Router)
+   let token ;
+   token = localStorage.getItem('jwt')??""
+   const decodedToken = jwt_decode<any>(token);
+  if(decodedToken.Authorization[0].authority === "ADMIN" || decodedToken.Authorization[0].authority === "WORKER"){
+   // loginService.isAdmin = true
+    return true
   }
-  
+  router.navigate(['user'])
+  return false;
 }

@@ -1,28 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../../models/user/user';
 import { loginResponse } from '../../../interface/loginResponse';
+
+
+import jwt_decode from 'jwt-decode';
+import { Router } from '@angular/router';
+import { AppComponent } from '../../../app.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-
   public formData: FormGroup ;
   loginresponse! : loginResponse
   baseUrl = 'api/auth/'
   isAdmin = false
+  role = ""
   token!: string|null
   
-  constructor(private http : HttpClient, private fb : FormBuilder) {
+  constructor(private http : HttpClient, private fb : FormBuilder, private router : Router) {
     this.formData = this.fb.group({
       userName: ['example@example.com'],
       password: ['password']
     });
    }
+
+ 
 
   login(data:User):Observable<loginResponse>{
    return this.http.post<loginResponse>(`${this.baseUrl}authentication`, data)
@@ -38,12 +45,32 @@ export class LoginService {
 
   refreshToken():Observable<any>{
     this.getToken()
-    this.admin()
+    this.rolefunc()
    return this.http.post(`${this.baseUrl}refresh`,this.token)
   }
-  admin():boolean{
+  rolefunc():string{
+    this.getToken();
+    if(this.token){
+      const decodedToken = jwt_decode<any>(this.token);
+      switch (decodedToken.Authorization[0].authority){
+        case "ADMIN":
+        this.role = "ADMIN";
+        break;
+        case "WORKER":
+          this.role = "WORKER"
+          break
+      }
+    }
+    return this.role
+  }
 
-    return this.isAdmin
+  admin():boolean{
+    this.role = this.rolefunc()
+ if(this.role == "ADMIN"){
+  this.isAdmin = true;
+ }
+ console.log(this.isAdmin)
+ return this.isAdmin
   }
 
   getToken(){

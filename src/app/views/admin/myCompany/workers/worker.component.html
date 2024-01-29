@@ -1,9 +1,12 @@
 
-<button mat-raised-button color="primary" *ngIf="worker$" (click)="openWorkerModal(worker$,'worker')">add worker</button>
+<button mat-raised-button color="primary" *ngIf="!entity" (click)="openWorkerModal('new',null)">add worker</button>
+<button mat-raised-button color="primary" *ngIf="entity" (click)="searchWorker('user')">add exist worker</button>
 
 <input type="search" [(ngModel)]="entity" placeholder="type worker name">
-<button (click)="searchUser()">search</button>
-<div *ngIf="workers | async as workers">
+<button mat-raised-button color="primary" (click)="searchWorker('worker')">search</button>
+<div *ngIf="type == 'worker'">
+  
+<div *ngIf="worker$ || (workers | async) as workers">
     <table>
       <thead>
         <tr>
@@ -19,12 +22,12 @@
           <th>Actions</th>  
         </tr>
       </thead>
-      <tbody *ngIf="workers.length > 0 " >
+      <tbody  >
          <tr *ngFor="let worker of workers; index as i" routerLink="{{worker.id}}"> 
            <td>{{worker.name}}</td>
-            <td>{{worker.user.address}}</td>
-            <td>{{worker.user.email}}</td>
-            <td>{{worker.user.phone}}</td>
+            <td>{{worker.address}}</td>
+            <td>{{worker.email}}</td>
+            <td>{{worker.phone}}</td>
             <td>{{worker.jobtitle}}</td>
             <td>{{worker.department}}</td>
             <td>{{worker.totdayvacation}}</td>
@@ -39,7 +42,33 @@
           </tr>
       </tbody>
     </table>
-    
-   
   </div>
+</div>
+<div *ngIf="type=='user'">
+  <div *ngIf="user$ |async as users ">
+    <table>
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>address </th>
+          <th>email</th>
+          <th>phone</th>
+          <th>Actions</th>  
+        </tr>
+      </thead>
+      <tbody  >
+         <tr *ngFor="let user of users" > 
+           <td>{{ user.username}}</td>
+            <td>{{user.address}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.phone}}</td>
+            <td> 
+               <mat-icon color="warn" style="font-size: 24px;" (click)="openWorkerModal('exist',user)">add</mat-icon>  
+            </td>
+           
+          </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
   
