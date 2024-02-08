@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { AdminGuard } from '../../../guards/adminGuard';
+import { OrderByIdComponent } from '../../../components/shared/order-by-id/order-by-id.component';
 
 const routes: Routes = [
   {path:'', component:DashboardComponent},
@@ -17,7 +18,9 @@ canActivate:[AdminGuard]},
 {path:'worker', loadChildren:()=>import('../myCompany/workers/worker.module').then(m=>m.WorkerModule)
 ,canActivate:[AdminGuard]},
   {path:'client', loadChildren:()=>import('../../admin/myCompany/client/client.module').then(m=>m.ClientModule)},
-    {path:'article', loadChildren:()=>import('../../admin/myCompany/article/article.module').then(m=>m.ArticleModule)}
+  {path:'article', loadChildren:()=>import('../../admin/myCompany/article/article.module').then(m=>m.ArticleModule)},
+  // {path:'order', loadChildren:()=>import('../../admin/myCompany/order/order.module').then(m=>m.OrderModule)},
+  {path:'order/:id', component:OrderByIdComponent}
 ];
 
 @NgModule({

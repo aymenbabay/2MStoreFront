@@ -1,0 +1,61 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 4px;
+}
+
+tr {
+    border: solid 2px;
+}
+
+th {
+    background-color: gray;
+}
+
+td {
+    background-color: azure;
+}
+
+td:hover {
+    cursor: pointer;
+}
+
+td,
+th {
+    border: solid gray 0.1px;
+    padding: 2px;
+    text-align: center;
+}
+
+.accepted_button {
+    margin-right: 3px;
+    border-radius: 5px;
+    background-color: green;
+    padding: 2px;
+}
+
+.refused_button{
+    
+    border-radius: 5px;
+    background-color: red;
+    padding: 2px;
+}
+
+.refused_button{
+    
+    border-radius: 5px;
+    background-color: violet;
+    padding: 2px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+p {
+    margin: 4px;
+}
+

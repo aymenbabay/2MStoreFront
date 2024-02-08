@@ -29,6 +29,7 @@ import { SubCategoryModalComponent } from './modal/admin/sub-category-modal/sub-
 import { PurchaseOrderModalComponent } from './modal/user/bon-decommand-modal/bon-decommand-modal.component';
 import { PaymentModalComponent } from './modal/admin/payment-modal/payment-modal.component';
 import { WorkerModalComponent } from './modal/admin/worker-modal/worker-modal.component';
+import { OrderByIdComponent } from './components/shared/order-by-id/order-by-id.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { WorkerModalComponent } from './modal/admin/worker-modal/worker-modal.co
     SubCategoryModalComponent,
     PurchaseOrderModalComponent,
     PaymentModalComponent,
-    WorkerModalComponent
+    WorkerModalComponent,
+    OrderByIdComponent
   ],
   imports: [
     BrowserModule,

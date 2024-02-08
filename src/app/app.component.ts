@@ -68,22 +68,37 @@ ngOnInit(): void {
   })
   this.getAllMyConversation()
   this.shopping$ = this.purchaseOrderService.getOrder()
-  this.shopping$.subscribe(x=>console.log(x))
 }
+}
+
+goToOrder(id : number, shopping: any){
+  this.router.navigate([`/my-company/order/${id}`, { shopping: JSON.stringify(shopping) }])
+  this.openShopping()
+}
+
+goToOrder2(id : number, shopping: any){
+  this.router.navigate([`/user/order/${id}`, { shopping: JSON.stringify(shopping) }])
+  this.openShopping()
 }
 
 
 
 openShopping(){
   this.openedShopping = !this.openedShopping
+  this.openedNotification = false
+  this.openedInvetation = false
 }
 
 openNotification(){
   this.openedNotification = !this.openedNotification
+  this.openedShopping = false
+  this.openedInvetation = false
 }
 
 openInvetation(){
   this.openedInvetation = !this.openedInvetation
+  this.openedNotification = false
+  this.openedShopping = false
 }
 
 openConversation(){

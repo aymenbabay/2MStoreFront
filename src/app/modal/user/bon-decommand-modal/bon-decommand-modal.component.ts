@@ -1,4 +1,4 @@
-import { Component,Inject } from '@angular/core';
+import { Component,Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Company } from '../../../models/user/company';
@@ -12,29 +12,49 @@ import { Client } from '../../../models/admin/client';
   templateUrl: './bon-decommand-modal.component.html',
   styleUrls: ['./bon-decommand-modal.component.css']
 })
-export class PurchaseOrderModalComponent {
+export class PurchaseOrderModalComponent implements OnInit {
 
   bonCommandForm! : FormGroup
-
+  imageUrl!: string| null
   constructor(private ref : MatDialogRef<PurchaseOrderModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { company: Company, article : Article },
+    @Inject(MAT_DIALOG_DATA) public data: { company: Company, article : Article, line :PurchaseOrderLine, type :string },
   public fb : FormBuilder, private purchaseOrderService : PurchaseOrderService){
     this.bonCommandForm = fb.group({
       'quantity' : [''],
-      'comment' : ['']
+      'comment' : [''],
+
     })
+    this.imageUrl = `http://localhost:8080/werehouse/image/${this.data.article.image}/article/${this.data.article.provider.company.user.username}`
   }
+
+  ngOnInit(): void {
+    if(this.data.type === "update"){
+      this.bonCommandForm.setValue({
+        quantity : this.data.line.quantity,
+        comment : this.data.line.comment
+      })
+    }
+  }
+
+
 //a verifier pour le commentaire de company
   submit(){
-    const order = new PurchaseOrderLine()
-    console.log(this.data.article)
-    console.log(this.bonCommandForm.value)
-    order.article = this.data.article
-   // order.company = this.data.company
-    order.quantity = this.bonCommandForm.value.quantity
-    order.comment = this.bonCommandForm.value.comment
-    console.log(order)
-    this.purchaseOrderService.orderList.push(order)
+    if(this.data.type != "update"){
+
+      const order = new PurchaseOrderLine()
+      order.article = this.data.article
+      order.quantity = this.bonCommandForm.value.quantity
+      order.comment = this.bonCommandForm.value.comment
+      console.log(order)
+      this.purchaseOrderService.orderList.push(order)
+      console.log(this.purchaseOrderService.orderList)
+    }else{
+      this.data.line.comment = this.bonCommandForm.value.comment
+      this.data.line.quantity = this.bonCommandForm.value.quantity
+      console.log(this.data.line.comment)
+
+      this.purchaseOrderService.updateLine(this.data.line).subscribe()
+    }
     this.close()
   }
 

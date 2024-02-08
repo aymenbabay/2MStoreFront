@@ -10,7 +10,6 @@ export class PurchaseOrder{
     client      !:Client
     pclient     !:PassingClient
     lines       !:PurchaseOrderLine[]
-    status          !:string
     orderNumber     !:string
 
 }

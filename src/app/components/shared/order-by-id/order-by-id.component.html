@@ -1,0 +1,37 @@
+<div class="container">  
+    <div *ngIf="order.lines.length>1">
+
+    </div>
+     <table >
+        <thead>
+          <tr>
+            <th>company</th>
+            <th> client </th>
+            <th>status</th>
+            <th>libelle</th>
+            <th>quantity</th>
+            <th>comment</th>
+            <th>order N°</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let line of order.lines">
+            <td>{{order.company.name}}</td>
+            <td *ngIf="order.client">{{order.client.name}}</td>
+            <td *ngIf="order.pclient">{{order.pclient.user.username}}</td>
+            <td  *ngIf="line.status === status.INWAITING" [style.backgroundColor]="'orange'">
+              <button (click)="cancelOrder(line.id)" class="cancel_button" *ngIf="!mycompany">cancel</button>
+              <button (click)="statusResponse(line.id,status.ACCEPTED)" class="accepted_button" *ngIf="mycompany">accept</button>
+              <button (click)="statusResponse(line.id,status.REFUSED)" class="refused_button" *ngIf="mycompany">refuse</button>
+            </td>
+            <td *ngIf="line.status === status.REFUSED" [style.backgroundColor]="'red'">REFUSED</td>
+            <td *ngIf="line.status === status.ACCEPTED" [style.backgroundColor]="'green'">ACCEPTED</td>
+            <td *ngIf="line.status === status.CANCELLED" [style.backgroundColor]="'violet'">CANCELLED</td>
+            <td>{{line.article.libelle}}</td>
+            <td>{{line.quantity}}</td>
+            <td>{{line.comment}}</td>
+            <td>{{order.orderNumber}}</td>
+          </tr>
+        </tbody>
+      </table>
+</div>

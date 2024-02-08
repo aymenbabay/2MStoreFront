@@ -1,5 +1,6 @@
 <div class="container">
-    <form [formGroup]="bonCommandForm" (keyup.enter)="submit()">
+    <form [formGroup]="bonCommandForm" >
+      <img *ngIf="imageUrl" height="100px" [src]="imageUrl" alt="Uploaded Image">
       <label for="quantity">Quantity</label>
       <input type="number" formControlName="quantity" id="quantity" name="quantity" required>
 

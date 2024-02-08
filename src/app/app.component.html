@@ -6,17 +6,14 @@
     <div> 
       <mat-icon (click)="openShopping()">shopping_cart</mat-icon>
       <div class="notificationMenu" [class.opened]="openedShopping">
-        <div class="menuContainer" *ngFor="let shopping of shopping$ |async">
-         
-           <div *ngFor="let purchaseOrder of shopping.lines">
-            
-            
-            <p *ngIf="shopping.client !=null">{{shopping.client.name}} wants {{purchaseOrder.article.libelle}}</p>
-            <p *ngIf="shopping.pclient !=null">{{shopping.pclient.user.username}} wants {{purchaseOrder.article.libelle}}</p>
-            
-           </div>
-        
-
+        <div class="menuContainer" *ngFor="let shopping of shopping$ |async">  
+            <div *ngIf="shopping.company.id == companyId">
+              <p *ngIf="shopping.client !=null" (click)="goToOrder(shopping.id,shopping)">{{shopping.client.name}} sent an order</p>
+              <p *ngIf="shopping.pclient !=null" (click)="goToOrder(shopping.id,shopping)">{{shopping.pclient.user.username}} sent an order </p>
+            </div>
+            <div *ngIf="shopping.company.id != companyId">
+              <p (click)="goToOrder2(shopping.id,shopping)">you have send an order to {{shopping.company.name}}</p>
+            </div>
         </div>
       </div>
 
