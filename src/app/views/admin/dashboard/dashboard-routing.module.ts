@@ -19,7 +19,7 @@ canActivate:[AdminGuard]},
 ,canActivate:[AdminGuard]},
   {path:'client', loadChildren:()=>import('../../admin/myCompany/client/client.module').then(m=>m.ClientModule)},
   {path:'article', loadChildren:()=>import('../../admin/myCompany/article/article.module').then(m=>m.ArticleModule)},
-  // {path:'order', loadChildren:()=>import('../../admin/myCompany/order/order.module').then(m=>m.OrderModule)},
+   {path:'parents', loadChildren:()=>import('../myCompany/parents/parents.module').then(m=>m.ParentsModule)},
   {path:'order/:id', component:OrderByIdComponent}
 ];
 

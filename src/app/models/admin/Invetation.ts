@@ -7,7 +7,8 @@ export class Invetation{
     id!        :number
     client! : Client
     provider! : Provider
-    company!  :Company
+    companySender!  :Company
+    companyReciver!  :Company
     status ! :String
     user !: SignUp
     salary !:number

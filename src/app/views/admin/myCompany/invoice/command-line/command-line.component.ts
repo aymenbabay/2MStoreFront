@@ -58,7 +58,9 @@ export class CommandLineComponent implements OnInit, OnDestroy {
       this.currentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd')||"";
       this.client = this.invoiceService.client 
       this.factureCode$ = this.invoiceService.getInvoices();
-      this.company$ = this.companyServce.getMe()
+      this.store.select(companyIdSelector).subscribe(companyId =>{
+        this.company$ = this.companyServce.getMe(companyId)
+      })
     }
   
     console.log(this.commandService.view)

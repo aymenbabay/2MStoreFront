@@ -22,4 +22,6 @@ export class Company{
        provider         ! : Provider
        client           ! : Client
        isVisible        ! : String
+       parentCompany    ! : Company
+       branshes         ! : Company[]
 }

@@ -1,0 +1,36 @@
+<div class="container">
+<input type="search" [(ngModel)]="branshe" placeholder="type company name">
+<button mat-raised-button color="primary" (click)="searchCompany()">search</button>
+
+<div >
+    <table >
+        <thead>
+          <tr>
+            <th>name</th>
+            <th> code </th>
+            <th>matricule</th>
+            <th>address</th>
+            <th>phone</th>
+            <th>bank account number</th>
+            <th>email</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let company of companies|async">
+          <tr>
+            <td>{{company.name}}</td>
+            <td >{{company.code}}</td>
+            <td >{{company.matfisc}}</td>
+            <td >{{company.address}}</td>
+            <td> {{company.phone}}</td>
+            <td>{{company.bankaccountnumber}}</td>
+            <td>{{company.email}}</td>
+            <td>
+                <mat-icon (click)="addParent(company.id)">add</mat-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+</div>
+</div>

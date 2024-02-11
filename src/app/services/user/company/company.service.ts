@@ -5,11 +5,13 @@ import { Company } from '../../../models/user/company';
 import { Store } from '@ngrx/store';
 import { companyIdSelector } from '../../../store/reducer/state.reducer';
 import { CompanyId } from '../../../store/actions/state.action';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
+ 
 
 
   update = false
@@ -25,8 +27,8 @@ getCompanyById(id:number):Observable<any>{
   return this.http.get(`${this.baseUrl}${id}`)
 }
 
-getMe():Observable<Company>{
-  return this.http.get<Company>(`${this.baseUrl}mycompany`)
+getMe(id : number):Observable<Company>{
+  return this.http.get<Company>(`${this.baseUrl}mycompany/${id}`)
 }
 
 checkCompany() :Observable<any>{
@@ -39,6 +41,10 @@ getAllCompany():Observable<any> {
 
 updateCompany(formData: FormData) :Observable<any>{
   return this.http.put(`${this.baseUrl}update`,formData)
+}
+
+getCompanyContaining(branshe: string) :Observable<any>{
+  return this.http.get(`${this.baseUrl}search/${branshe}`)
 }
 
 rate(x: number, id: number) :Observable<any>{

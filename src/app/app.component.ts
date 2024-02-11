@@ -30,6 +30,7 @@ export class AppComponent implements OnInit{
   openedInvetation = false
   openedConversation = false
   openedShopping = false
+  openedCompanies = false
   invoice$! : Observable<Invoice[]>
   invetation$! : Observable<Invetation[]>
   shopping$! : Observable<PurchaseOrder[]>
@@ -81,24 +82,32 @@ goToOrder2(id : number, shopping: any){
   this.openShopping()
 }
 
-
+openCompanies(){
+  this.openedCompanies = !this.openedCompanies;
+  this.openedNotification = false
+  this.openedInvetation = false
+  this.openedShopping = false
+}
 
 openShopping(){
   this.openedShopping = !this.openedShopping
   this.openedNotification = false
   this.openedInvetation = false
+  this.openedCompanies = false
 }
 
 openNotification(){
   this.openedNotification = !this.openedNotification
   this.openedShopping = false
   this.openedInvetation = false
+  this.openedCompanies = false
 }
 
 openInvetation(){
   this.openedInvetation = !this.openedInvetation
   this.openedNotification = false
   this.openedShopping = false
+  this.openedCompanies = false
 }
 
 openConversation(){

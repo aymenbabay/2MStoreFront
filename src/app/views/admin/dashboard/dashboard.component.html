@@ -1,5 +1,6 @@
 <div class="container"  *ngIf="company$">
 
+   
     <div class="btn">
         <button mat-raised-button color="primary" routerLink="/my-company/article">article</button>
         <button mat-raised-button color="primary" routerLink="/my-company/client">client</button>
@@ -7,9 +8,11 @@
         <button mat-raised-button color="primary" routerLink="/my-company/category" *ngIf="isAdmin">category</button>
         <button mat-raised-button color="primary" routerLink="/my-company/sous-category"
             *ngIf="isAdmin">sous_category</button>
+        <button mat-raised-button color="primary" routerLink="/user/my-order">order</button>
         <button mat-raised-button color="primary" routerLink="/my-company/invoice">invoice</button>
         <button mat-raised-button color="primary" routerLink="/my-company/worker" *ngIf="isAdmin">worker</button>
         <button mat-raised-button color="primary" routerLink="/my-company/inventory" *ngIf="isAdmin">inventory</button>
+        <button mat-raised-button color="primary" routerLink="/my-company/parents" *ngIf="isAdmin">parents</button>
         <button mat-raised-button color="primary" (click)="openDialog(company$,'update')" *ngIf="isAdmin">update</button>
     </div>
     <div class="content" >

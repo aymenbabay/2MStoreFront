@@ -8,6 +8,7 @@ import { Worker } from '../../models/admin/worker';
   providedIn: 'root'
 })
 export class InvetationService {
+
   
   
   
@@ -29,4 +30,10 @@ export class InvetationService {
   sendWorkerInvetation(worker: Worker):Observable<any> {
     return this.http.post(`${this.baseUrl}worker`,worker)
   }
+
+  sendParentInvetation(id: number) :Observable<any>{
+    return this.http.get(`${this.baseUrl}parent/${id}`)
+  }
+
+
 }
