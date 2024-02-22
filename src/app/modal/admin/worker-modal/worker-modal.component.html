@@ -3,7 +3,7 @@
       <h1>{{Add}} {{type}}</h1>
     </div>
 <!-- -------------------------------------------------  worker  ----------------------------------------------------- -->
- <form [formGroup]="Form" (keydown.enter)="submit()" class="form" >
+ <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type !== 'vacation'" >
     <label for="name">name</label>
     <input type="text" formControlName="name" [readonly]="type==='exist'" id="name" name="name">
 
@@ -32,8 +32,18 @@
     <input type=boolean formControlName="statusvacation" id="statusvacation" name="statusvacation">
 
     <input type="number" formControlName="id" hidden id="id" name="id">
+    
+  </form>
+  
+  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='vacation'">
+    <label for="startdate">startday</label>
+    <input type="date" formControlName="startdate" id="startdate" name="startdate">
+    <input type="date" formControlName="enddate" id="enddate" name="enddate">
+    <input type="number" formControlName="remainingday" readonly id="remainingday" name="remainingday">
+    <input type="number" formControlName="usedday" readonly id="usedday" name="usedday">
 
   </form>
+
 
   <div class="button" mat-dialog-actions>
     <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Client } from '../../../../models/admin/client';
-import { EMPTY, Observable, forkJoin, map, switchMap } from 'rxjs';
+import { EMPTY, Observable, catchError, combineLatest, forkJoin, map, of, switchMap, take } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientService } from '../../../../services/admin/client.service';
 import { LoginService } from '../../../../services/guest/login/login.service';
 import { ClientModalComponent } from '../../../../modal/admin/client-modal/client-modal.component';
-import { clientIdSelector } from '../../../../store/reducer/state.reducer';
+import { clientIdSelector, parentIdSelector } from '../../../../store/reducer/state.reducer';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { ClientCompany } from '../../../../models/admin/ClientCompnay';
@@ -18,58 +18,41 @@ import { ClientCompany } from '../../../../models/admin/ClientCompnay';
 export class ClientComponent implements OnInit {
 
   MyClients!:Observable<ClientCompany[]>
-  clients$:Observable<Client[]> = EMPTY
+  clients$:Observable<ClientCompany[]> = EMPTY
+  isAdmin$: Observable<boolean> = of(false);
   search = false
   isClientResult = false
   myClientId! : number
+  companyId! : number;
   constructor(private dialog : MatDialog, private clientService: ClientService, public loginService : LoginService,
     private store : Store, private router : Router){
 
   }
 
   ngOnInit(): void {
+    this.getMyCompanyId()
     this.getAllMyClients()
     this.store.select(clientIdSelector).subscribe(x =>{
       this.myClientId = x
       console.log(x)
     })
+    this.isAdmin$ = this.isAdmin()
   }
 
   getAllMyClients(){
     this.MyClients = this.clientService.getAllMyClients()
   }
 
-  getAllClientContaining(value : string){
-    this.search = true
-   this.clients$ = this.clientService.getAllClientContaining(value).pipe(
-      switchMap(clients => {
-        // Create an array of observables for checking client status
-        const observables = clients.map(client => {
-          return this.clientService.checkClient(client.id).pipe(
-            map(isYours => {
-              console.log(isYours);
-              return {
-              ...client,
-              myClient: isYours}
-            })
-            );
-        });
-
-        // Combine all observables into a single observable
-        return forkJoin(observables);
-      })
-    );
+  getAllClientContaining(value : string ){
+    this.search = true;
+    this.clients$ = this.clientService.getAllClientContaining(value)
   }
+  
     
   addAsClient(id : number){
     this.clientService.addAsClient(id).subscribe();
   }
   
-
-  isClient(client : Client) {
-    
-    this.clientService.checkClient(client.id).subscribe()
-  }
 
 
   backToMyClients(){
@@ -92,6 +75,9 @@ export class ClientComponent implements OnInit {
      });
   }
 
+  isAdmin(): Observable<boolean> {
+    return this.loginService.isadmin()
+  }
 
   updateClientServer(client : Client){
     this.clientService.update = true
@@ -112,6 +98,13 @@ export class ClientComponent implements OnInit {
      
     }
 
+  }
+
+  getMyCompanyId(){
+    this.clientService.getCompanyId().subscribe(x =>{
+      this.companyId = x
+      console.log(x)
+    })
   }
 
 

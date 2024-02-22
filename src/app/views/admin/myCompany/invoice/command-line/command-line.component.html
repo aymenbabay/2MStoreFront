@@ -2,7 +2,7 @@
     <div class="facture" *ngIf="(factureCode$|async) as facture$">
         <h1>Invoice N°: {{facture$}}</h1>
         <p>Invoice Date: {{ currentDate }}</p>
-        <div *ngIf=" companyId === company$.id">
+        <div *ngIf=" companyId === company$.id && ((isadmin|async) || loginService.rolefunc()==='WORKER')">
 
           <mat-icon color="accent" style="font-size: 24px;" (click)="addLine(null,-1)">add</mat-icon>
           <mat-icon color="accent" style="font-size: 24px;" (click)="addInvoice(facture$,'pdf-save-client',client.id)">save</mat-icon>
@@ -25,7 +25,7 @@
       </div>
       <h2>Client:</h2>
       <div class="client" *ngIf="client">
-        <input [readOnly]="companyId !==company$.id" value="{{client.name}}">
+        <input [readOnly]="companyId !==company$.id && ((isadmin|async) || loginService.rolefunc()==='WORKER')" value="{{client.name}}">
         <p> address: {{client.address}}</p>
         <p> phone:   {{client.phone}}</p>
         <p> matricule:   {{client.matfisc}}</p>
@@ -43,7 +43,7 @@
               <th>tot tva</th>
               <th>prix tot  article</th>
               <th *ngIf="hasDiscount()|| companyId === company$.id">discount</th>
-              <th *ngIf="companyId ===company$.id">Actions</th> 
+              <th *ngIf="companyId ===company$.id && ((isadmin|async) || loginService.rolefunc()==='WORKER')">Actions</th> 
             </tr>
           </thead>
           <tbody *ngIf="commandService.commandLine$.length > 0  " >
@@ -58,7 +58,8 @@
               <td>{{line.totTva|currency: ' DT '}}</td>
               <td>{{line.prixArticleTot|currency: ' DT '}}</td>
               <td *ngIf="line.discount || companyId === company$.id">{{line.discount}}</td>
-              <td *ngIf="companyId === company$.id"> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteLine(line, i)">delete</mat-icon>
+              <td *ngIf="companyId === company$.id && ((isadmin|async) || loginService.rolefunc()==='WORKER')"> 
+                <mat-icon color="warn" style="font-size: 24px;" (click)="deleteLine(line, i)">delete</mat-icon>
                 <mat-icon color="accent" style="font-size: 24px;" (click)="addLine(line,i)">update</mat-icon>  
               </td>
             </tr>

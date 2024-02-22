@@ -12,23 +12,24 @@
           </tr>
         </thead>
         <tbody *ngFor="let order of order |async">
-          <tr *ngFor="let line of order.lines">
-            <td>{{order.company.name}}</td>
-            <td *ngIf="order.client">{{order.client.name}}</td>
-            <td *ngIf="order.pclient">{{order.pclient.user.username}}</td>
-            <td  *ngIf="line.status === status.INWAITING" [style.backgroundColor]="'orange'">
-              <button (click)="cancelOrder(line.id)" class="cancel_button" *ngIf="order.company.id != companyId">cancel</button>
-              <button (click)="updateOrder(order,line)" class="cancel_button" *ngIf="order.company.id != companyId">update</button>
-              <button (click)="statusResponse(line.id,status.ACCEPTED)" class="accepted_button" *ngIf="order.company.id == companyId">accept</button>
-              <button (click)="statusResponse(line.id,status.REFUSED)" class="refused_button" *ngIf="order.company.id == companyId">refuse</button>
+          <tr>
+            <td>{{order.purchaseorder.company.name}}</td>
+            <td *ngIf="order.purchaseorder.client">{{order.purchaseorder.client.name}}</td>
+            <td *ngIf="order.purchaseorder.pclient">{{order.purchaseorder.pclient.user.username}}</td>
+            <td  *ngIf="order.status === status.INWAITING" [style.backgroundColor]="'orange'">
+              <p *ngIf="!(isadmin|async) && loginService.rolefunc() === 'ADMIN'">{{order.status}}</p>
+              <button (click)="cancelOrder(order.id)" class="cancel_button" *ngIf="order.purchaseorder.company.id != companyId">cancel</button>
+              <button (click)="updateOrder(order.purchaseorder,order)" class="cancel_button" *ngIf="order.purchaseorder.company.id != companyId">update</button>
+              <button (click)="statusResponse(order.id,status.ACCEPTED)" class="accepted_button" *ngIf="order.purchaseorder.company.id == companyId && ((isadmin|async) || loginService.rolefunc() === 'WORKER')">accept</button>
+              <button (click)="statusResponse(order.id,status.REFUSED)" class="refused_button" *ngIf="order.purchaseorder.company.id == companyId &&((isadmin|async) || loginService.rolefunc() === 'WORKER')">refuse</button>
             </td>
-            <td *ngIf="line.status === status.REFUSED" [style.backgroundColor]="'red'">REFUSED</td>
-            <td *ngIf="line.status === status.ACCEPTED" [style.backgroundColor]="'green'">ACCEPTED</td>
-            <td *ngIf="line.status === status.CANCELLED" [style.backgroundColor]="'violet'">CANCELLED</td>
-            <td>{{line.article.libelle}}</td>
-            <td>{{line.quantity}}</td>
-            <td>{{line.comment}}</td>
-            <td>{{order.orderNumber}}</td>
+            <td *ngIf="order.status === status.REFUSED" [style.backgroundColor]="'red'">REFUSED</td>
+            <td *ngIf="order.status === status.ACCEPTED" [style.backgroundColor]="'green'">ACCEPTED</td>
+            <td *ngIf="order.status === status.CANCELLED" [style.backgroundColor]="'violet'">CANCELLED</td>
+            <td>{{order.article.libelle}}</td>
+            <td>{{order.quantity}}</td>
+            <td>{{order.comment}}</td>
+            <td>{{order.purchaseorder.orderNumber}}</td>
           </tr>
         </tbody>
       </table>

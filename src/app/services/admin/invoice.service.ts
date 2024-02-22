@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 import { Invoice } from '../../models/admin/invoice';
 import { Client } from '../../models/admin/client';
-import { Invetation } from '../../models/admin/Invetation';
+import { Store } from '@ngrx/store';
+import { companyIdSelector } from '../../store/reducer/state.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class InvoiceService {
   client!: Client;
   invoices$! : Observable<Invoice[]>
   invoice! : Invoice
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private store : Store) { }
 
 
  
@@ -25,7 +26,8 @@ export class InvoiceService {
   }
 
   getAllInvoiceAsProvider():Observable<any>{
-    return this.http.get(`${this.invoiceUrl}getMyInvoiceAsProvider`)
+    return this.getCompanyId().pipe(
+      switchMap(companyId => this.http.get(`${this.invoiceUrl}getMyInvoiceAsProvider/${companyId}`)))
   }
   addInvoice(client : Client):Observable<any>{
     console.log(client)
@@ -41,7 +43,8 @@ export class InvoiceService {
   }
 
   getInvoiceAClient(): Observable<Invoice[]> {
-    return this.http.get<Invoice[]>(`${this.invoiceUrl}getMyInvoiceAsClient`)
+    return this.getCompanyId().pipe(
+      switchMap(companyId => this.http.get<Invoice[]>(`${this.invoiceUrl}getMyInvoiceAsClient/${companyId}`)))
   }
 
   getAllInvoiceNotAccepted():Observable<any>{
@@ -54,5 +57,11 @@ export class InvoiceService {
 
   InvoiceStatus(status: string, invoiceCode : number):Observable<any> {
    return this.http.get(`${this.invoiceUrl}response/${status}/${invoiceCode}`)
+  }
+
+  getCompanyId():Observable<number>{
+    return this.store.select(companyIdSelector).pipe(
+      map(companyId => companyId as number)
+    )
   }
 }

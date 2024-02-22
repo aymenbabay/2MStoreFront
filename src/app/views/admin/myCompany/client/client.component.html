@@ -1,7 +1,7 @@
 
-<button mat-raised-button color="primary" *ngIf="loginService.isAdmin && !search" (click)="openClientModal(null)">add client</button>
+<button mat-raised-button color="primary" *ngIf="(isAdmin$ | async) !== false && !search" (click)="openClientModal(null)">add client</button>
 <br>
-<button mat-raised-button color="primary" *ngIf="search" (click)="backToMyClients()">back tyo my clients</button>
+<button mat-raised-button color="primary" *ngIf="search" (click)="backToMyClients()">back to my clients</button>
 <br>
 <div class="search-container">
   <input type="search" name="searchQuery" id="searchQuery" #searchInput placeholder="Search...">
@@ -24,7 +24,7 @@
           <th>bankaccountnumber</th>
           <th>mat fisc</th>
           <th>sector</th>
-          <th  *ngIf="loginService.isAdmin">Actions</th> 
+          <th  >Actions</th> 
         </tr> 
       </thead>
 
@@ -41,10 +41,10 @@
             <td>{{client.client.bankaccountnumber}}</td>
             <td>{{client.client.matfisc}}</td>
             <td>{{client.client.indestrySector}}</td>
-            <td *ngIf="loginService.isAdmin"> 
-              <mat-icon color="warn" style="font-size: 24px;" (click)="deleteClientServer( client.client.name,client.client.id)">delete</mat-icon>
-              <mat-icon color="accent" style="font-size: 24px;" *ngIf="client.client.virtual ==true || client.client.id == myClientId" (click)="updateClientServer(client.client)">update</mat-icon>
-              <mat-icon color="accent" style="font-size: 24px;" *ngIf="client.client.virtual ==false && client.client.id != myClientId" (click)="visitClient(client.client)">person</mat-icon>
+            <td> 
+              <mat-icon color="warn" style="font-size: 24px;" (click)="deleteClientServer( client.client.name,client.client.id)" *ngIf="client.client.id != myClientId && (isAdmin$ | async)">delete</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;" *ngIf="(client.client.virtual ==true || client.client.id == myClientId) && (isAdmin$ | async) !== false" (click)="updateClientServer(client.client)">update</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;" *ngIf="client.client.virtual ==false" (click)="visitClient(client.client)">person</mat-icon>
               
               
             </td>
@@ -52,26 +52,22 @@
           </tr>
         </tbody>
      
-
         <tbody *ngIf="search && (clients$ | async) as clients " > 
           <tr *ngFor="let client of clients; index as i"> 
-            <td>{{client.name}}</td>
-             <td>{{client.code}}</td>
-             <td>{{client.nature}}</td>
-             <td>0</td>
-             <td>0</td>
-             <td>{{client.phone}}</td>
-             <td>{{client.email}}</td>
-             <td>{{client.address}}</td>
-             <td>{{client.bankaccountnumber}}</td>
-             <td>{{client.matfisc}}</td>
-             <td>{{client.indestrySector}}</td>
+            <td>{{client.client.name}}</td>
+             <td>{{client.client.code}}</td>
+             <td>{{client.client.nature}}</td>
+             <td>{{client.credit}}</td>
+             <td>{{client.mvt}}</td>
+             <td>{{client.client.phone}}</td>
+             <td>{{client.client.email}}</td>
+             <td>{{client.client.address}}</td>
+             <td>{{client.client.bankaccountnumber}}</td>
+             <td>{{client.client.matfisc}}</td>
+             <td>{{client.client.indestrySector}}</td>
              <td>
-                <button mat-raised-button color="primary" *ngIf="!client.myClient" (click)="addAsClient(client.id)">add as client</button>
-                <button mat-raised-button color="primary" *ngIf="client.myClient">view profil</button>
-           
-
-            
+                <button mat-raised-button color="primary" *ngIf="client.company.id !== companyId && (isAdmin$ | async) !== false" (click)="addAsClient(client.client.id)">add as client</button>
+                <button mat-raised-button color="primary" *ngIf="!client.client.virtual">view profil</button>
             </td>
             </tr>
          </tbody>

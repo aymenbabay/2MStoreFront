@@ -26,6 +26,14 @@ export class CompanyId{
         this.payload = payload
     }
 }
+
+export class ParentId{
+    type :string = Provider.Parent
+    payload : any
+    constructor(payload: any){
+        this.payload = payload
+    }
+}
 export class Init{
     type : string = Provider.Init
    

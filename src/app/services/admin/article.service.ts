@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Article } from '../../models/admin/Article';
-import { Observable } from 'rxjs'
+import { Observable, map, switchMap } from 'rxjs'
 import { FormGroup } from '@angular/forms';
+import { LoginService } from '../guest/login/login.service';
+import { Store } from '@ngrx/store';
+import { companyIdSelector } from '../../store/reducer/state.reducer';
 
 
 
@@ -17,7 +20,7 @@ export class ArticleService {
 
   
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private store : Store) {
    
    
    }
@@ -28,8 +31,9 @@ export class ArticleService {
     return  this.http.delete(`${this.baseUrl}delete/${id}`)
   }
 
-  getAllArticles(id:number |0):Observable<Article[]>{
-    return this.http.get<Article[]>(`${this.baseUrl}getAllMyArticle`)
+  getAllArticles(id:number):Observable<Article[]>{
+    return this.getCompanyId().pipe(
+      switchMap(companyId => this.http.get<Article[]>(`${this.baseUrl}getAllMyArticle/${companyId}`)))
   }
 
   addArticle(article : FormData):Observable<any>{
@@ -69,6 +73,12 @@ export class ArticleService {
   }
   UpdateCompanyArticle(form: Article) :Observable<any>{
     return this.http.put(`${this.baseUrl}updatecompanyarticle`,form)
+  }
+
+  getCompanyId():Observable<number>{
+    return this.store.select(companyIdSelector).pipe(
+      map(companyId => companyId as number)
+    )
   }
 
 }

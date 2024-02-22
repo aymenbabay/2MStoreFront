@@ -2,8 +2,7 @@ import { Company } from "../user/company"
 import { Worker } from "./worker"
 
 export class Vacation {
-    usedday      ! : number
-    remainingday !  : number
+    id             !:number
     year         ! : number
     startdate    ! : Date
     enddate      ! : Date

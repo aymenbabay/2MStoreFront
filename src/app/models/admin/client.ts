@@ -1,5 +1,4 @@
 import { Company } from "../user/company"
-import { User } from "../user/user"
 import { Provider } from "./provider"
 
 export class Client{

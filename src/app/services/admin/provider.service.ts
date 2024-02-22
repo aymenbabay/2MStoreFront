@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Provider } from '../../models/admin/provider';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { StoreInterface } from '../../store/store';
-import { providerIdSelector } from '../../store/reducer/state.reducer';
+import { companyIdSelector, providerIdSelector } from '../../store/reducer/state.reducer';
 import { ProviderId } from '../../store/actions/state.action';
+import { ProviderCompany } from '../../models/admin/ProviderCompany';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProviderService {
+ 
     
   update = false
   baseUrl="werehouse/provider/"
@@ -33,7 +35,8 @@ export class ProviderService {
   }
 
   getAllMyProviders():Observable<any>{
-    return this.http.get(`${this.baseUrl}get_all_my`)
+    return this.getCompanyId().pipe(
+      switchMap(companyId =>  this.http.get(`${this.baseUrl}get_all_my/${companyId}`)))
   }
   addProvider(provider : Provider):Observable<any>{
     console.log(provider)
@@ -48,8 +51,10 @@ export class ProviderService {
     return this.http.get(`${this.baseUrl}add_as_provider/${id}`)
   }
 
-  findAllProviderContaining(searchInput: String): Observable<Provider[]> {
-    return this.http.get<Provider[]>(`${this.baseUrl}get_all_provider_containing/${searchInput}`)
+  findAllProviderContaining(searchInput: String): Observable<ProviderCompany[]> {
+    return this.getCompanyId().pipe(
+      switchMap(companyId =>this.http.get<ProviderCompany[]>(`${this.baseUrl}get_all_provider_containing/${searchInput}/${companyId}`))
+    )
   }
 
   checkProvider(id: number): Observable<boolean> {
@@ -69,6 +74,13 @@ export class ProviderService {
     this.getMyProviderId().subscribe((x:number) =>{
       this.store.dispatch(new ProviderId(x))
      })
+    }
+
+    getCompanyId():Observable<number>{
+      return this.store.select(companyIdSelector).pipe(
+        map(companyId => companyId as number) // Assuming clientIdSelector returns a number
+        
+      );
     }
 
 

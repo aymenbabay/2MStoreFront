@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { Company } from '../../../models/user/company';
 import { Store } from '@ngrx/store';
 import { companyIdSelector } from '../../../store/reducer/state.reducer';
@@ -11,7 +11,6 @@ import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
   providedIn: 'root'
 })
 export class CompanyService {
- 
 
 
   update = false
@@ -49,6 +48,16 @@ getCompanyContaining(branshe: string) :Observable<any>{
 
 rate(x: number, id: number) :Observable<any>{
 return this.http.get(`${this.baseUrl}rate/${id}/${x}`)
+}
+
+getMyParent(): Observable<Company> {
+  return this.getMycompanyid().pipe(
+    switchMap(companyId => this.http.get<Company>(`${this.baseUrl}get_my_parent/${companyId}`))
+  )
+}
+
+getBranches(): Observable<Company[]> {
+  return this.http.get<Company[]>(`${this.baseUrl}get_branches`)
 }
 
 getMyCompanyId() {

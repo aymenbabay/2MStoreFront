@@ -3,10 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { ArticleService } from '../../../../services/admin/article.service';
 import { Article } from '../../../../models/admin/Article';
-import { Observable } from 'rxjs';
+import { Observable, catchError, combineLatest, map, of, switchMap, take } from 'rxjs';
 import { LoginService } from '../../../../services/guest/login/login.service';
 import { ProviderService } from '../../../../services/admin/provider.service';
 import { ArticleModalComponent } from '../../../../modal/admin/article-modal/article-modal.component';
+import { Store } from '@ngrx/store';
+import { companyIdSelector, parentIdSelector } from '../../../../store/reducer/state.reducer';
 
 
 @Component({
@@ -18,22 +20,36 @@ export class ArticleComponent implements OnInit{
 
   articles!:Observable<Article[]>
   table= false
+  companyId! : number
+  isAdmin$: Observable<boolean> = of(false);
   constructor(private dialog : MatDialog, private articleService: ArticleService, public loginService : LoginService,
-    private providerService : ProviderService){
+    private providerService : ProviderService, private store : Store){
   
   }
   sendMessage(): void {
   
   }
   ngOnInit(): void {
-   this.providerService.getMyProviderid()
+    this.providerService.getMyProviderid()
     this.getAllArticles()
+    this.isAdmin$ = this.isAdmin()
     this.providerService.getMyProviderId().subscribe()
+
+   
   }
+  isAdmin(): Observable<boolean> {
+    return this.loginService.isadmin()
+  }
+  
+  
+  
 
   getAllArticles(){
-    this.articles = this.articleService.getAllArticles(0)
-    this.articles.subscribe(x =>console.log(x))
+    this.store.select(companyIdSelector).subscribe(x =>{
+
+      this.articles = this.articleService.getAllArticles(x)
+      this.articles.subscribe(x =>console.log(x))
+    })
   }
 
   vuSwitch(){
@@ -79,7 +95,6 @@ export class ArticleComponent implements OnInit{
 
   }
 
-  isAdmin():boolean{
-    return this.loginService.admin()
-  }
+ 
+  
 }

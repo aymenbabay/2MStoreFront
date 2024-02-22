@@ -16,10 +16,14 @@ export class PurchaseOrderModalComponent implements OnInit {
 
   bonCommandForm! : FormGroup
   imageUrl!: string| null
+ // selectedOption = false
+
+
   constructor(private ref : MatDialogRef<PurchaseOrderModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { company: Company, article : Article, line :PurchaseOrderLine, type :string },
   public fb : FormBuilder, private purchaseOrderService : PurchaseOrderService){
     this.bonCommandForm = fb.group({
+      'selectedOption' : [true],
       'quantity' : [''],
       'comment' : [''],
 
@@ -30,6 +34,7 @@ export class PurchaseOrderModalComponent implements OnInit {
   ngOnInit(): void {
     if(this.data.type === "update"){
       this.bonCommandForm.setValue({
+        selectedOption : this.data.line.delivery,
         quantity : this.data.line.quantity,
         comment : this.data.line.comment
       })
@@ -45,13 +50,15 @@ export class PurchaseOrderModalComponent implements OnInit {
       order.article = this.data.article
       order.quantity = this.bonCommandForm.value.quantity
       order.comment = this.bonCommandForm.value.comment
+      order.delivery = this.bonCommandForm.value.selectedOption
       console.log(order)
       this.purchaseOrderService.orderList.push(order)
       console.log(this.purchaseOrderService.orderList)
     }else{
+      this.data.line.delivery = this.bonCommandForm.value.selectedOption
       this.data.line.comment = this.bonCommandForm.value.comment
       this.data.line.quantity = this.bonCommandForm.value.quantity
-      console.log(this.data.line.comment)
+      console.log(this.data.line)
 
       this.purchaseOrderService.updateLine(this.data.line).subscribe()
     }

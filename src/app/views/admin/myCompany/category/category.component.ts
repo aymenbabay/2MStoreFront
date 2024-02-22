@@ -1,10 +1,13 @@
 import { Component , OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, catchError, combineLatest, map, of, take } from 'rxjs';
 import { Category } from '../../../../models/admin/category';
 import { CategoryService } from '../../../../services/admin/category.service';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { CategoryModalComponent } from '../../../../modal/admin/category-modal/category-modal.component';
+import { Store } from '@ngrx/store';
+import { parentIdSelector } from '../../../../store/reducer/state.reducer';
+import { LoginService } from '../../../../services/guest/login/login.service';
 
 @Component({
   selector: 'app-category',
@@ -14,12 +17,15 @@ import { CategoryModalComponent } from '../../../../modal/admin/category-modal/c
 export class CategoryComponent implements OnInit {
 
   categories!:Observable<Category[]>
-  constructor(private dialog : MatDialog, private categoryService: CategoryService){
+  isAdmin$: Observable<boolean> = of(false);
+
+  constructor(private dialog : MatDialog, private categoryService: CategoryService, private store : Store, private loginService : LoginService){
    
   }
 
   ngOnInit(): void {
     this.getAllCategorys()
+    this.isAdmin$ = this.isAdmin()
   }
   
   getAllCategorys(){
@@ -60,5 +66,11 @@ export class CategoryComponent implements OnInit {
     }
 
   }
+
+  
+  isAdmin(): Observable<boolean> {
+    return this.loginService.isadmin()
+   }
+
 
 }

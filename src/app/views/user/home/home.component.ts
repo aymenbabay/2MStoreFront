@@ -35,9 +35,9 @@ export class HomeComponent implements OnDestroy, OnInit{
     this.check()
     this.getRandomArticleWithRandomCompany()
     this.getAllCompany()
-    this.providerService.getMyProviderid()
-    this.clientService.getMyClientId()
-    this.companyService.getMyCompanyId()
+   // this.providerService.getMyProviderid()
+   // this.clientService.getMyClientId()
+   // this.companyService.getMyCompanyId()
   }
 
  
@@ -73,11 +73,11 @@ export class HomeComponent implements OnDestroy, OnInit{
   }
   check(){
     this.s= this.companyService.checkCompany().subscribe(x =>{
-      if(x){
+      
 
         this.has_company = x
         localStorage.setItem('has_company',x)
-      }
+      
     })
   }
 

@@ -85,17 +85,7 @@ export class AdminComponent implements OnInit, OnDestroy {
                 })
                 break;
 
-                case 'vacation':
-                  this.Form = fb.group({
-                    'startdate':[],
-                    'enddate':[],
-                    'remainingday':[],
-                    'usedday':[],
-                    'worker':[]
-                  })
-                break;
-
-                  default:
+                default:
                     console.log("sal")
     break;
 }
@@ -163,19 +153,7 @@ ngOnInit(): void {
 
               break;
 
-              case 'vacation':
-                
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
-                this.Form.setValue({
-                  startdate: today.toISOString().substring(0, 10),
-                  enddate: tomorrow.toISOString().substring(0, 10),
-                  remainingday : this.data.entity.totdayvacation,
-                  usedday : 0,
-                  worker: this.data.entity.id
-                })
-                break
+             
 
             default:
               this.Form.setValue({
@@ -262,16 +240,7 @@ ngOnInit(): void {
     }
     break;
    
-    case 'vacation':
-      this.Form.setValue({
-        startdate: this.Form.value.startdate,
-        enddate: this.Form.value.enddate,
-        remainingday: this.Form.value.remainingday,
-        usedday: this.Form.value.usedday,
-        worker : {id:this.Form.value.worker}
-      })
-      this.workerService.addVacation(this.Form.value).subscribe()
-      break;
+    
 
 
     

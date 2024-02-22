@@ -1,5 +1,5 @@
 
-<button mat-raised-button color="primary" (click)="openInvoiceModal(null)">add invoice</button>
+<button mat-raised-button color="primary" (click)="openInvoiceModal(null)" *ngIf="(isadmin|async) || loginService.rolefunc() ==='WORKER'">add invoice</button>
 <button mat-raised-button color="primary" (click)="getInvoiceAsClient()">get invoice as client</button>
 <button mat-raised-button color="primary" (click)="getAllMyInvoicesAsProvider()">get all my invoice as provider</button>
 <div >
@@ -13,7 +13,7 @@
           <th>TT tva</th>
           <th>TT prix </th> 
           <th>date</th>
-          <th *ngIf="!me">Actions</th> 
+          <th >Actions</th> 
         </tr>
       </thead>
       <tbody >
@@ -24,9 +24,9 @@
             <td>{{invoice.tot_tva_invoice}}</td>
             <td>{{invoice.prix_invoice_tot}}</td>
             <td>{{invoice.lastModifiedDate |date:'dd/MM/yyyy' }}</td>
-            <td *ngIf="!me"> 
-              <mat-icon color="accent" style="font-size: 24px;" *ngIf="provider" (click)="updateInvoiceServer(invoice)">update</mat-icon>
-              <mat-icon color="accent" style="font-size: 24px;"  (click)="paymentInvoice(invoice)" *ngIf="!invoice.paid && !provider">payment</mat-icon>
+            <td > 
+              <mat-icon color="accent" style="font-size: 24px;"  (click)="updateInvoiceServer(invoice)">update</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;"  (click)="paymentInvoice(invoice)" *ngIf="!invoice.paid && !provider && (isadmin|async)">payment</mat-icon>
   
               
             </td>

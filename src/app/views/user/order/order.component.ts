@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { PurchaseOrder } from '../../../models/user/PurchaseOrder';
 import { PurchaseOrderService } from '../../../services/user/purchase-order.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Status } from '../../../enums/status';
 import { Store } from '@ngrx/store';
 import { companyIdSelector } from '../../../store/reducer/state.reducer';
 import { PurchaseOrderLine } from '../../../models/user/purchaseOrderLine';
 import { MatDialog } from '@angular/material/dialog';
 import { PurchaseOrderModalComponent } from '../../../modal/user/bon-decommand-modal/bon-decommand-modal.component';
+import { LoginService } from '../../../services/guest/login/login.service';
 
 @Component({
   selector: 'app-order',
@@ -16,18 +17,21 @@ import { PurchaseOrderModalComponent } from '../../../modal/user/bon-decommand-m
 })
 export class OrderComponent implements OnInit{
 
-  order! : Observable<PurchaseOrder[]>
+  order! : Observable<PurchaseOrderLine[]>
   status = Status
   companyId! : number
-  constructor(private purchaseOrderService : PurchaseOrderService,private store : Store, private orderService : PurchaseOrderService,public dialog: MatDialog){}
+  isadmin : Observable<boolean> = of(false)
+  constructor(private purchaseOrderService : PurchaseOrderService,private store : Store, private orderService : PurchaseOrderService,public dialog: MatDialog, public loginService : LoginService){}
 
 ngOnInit(): void {
   this.getCompany()
   this.getAllMyOrder()
+  this.isadmin = this.isAdmin()
 }
 
 getAllMyOrder(){
   this.order = this.purchaseOrderService.getOrder()
+  this.order.subscribe(x =>console.log(x))
 }
 
 statusResponse(id: number, status : Status){
@@ -59,6 +63,10 @@ getCompany(){
     this.companyId = x
     console.log(x)
   })
+}
+
+isAdmin():Observable<boolean>{
+  return this.loginService.isadmin()
 }
 
 

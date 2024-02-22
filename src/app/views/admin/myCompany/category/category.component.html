@@ -1,5 +1,5 @@
 
-<button mat-raised-button color="primary" (click)="openCategoryModal(null)">add category</button>
+<button mat-raised-button color="primary" (click)="openCategoryModal(null)" *ngIf="isAdmin$|async">add category</button>
 <div *ngIf="categories | async as categories">
     <table>
       <thead>
@@ -7,7 +7,7 @@
           <th>libelle</th>
           <th> code </th>
           <th>image</th>
-          <th>Actions</th> 
+          <th *ngIf="isAdmin$|async">Actions</th> 
         </tr>
       </thead>
       <tbody *ngIf="categories.length > 0 " >
@@ -16,7 +16,7 @@
             <td>{{category.code}}</td>
             <td><img class="img" src="http://localhost:8080/werehouse/image/{{category.image}}/category/{{category.company.user.username}}"
               alt="download"></td>
-            <td> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteCategoryServer( category.libelle,category.id)">delete</mat-icon>
+            <td *ngIf="isAdmin$|async"> <mat-icon color="warn" style="font-size: 24px;" (click)="deleteCategoryServer( category.libelle,category.id)">delete</mat-icon>
               <mat-icon color="accent" style="font-size: 24px;" (click)="updateCategoryServer(category)">update</mat-icon>
   
    

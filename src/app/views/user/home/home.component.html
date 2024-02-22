@@ -14,7 +14,7 @@
       <div class="card" *ngFor="let article of article$|async">
         <div class="company">
            <img class="logo"
-            src="http://localhost:8080/werehouse/image/{{article.provider.company.logo}}/company/{{article.sharedPoint}}"
+            src="http://localhost:8080/werehouse/image/{{article.provider.company.logo}}/company/{{article.provider.company.user.username}}"
           alt="download"
           routerLink="company/{{article.provider.company.id}}">
 

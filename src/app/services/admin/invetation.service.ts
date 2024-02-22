@@ -16,6 +16,7 @@ export class InvetationService {
   constructor(private http : HttpClient) { }
   
   getAllInvetations(): Observable<Invetation[]> {
+    console.log('get all invetation')
     return this.http.get<Invetation[]>(`${this.baseUrl}get_invetation`)
   }
   

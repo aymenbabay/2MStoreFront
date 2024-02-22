@@ -6,6 +6,7 @@ import { EMPTY, Observable } from 'rxjs';
 import { AdminComponent } from '../../../modal/admin/admin/admin.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Worker } from '../../../models/admin/worker';
+import { WorkerModalComponent } from '../../../modal/admin/worker-modal/worker-modal.component';
 
 @Component({
   selector: 'app-worker-by-id',
@@ -25,14 +26,15 @@ export class WorkerByIdComponent implements OnInit {
 
   getWorkerHistory(){
    this.history$ = this.workerService.getWorkerHistory(this.id)
+   this.history$.subscribe(x => console.log(x))
   }
 
-  addVacation(worker:Worker){
-    this.openWorkerModal(worker,"vacation")
+  addVacation(vacation:Vacation){
+    this.openWorkerModal(vacation,"vacation")
   }
 
-  openWorkerModal(entity:Worker,type : string){
-    const dialogRef = this.dialog.open(AdminComponent,
+  openWorkerModal(entity:Vacation,type : string){
+    const dialogRef = this.dialog.open(WorkerModalComponent,
       {
         data: { entity, type },
         enterAnimationDuration:'1000ms',

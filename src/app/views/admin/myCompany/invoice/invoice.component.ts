@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, filter, map ,combineLatest} from 'rxjs';
+import { Observable, filter, map ,combineLatest, of} from 'rxjs';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { Invoice } from '../../../../models/admin/invoice';
 import { InvoiceService } from '../../../../services/admin/invoice.service';
@@ -11,6 +11,7 @@ import { CommandLineService } from '../../../../services/admin/command-line.serv
 import { InvoiceModalComponent } from '../../../../modal/admin/invoice-modal/invoice-modal.component';
 import { PaymentModalComponent } from '../../../../modal/admin/payment-modal/payment-modal.component';
 import { InvetationService } from '../../../../services/admin/invetation.service';
+import { LoginService } from '../../../../services/guest/login/login.service';
 
 @Component({
   selector: 'app-invoice',
@@ -20,10 +21,11 @@ import { InvetationService } from '../../../../services/admin/invetation.service
 export class InvoiceComponent implements OnInit {
 
  invoices$!:Observable<Invoice[]>
-  me = false
+  
   provider = true
+  isadmin : Observable<boolean> = of(false)
   constructor(private dialog : MatDialog, private invoiceService: InvoiceService, private store : Store,private invetationService : InvetationService,
-    private router : Router, private commandLineService : CommandLineService){
+    private router : Router, private commandLineService : CommandLineService, public loginService : LoginService){
    
   }
 
@@ -32,6 +34,7 @@ export class InvoiceComponent implements OnInit {
     if(this.commandLineService.view){
       console.log(this.commandLineService.invoice$)
     }
+    this.isadmin = this.isAdmin()
   }
   
 
@@ -82,7 +85,9 @@ export class InvoiceComponent implements OnInit {
       )
   }
 
- 
+ isAdmin():Observable<boolean>{
+  return this.loginService.isadmin()
+ }
 
 
 

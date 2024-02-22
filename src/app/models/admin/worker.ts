@@ -12,6 +12,7 @@ export class Worker{
     department!: string
     totdayvacation!: number
     statusvacation! :boolean
+    remainingday!      :number
     user! : SignUp
     company !: Company
 }

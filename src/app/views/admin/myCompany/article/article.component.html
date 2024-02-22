@@ -2,7 +2,7 @@
   
   <div class="button">
     <button mat-raised-button color="primary" (click)="vuSwitch()">vuSwitch</button>
-    <button mat-raised-button color="primary" *ngIf="isAdmin()" (click)="openArticleModal(null,'article')">add new article</button>
+    <button *ngIf="(isAdmin$ | async) !== false" mat-raised-button color="primary" (click)="openArticleModal(null,'article')">add new article</button>
     </div>
   <div *ngIf=" (articles | async) as articles">
     <div *ngIf="table">

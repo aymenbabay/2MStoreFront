@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { SousCategoryService } from '../../../../services/admin/sous-category.service';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, catchError, combineLatest, map, of, take } from 'rxjs';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { SubCategory } from '../../../../models/admin/sub-category';
+import { parentIdSelector } from '../../../../store/reducer/state.reducer';
+import { Store } from '@ngrx/store';
+import { LoginService } from '../../../../services/guest/login/login.service';
 
 @Component({
   selector: 'app-sous-category',
@@ -13,12 +16,14 @@ import { SubCategory } from '../../../../models/admin/sub-category';
 export class SousCategoryComponent implements OnInit {
 
   sous_categories!:Observable<SubCategory[]>
-  constructor(private dialog : MatDialog, private sousCategoryService: SousCategoryService){
+  isAdmin$ : Observable<boolean>  = of(false);
+  constructor(private dialog : MatDialog, private sousCategoryService: SousCategoryService, private store : Store , private loginService : LoginService){
    
   }
 
   ngOnInit(): void {
     this.getAllSousCategories()
+    this.isAdmin$ = this.isAdmin()
   }
   
   getAllSousCategories(){
@@ -63,5 +68,8 @@ export class SousCategoryComponent implements OnInit {
     return sousCategory.id
   }
 
+  isAdmin(): Observable<boolean> {
+    return this.loginService.isadmin()
+  }
 
 }

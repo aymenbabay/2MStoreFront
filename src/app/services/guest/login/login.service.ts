@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 import { User } from '../../../models/user/user';
 import { loginResponse } from '../../../interface/loginResponse';
 
@@ -9,11 +9,15 @@ import { loginResponse } from '../../../interface/loginResponse';
 import jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
 import { AppComponent } from '../../../app.component';
+import { Company } from '../../../models/user/company';
+import { Store } from '@ngrx/store';
+import { companyIdSelector, parentIdSelector } from '../../../store/reducer/state.reducer';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+
 
   public formData: FormGroup ;
   loginresponse! : loginResponse
@@ -22,7 +26,7 @@ export class LoginService {
   role = ""
   token!: string|null
   
-  constructor(private http : HttpClient, private fb : FormBuilder, private router : Router) {
+  constructor(private http : HttpClient, private fb : FormBuilder, private router : Router,private store : Store) {
     this.formData = this.fb.group({
       userName: ['example@example.com'],
       password: ['password']
@@ -73,6 +77,27 @@ export class LoginService {
  return this.isAdmin
   }
 
+  isadmin(): Observable<boolean> {
+    return this.store.select(companyIdSelector).pipe(
+      switchMap(companyId => {
+        return this.store.select(parentIdSelector).pipe(
+          map(parentId => {
+            if (!this.admin()) {
+              console.log("parent id : "+parentId +" companyid : "+ companyId)
+              return false;
+            }
+            if (parentId !== 0 && companyId !== parentId) {
+              console.log("parent id : "+parentId +" companyid : "+ companyId)
+              return false;
+            }
+            console.log("parent id : "+parentId +" companyid : "+ companyId)
+            return true;
+          })
+        );
+      })
+    );
+  }
+  
   getToken(){
     this.token = localStorage.getItem('jwt')
   }

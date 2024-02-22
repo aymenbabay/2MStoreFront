@@ -1,6 +1,6 @@
 
-<button mat-raised-button color="primary" *ngIf="!entity" (click)="openWorkerModal('new',null)">add worker</button>
-<button mat-raised-button color="primary" *ngIf="entity" (click)="searchWorker('user')">add exist worker</button>
+<button mat-raised-button color="primary" *ngIf="!entity && (isAdmin$|async)" (click)="openWorkerModal('new',null)">add worker</button>
+<button mat-raised-button color="primary" *ngIf="entity && (isAdmin$|async)" (click)="searchWorker('user')">search new worker</button>
 
 <input type="search" [(ngModel)]="entity" placeholder="type worker name">
 <button mat-raised-button color="primary" (click)="searchWorker('worker')">search</button>
@@ -23,7 +23,7 @@
         </tr>
       </thead>
       <tbody  >
-         <tr *ngFor="let worker of workers; index as i" routerLink="{{worker.id}}"> 
+         <tr *ngFor="let worker of workers; index as i" > 
            <td>{{worker.name}}</td>
             <td>{{worker.address}}</td>
             <td>{{worker.email}}</td>
@@ -34,9 +34,10 @@
             <td>{{worker.statusvacation}}</td>
             <td>{{worker.salary}}</td>
             <td>
-               <mat-icon color="warn" style="font-size: 24px;" (click)="deleteWorkerServer( worker.name,worker.id)">delete</mat-icon>
-               <mat-icon color="warn" style="font-size: 24px;" (click)="UpdateWorkerServer( worker)">update</mat-icon>  
-               <mat-icon color="warn" style="font-size: 24px;" (click)="addVacation( worker)">vacation</mat-icon>  
+               <mat-icon color="warn" style="font-size: 24px;" (click)="deleteWorkerServer( worker.name,worker.id)" *ngIf="isAdmin$|async">delete</mat-icon>
+               <mat-icon color="warn" style="font-size: 24px;" (click)="UpdateWorkerServer( worker)" *ngIf="isAdmin$|async">update</mat-icon>  
+               <mat-icon color="warn" style="font-size: 24px;" (click)="addVacation( worker,'vacation')" *ngIf="isAdmin$|async">add</mat-icon>  
+               <mat-icon color="warn" style="font-size: 24px;" (click)="visitWorker( worker.id)" >person</mat-icon>  
             </td>
            
           </tr>
@@ -44,7 +45,7 @@
     </table>
   </div>
 </div>
-<div *ngIf="type=='user'">
+<div *ngIf="type=='user' && (isAdmin$|async)">
   <div *ngIf="user$ |async as users ">
     <table>
       <thead>

@@ -2,12 +2,12 @@ import { ChangeDetectorRef, Component, OnInit, Renderer2 } from '@angular/core';
 
 import jwt_decode from 'jwt-decode';
 import { InvoiceService } from './services/admin/invoice.service';
-import { Observable , of} from 'rxjs'
+import { EMPTY, Observable , of} from 'rxjs'
 import { Invoice } from './models/admin/invoice';
 import { ClientService } from './services/admin/client.service';
 import { Store } from '@ngrx/store';
 import { clientIdSelector, companyIdSelector } from './store/reducer/state.reducer';
-import { Init } from './store/actions/state.action';
+import { CompanyId, Init, ParentId } from './store/actions/state.action';
 import { Router } from '@angular/router';
 import { CommandLineService } from './services/admin/command-line.service';
 import { CompanyService } from './services/user/company/company.service';
@@ -16,9 +16,13 @@ import { InvetationService } from './services/admin/invetation.service';
 import { MessageService } from './services/user/message.service';
 import { Message } from './models/user/message';
 import { LoginService } from './services/guest/login/login.service';
-import { PurchaseOrderLine } from './models/user/purchaseOrderLine';
 import { PurchaseOrderService } from './services/user/purchase-order.service';
 import { PurchaseOrder } from './models/user/PurchaseOrder';
+import { Type } from './enums/Type';
+import { Company } from './models/user/company';
+import { ProviderService } from './services/admin/provider.service';
+import { OrderDelivery } from './models/user/OrderDelivery';
+import { OrderDeliveryService } from './services/shared/order-delivery.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -34,13 +38,17 @@ export class AppComponent implements OnInit{
   invoice$! : Observable<Invoice[]>
   invetation$! : Observable<Invetation[]>
   shopping$! : Observable<PurchaseOrder[]>
+  orders$!   : Observable<OrderDelivery[]>
+  companies$  :Observable<Company[]> = of([])
   companyId! : number
   clientId! : number
   conversations : any[]=[]
   user!:string
   logedIn = false
-constructor(private invoiceService : InvoiceService, private store : Store, private companyService : CompanyService,
-  private clientService : ClientService, private router: Router, private commandService : CommandLineService,
+  type = Type
+  hasCompany = false
+constructor(private invoiceService : InvoiceService, private store : Store, private companyService : CompanyService, private orderDeliveryService : OrderDeliveryService,
+  private clientService : ClientService, private router: Router, private commandService : CommandLineService,private providerService : ProviderService,
    private invetationService: InvetationService, public messageService : MessageService, private loginService : LoginService, private purchaseOrderService : PurchaseOrderService
   ){
     
@@ -49,6 +57,7 @@ constructor(private invoiceService : InvoiceService, private store : Store, priv
 
 ngOnInit(): void {
   let token = localStorage.getItem('jwt') ?? ''
+  console.log("on init")
     if(token){
       console.log("token "+token)
       this.user = jwt_decode<any>(token).sub 
@@ -56,30 +65,51 @@ ngOnInit(): void {
       this.logedIn = true
       if(jwt_decode<any>(token).Authorization[0].authority !== "USER"){
 
+        this.hasCompany = true
         this.companyService.getMyCompanyId()
         this.clientService.getMyClientId()
-      }
-      this.invoiceService.invoices$ = this.invoice$ = this.invoiceService.getAllInvoiceNotAccepted()
+        this.providerService.getMyProviderid()
+        this.invoiceService.invoices$ = this.invoice$ = this.invoiceService.getAllInvoiceNotAccepted()
+        this.store.select(companyIdSelector).subscribe(x => {
+          console.log(x)
+        this.companyId = x
+      })
+      this.store.select(clientIdSelector).subscribe(x =>{
+        this.clientId = x
+      })
+      this.getBranches()
+      
+    }
+
+    this.getAllOrderForAymen()
+
     this.invetation$ = this.invetationService.getAllInvetations()
-    this.store.select(companyIdSelector).subscribe(x => {
-    this.companyId = x
-  })
-  this.store.select(clientIdSelector).subscribe(x =>{
-    this.clientId = x
-  })
+    this.invetation$.subscribe(x =>{console.log(x)})
   this.getAllMyConversation()
   this.shopping$ = this.purchaseOrderService.getOrder()
-}
+  this.shopping$.subscribe(x =>console.log(x))
 }
 
-goToOrder(id : number, shopping: any){
-  this.router.navigate([`/my-company/order/${id}`, { shopping: JSON.stringify(shopping) }])
+}
+
+getAllOrderForAymen(){
+  this.orders$ = this.orderDeliveryService.getAllOrderForAymen();
+  this.orders$.subscribe(x => console.log(x))
+}
+
+goToOrder(id : number){
+  this.router.navigate([`/my-company/order/${id}`])
   this.openShopping()
 }
 
-goToOrder2(id : number, shopping: any){
-  this.router.navigate([`/user/order/${id}`, { shopping: JSON.stringify(shopping) }])
+goToOrder2(id : number){
+  this.router.navigate([`/user/order/${id}`])
   this.openShopping()
+}
+
+getBranches(){
+  this.companies$ = this.companyService.getBranches()
+  this.companies$.subscribe(x => console.log(x))
 }
 
 openCompanies(){
@@ -199,6 +229,15 @@ openMessanger(user:string){
     },70);
   }
 
+}
+
+changeCompany(id : number, parentId : number){
+  if(parentId !== 0){
+    this.store.dispatch(new ParentId(parentId))
+  }
+  this.store.dispatch(new CompanyId(id))
+  this.openedCompanies = !this.openedCompanies
+  this.router.navigate(["my-company"])
 }
 
 scrollToBottom() {

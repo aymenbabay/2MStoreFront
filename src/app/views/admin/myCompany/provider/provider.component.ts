@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { EMPTY, Observable, forkJoin, map, switchMap } from 'rxjs';
+import { EMPTY, Observable, catchError, combineLatest, forkJoin, map, of, switchMap, take } from 'rxjs';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { ProviderService } from '../../../../services/admin/provider.service';
 import { Provider } from '../../../../models/admin/provider';
 import { LoginService } from '../../../../services/guest/login/login.service';
 import { ClientService } from '../../../../services/admin/client.service';
 import { Store } from '@ngrx/store';
-import { providerIdSelector } from '../../../../store/reducer/state.reducer';
+import { parentIdSelector, providerIdSelector } from '../../../../store/reducer/state.reducer';
 import { ProviderModalComponent } from '../../../../modal/admin/provider-modal/provider-modal.component';
 import { Router } from '@angular/router';
 import { ProviderCompany } from '../../../../models/admin/ProviderCompany';
@@ -20,8 +20,10 @@ import { ProviderCompany } from '../../../../models/admin/ProviderCompany';
 export class ProviderComponent implements OnInit {
 
   providers$!:Observable<ProviderCompany[]>
-  allproviders$!: Observable<Provider[]>
+  allproviders$!: Observable<ProviderCompany[]>
+  isAdmin$: Observable<boolean> = of(false);
   myProviderId!: number
+  companyId! : number;
   search = false
   constructor(private dialog : MatDialog, private providerService: ProviderService, public loginService : LoginService,
      private store : Store, private router : Router){
@@ -29,6 +31,7 @@ export class ProviderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getCompanyId()
     this.getAllProviders()
     this.providerService.getMyProviderid()
     this.store.select(providerIdSelector).subscribe(x =>{
@@ -36,6 +39,7 @@ export class ProviderComponent implements OnInit {
       console.log(x)
     })
   this.providerService.update = false
+  this.isAdmin$ = this.isAdmin()
   }
  
   getAllProviders(){
@@ -47,21 +51,7 @@ export class ProviderComponent implements OnInit {
 
   getAllProviderContaining(searchInput : String){
     this.search = true;
-   this.allproviders$ = this.providerService.findAllProviderContaining(searchInput).pipe(
-    switchMap((providers) => {
-      // Create an array of observables for checking client status
-      const observables = providers.map(provider => {
-        return this.providerService.checkProvider(provider.id).pipe(
-          map(isYours => ({
-            ...provider,
-            myProvider: isYours
-          }))
-        );
-      });
-
-      // Combine all observables into a single observable
-      return forkJoin(observables);
-    })) 
+   this.allproviders$ = this.providerService.findAllProviderContaining(searchInput)
     this.allproviders$.subscribe(x => console.log(x))  
   }
 
@@ -115,7 +105,16 @@ export class ProviderComponent implements OnInit {
   }
 
 
+  isAdmin(): Observable<boolean> {
+    return this.loginService.isadmin()
+  }
 
+  getCompanyId(){
+    this.providerService.getCompanyId().subscribe(x =>{
+      this.companyId = x
+      console.log(x)
+    })
+  }
 
 
 }

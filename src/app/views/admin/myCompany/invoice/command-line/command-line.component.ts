@@ -2,18 +2,17 @@ import { Component, OnDestroy, OnInit  } from '@angular/core';
 import { CommandLineService } from '../../../../../services/admin/command-line.service';
 import { CompanyService } from '../../../../../services/user/company/company.service';
 import { Company } from '../../../../../models/user/company';
-import { BehaviorSubject, EMPTY, Observable, map, of, switchMap } from 'rxjs';
+import { EMPTY, Observable, map, of, switchMap } from 'rxjs';
 import { InvoiceService } from '../../../../../services/admin/invoice.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AdminComponent } from '../../../../../modal/admin/admin/admin.component';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { Article } from '../../../../../models/admin/Article';
 import { CommandLine } from '../../../../../models/admin/lineCommande';
 import { Client } from '../../../../../models/admin/client';
 import { DatePipe } from '@angular/common';
 import { CommandLineModalComponent } from '../../../../../modal/admin/command-line-modal/command-line-modal.component';
 import { Store } from '@ngrx/store';
 import { companyIdSelector } from '../../../../../store/reducer/state.reducer';
+import { LoginService } from '../../../../../services/guest/login/login.service';
 //import { saveAs } from 'file-saver';
 
 @Component({
@@ -30,8 +29,9 @@ export class CommandLineComponent implements OnInit, OnDestroy {
   client! : Client
   currentDate!: string;
   companyId! :number
+  isadmin :Observable<boolean> = of(false)
   constructor(public commandService : CommandLineService, private companyServce : CompanyService,private router : Router,
-     private invoiceService: InvoiceService, private dialog : MatDialog, private datePipe: DatePipe, private store : Store){
+     private invoiceService: InvoiceService, private dialog : MatDialog, private datePipe: DatePipe, private store : Store, public loginService : LoginService){
     
 
       this.navigationStartSubscription =  router.events.subscribe((event) =>{
@@ -43,6 +43,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
      }
 
   ngOnInit(): void {
+    this.isadmin = this.isAdmin()
     if(this.commandService.view && this.commandService.invoice$ !== null ){
       this.currentDate = this.datePipe.transform(this.commandService.invoice$.lastModifiedDate,'yyyy-MM-dd')||"";
       console.log(this.commandService.invoice$.code)
@@ -76,7 +77,7 @@ export class CommandLineComponent implements OnInit, OnDestroy {
 
   hasDiscount(): boolean {
     let tr;
-    tr = this.commandService.commandLine$.some(line => line.discount !== null && line.discount !== undefined);
+    tr = this.commandService.commandLine$.some(line => line.discount !== null && line.discount !== undefined && line.discount !==0);
     console.log(tr+"tr hadhi")
     return tr
   }
@@ -151,7 +152,9 @@ export class CommandLineComponent implements OnInit, OnDestroy {
     this.commandService.change()
   }
 
-
+isAdmin():Observable<boolean>{
+  return this.loginService.isadmin()
+}
  
   ngOnDestroy() {
     this.navigationStartSubscription.unsubscribe();

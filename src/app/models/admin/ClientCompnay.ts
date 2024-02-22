@@ -6,4 +6,6 @@ export class ClientCompany{
     company             !:Company
     mvt                 !:number
     credit              !:number
+    idDeleted           !:boolean
+    advance             !:number
 }

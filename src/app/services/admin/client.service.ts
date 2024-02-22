@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Client } from '../../models/admin/client';
-import { Observable } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ClientId } from '../../store/actions/state.action';
-import { clientIdSelector } from '../../store/reducer/state.reducer';
+import { clientIdSelector, companyIdSelector } from '../../store/reducer/state.reducer';
+import { ClientCompany } from '../../models/admin/ClientCompnay';
 
 
 @Injectable({
@@ -15,18 +16,22 @@ export class ClientService {
  
   update = false
   baseUrl="werehouse/client/"
-  constructor(private http: HttpClient, private sotre : Store) { }
+  constructor(private http: HttpClient, private store : Store) { }
 
 
   deleteClient(id: number):Observable<any>{
     return  this.http.delete(`${this.baseUrl}delete/${id}`)
   }
   getAllMyClients():Observable<any>{
-    return this.http.get(`${this.baseUrl}get_all_my`)
+    return this.getCompanyId().pipe(
+      switchMap(companyId => this.http.get(`${this.baseUrl}get_all_my/${companyId}`))
+    );
   }
 
-  getAllClientContaining(variable : string): Observable<Client[]> {
-   return this.http.get<Client[]>(`${this.baseUrl}get_all_containing/${variable}`)
+  getAllClientContaining(variable : string): Observable<ClientCompany[]> {
+   return this.getCompanyId().pipe(
+    switchMap(companyId =>this.http.get<ClientCompany[]>(`${this.baseUrl}get_all_containing/${variable}/${companyId}`))
+   )
   }
 
   addClient(client : Client):Observable<any>{
@@ -45,19 +50,25 @@ export class ClientService {
     return this.http.get(`${this.baseUrl}get_all_my_provider`)
   }
 
-  checkClient(id: number):Observable<boolean> {
-    return this.http.get<boolean>(`${this.baseUrl}checkClient/${id}`)
-  }
 
   getAllMyClientContaining(value: string): Observable<Client[]> {
-   return this.http.get<Client[]>(`${this.baseUrl}get_all_my_containing/${value}`)
+    return this.getCompanyId().pipe(
+      switchMap(companyId => this.http.get<Client[]>(`${this.baseUrl}get_all_my_containing/${value}/${companyId}`))
+    )
   }
 
   getMyClientId() {
     this.getMyClientid().subscribe(x =>{
       console.log("dispatching client service"+x)
-      this.sotre.dispatch(new ClientId(x))
+      this.store.dispatch(new ClientId(x))
     })
+  }
+
+  getCompanyId():Observable<number>{
+    return this.store.select(companyIdSelector).pipe(
+      map(companyId => companyId as number) // Assuming clientIdSelector returns a number
+      
+    );
   }
 
   getMyClientid():Observable<number>{
@@ -65,7 +76,7 @@ export class ClientService {
   }
 
   getMyclientid():Observable<number>{
-    return this.sotre.select(clientIdSelector)
+    return this.store.select(clientIdSelector)
   }
   
 }

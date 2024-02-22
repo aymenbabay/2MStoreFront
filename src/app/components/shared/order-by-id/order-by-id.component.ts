@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { PurchaseOrderService } from '../../../services/user/purchase-order.service';
 import { PurchaseOrder } from '../../../models/user/PurchaseOrder';
 import { Status } from '../../../enums/status';
+import { PurchaseOrderLine } from '../../../models/user/purchaseOrderLine';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-order-by-id',
@@ -12,7 +14,7 @@ import { Status } from '../../../enums/status';
 export class OrderByIdComponent implements OnInit{
 
   id! :number
-  order! : PurchaseOrder
+  order! : Observable<PurchaseOrderLine[]>
   status = Status
   mycompany = false
   constructor(private activatedRoute : ActivatedRoute, private orderService : PurchaseOrderService){
@@ -22,8 +24,7 @@ export class OrderByIdComponent implements OnInit{
   ngOnInit(): void {
     console.log("on init")
     this.id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')??'');
-    const shoppingJson = this.activatedRoute.snapshot.paramMap.get('shopping');
-    this.order = shoppingJson ? JSON.parse(shoppingJson) : new PurchaseOrder();
+     this.getPurchaseOrderLinesByPurchaseOrderId(this.id)
     const currentUrl = window.location.href;
     const path = new URL(currentUrl).pathname
     if(path[1] === "m"){
@@ -45,13 +46,12 @@ export class OrderByIdComponent implements OnInit{
     })
   }
 
-  //we dont need it anymore
-  getOrder(){
-    this.orderService.getOrderById(this.id).subscribe((x:PurchaseOrder) =>{
-      console.log(x)
-      this.order = x
-    })
+  getPurchaseOrderLinesByPurchaseOrderId(id : number){
+    this.order = this.orderService.getPurchaseOrderLinesByPurchaseOrderId(id)
+    this.order.subscribe(x => console.log(x))
   }
+
+  
 
 
 }

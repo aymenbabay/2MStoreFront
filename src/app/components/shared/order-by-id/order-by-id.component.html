@@ -1,5 +1,5 @@
 <div class="container">  
-    <div *ngIf="order.lines.length>1">
+    <div>
 
     </div>
      <table >
@@ -15,10 +15,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let line of order.lines">
-            <td>{{order.company.name}}</td>
-            <td *ngIf="order.client">{{order.client.name}}</td>
-            <td *ngIf="order.pclient">{{order.pclient.user.username}}</td>
+          <tr *ngFor="let line of order|async">
+            <td>{{line.purchaseorder.company.name}}</td>
+            <td *ngIf="line.purchaseorder.client">{{line.purchaseorder.client.name}}</td>
+            <td *ngIf="line.purchaseorder.pclient">{{line.purchaseorder.pclient.user.username}}</td>
             <td  *ngIf="line.status === status.INWAITING" [style.backgroundColor]="'orange'">
               <button (click)="cancelOrder(line.id)" class="cancel_button" *ngIf="!mycompany">cancel</button>
               <button (click)="statusResponse(line.id,status.ACCEPTED)" class="accepted_button" *ngIf="mycompany">accept</button>
@@ -30,7 +30,7 @@
             <td>{{line.article.libelle}}</td>
             <td>{{line.quantity}}</td>
             <td>{{line.comment}}</td>
-            <td>{{order.orderNumber}}</td>
+            <td>{{line.purchaseorder.orderNumber}}</td>
           </tr>
         </tbody>
       </table>

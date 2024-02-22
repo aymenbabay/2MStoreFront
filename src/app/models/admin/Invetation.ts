@@ -1,3 +1,4 @@
+import { Type } from "../../enums/Type";
 import { Company } from "../user/company";
 import { SignUp } from "../user/signup";
 import { Client } from "./client";
@@ -16,7 +17,7 @@ export class Invetation{
     department !: string
     totdayvacation !: number
     statusvacation !: number
-
+    type            !:Type
 
 
 }

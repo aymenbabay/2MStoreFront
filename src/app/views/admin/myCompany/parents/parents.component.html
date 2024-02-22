@@ -1,6 +1,9 @@
 <div class="container">
-<input type="search" [(ngModel)]="branshe" placeholder="type company name">
-<button mat-raised-button color="primary" (click)="searchCompany()">search</button>
+  <div *ngIf="isadmin|async">
+
+    <input type="search" [(ngModel)]="branshe" placeholder="type company name">
+    <button mat-raised-button color="primary" (click)="searchCompany()">search</button>
+  </div>
 
 <div >
     <table >
@@ -13,7 +16,7 @@
             <th>phone</th>
             <th>bank account number</th>
             <th>email</th>
-            <th></th>
+            <th *ngIf="search && (companies | async)?.length !== 1">add</th>
           </tr>
         </thead>
         <tbody *ngFor="let company of companies|async">
@@ -25,9 +28,20 @@
             <td> {{company.phone}}</td>
             <td>{{company.bankaccountnumber}}</td>
             <td>{{company.email}}</td>
-            <td>
+            <td *ngIf="company === myParent">
                 <mat-icon (click)="addParent(company.id)">add</mat-icon>
             </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="myParent&&!search">
+          <tr>
+            <td>{{ myParent.name}}</td>
+            <td >{{myParent.code}}</td>
+            <td >{{myParent.matfisc}}</td>
+            <td >{{myParent.address}}</td>
+            <td> {{myParent.phone}}</td>
+            <td>{{ myParent.bankaccountnumber}}</td>
+            <td>{{ myParent.email}}</td>
           </tr>
         </tbody>
       </table>

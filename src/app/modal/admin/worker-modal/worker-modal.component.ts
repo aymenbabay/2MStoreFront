@@ -15,12 +15,13 @@ export class WorkerModalComponent implements OnInit {
   type = ''
   Add = "Add"
   Form!: FormGroup
-  constructor(private ref: MatDialogRef<WorkerModalComponent>, public fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: { type: string, user : SignUp|null },
+  constructor(private ref: MatDialogRef<WorkerModalComponent>, public fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: { type: string, user : SignUp|null,entity :any },
               private workerService : WorkerService, private invetationService : InvetationService
   ){
 
     this.type = data.type
-    
+      switch(this.type){
+        case 'exist':
         this.Form = fb.group({
           'name': [''],
           'salary': [''],
@@ -34,13 +35,41 @@ export class WorkerModalComponent implements OnInit {
           'statusvacation': [''],
           'user': ['']
         })
+        break;
+        case 'new':
+          this.Form = fb.group({
+            'name': [''],
+            'salary': [''],
+            'phone': [''],
+            'address': [''],
+            'email': [''],
+            'id': [''],
+            'jobtitle': [''],
+            'department': [''],
+            'totdayvacation': [''],
+            'statusvacation': [''],
+            'user': ['']
+          })
+          break;
+        case 'vacation':
+          this.Form = fb.group({
+            'startdate':[],
+            'enddate':[],
+            'remainingday':[],
+            'usedday':[],
+            'worker':[]
+          })
+          break;
       
+        }
   }
 
   ngOnInit(): void {
     console.log(this.data.user)
-    if(this.data.user != null){
-      this.Form.setValue({
+    switch(this.type){
+      case 'exist':
+      if(this.data.user != null){
+        this.Form.setValue({
         name : this.data.user.username,
         address : this.data.user.address,
         email : this.data.user.email,
@@ -54,6 +83,22 @@ export class WorkerModalComponent implements OnInit {
         user : this.data.user
       })
     }
+    break;
+      case 'vacation':
+                  console.log(this.data.entity)
+      const today = new Date();
+      const tomorrow = new Date();
+      tomorrow.setDate(today.getDate() + 1);
+                  this.Form.setValue({
+                    startdate: today.toISOString().substring(0, 10),
+                    enddate: tomorrow.toISOString().substring(0, 10),
+                    remainingday : this.data.entity.remainingday,
+                    usedday : this.data.entity.totdayvacation-this.data.entity.remainingday,
+                    worker: this.data.entity.id
+                  })
+            
+      break;
+  }
   }
   submit(){
       switch(this.type){
@@ -68,9 +113,20 @@ export class WorkerModalComponent implements OnInit {
         break;
         case 'exist':
           this.invetationService.sendWorkerInvetation(this.Form.value).subscribe()
-        this.close("successfully")
-      }
-     
+          break;
+          case 'vacation':
+            this.Form.setValue({
+        startdate: this.Form.value.startdate,
+        enddate: this.Form.value.enddate,
+        remainingday: this.Form.value.remainingday,
+        usedday: this.Form.value.usedday,
+        worker : {id:this.Form.value.worker}
+      })
+      this.workerService.addVacation(this.Form.value).subscribe()
+      break;
+    }
+    
+    this.close("successfully")
   }
 
   close(status : string){
