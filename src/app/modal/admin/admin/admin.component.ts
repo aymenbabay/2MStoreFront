@@ -32,7 +32,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   type = ""
   client = false
   article = false
-  categories$!:Observable<Category[]>
   subCategories$!:Observable<SubCategory[]>
   client$!:Observable<Client[]>
   providers$!:Observable<Provider[]>
@@ -60,30 +59,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         })
 
         break;
-       
-            case 'sous-category':
-              this.Form = fb.group({
-                'libelle': [''],
-                'code': [''],
-                'category': [null],
-                'id': ['']
-              })
-              break;
-
-              case 'worker':
-                this.Form = fb.group({
-                  'name': [''],
-                  'salary': [''],
-                  'phone': [''],
-                  'address': [''],
-                  'email': [''],
-                  'id': [''],
-                  'jobtitle': [''],
-                  'department': [''],
-                  'totdayvacation': [''],
-                  'statusvacation': ['']
-                })
-                break;
+      
 
                 default:
                     console.log("sal")
@@ -106,19 +82,6 @@ ngOnInit(): void {
     break;
 
    
-        case 'sous-category':
-
-        this.getAllCategory()
-          if(this.sousCategoryService.update){
-            this.Add = "update"
-            this.Form.setValue({
-              libelle: this.data.entity.libelle,
-              code: this.data.entity.code,
-              category: this.data.entity.category.id,
-              id: this.data.entity.id
-            })
-          }
-          break;
           case 'worker':
               console.log(this.data.entity)
               if(!this.workerService.update){
@@ -163,10 +126,6 @@ ngOnInit(): void {
 
 
 }
-  }
-  getAllCategory(){
-   this.categories$ = this.categoryService.getAllCategories(0)
-   this.categories$.subscribe(data =>console.log(data))
   }
 
   getAllSubCategory(){

@@ -17,7 +17,7 @@ import { LoginService } from '../../../services/guest/login/login.service';
 })
 export class OrderComponent implements OnInit{
 
-  order! : Observable<PurchaseOrderLine[]>
+  order$! : Observable<PurchaseOrderLine[]>
   status = Status
   companyId! : number
   isadmin : Observable<boolean> = of(false)
@@ -30,8 +30,8 @@ ngOnInit(): void {
 }
 
 getAllMyOrder(){
-  this.order = this.purchaseOrderService.getOrder()
-  this.order.subscribe(x =>console.log(x))
+  this.order$ = this.purchaseOrderService.getAllMyPurchaseOrdersLines()
+  this.order$.subscribe(x =>console.log(x))
 }
 
 statusResponse(id: number, status : Status){

@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatSelectModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    ZXingScannerModule
   ]
 })
 export class ArticleModule { }

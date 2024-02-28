@@ -57,37 +57,28 @@ constructor(private invoiceService : InvoiceService, private store : Store, priv
 
 ngOnInit(): void {
   let token = localStorage.getItem('jwt') ?? ''
-  console.log("on init")
     if(token){
-      console.log("token "+token)
       this.user = jwt_decode<any>(token).sub 
-      console.log("authority" +jwt_decode<any>(token).Authorization[0].authority)
       this.logedIn = true
-      if(jwt_decode<any>(token).Authorization[0].authority !== "USER"){
-
+      if(this.companyService.checkCompany()){
+        console.log("check company true")
         this.hasCompany = true
         this.companyService.getMyCompanyId()
         this.clientService.getMyClientId()
         this.providerService.getMyProviderid()
         this.invoiceService.invoices$ = this.invoice$ = this.invoiceService.getAllInvoiceNotAccepted()
         this.store.select(companyIdSelector).subscribe(x => {
-          console.log(x)
         this.companyId = x
       })
       this.store.select(clientIdSelector).subscribe(x =>{
         this.clientId = x
       })
-      this.getBranches()
-      
+      this.getBranches() 
     }
-
     this.getAllOrderForAymen()
-
     this.invetation$ = this.invetationService.getAllInvetations()
-    this.invetation$.subscribe(x =>{console.log(x)})
   this.getAllMyConversation()
   this.shopping$ = this.purchaseOrderService.getOrder()
-  this.shopping$.subscribe(x =>console.log(x))
 }
 
 }

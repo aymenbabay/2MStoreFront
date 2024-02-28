@@ -21,7 +21,7 @@ export class CategoryModalComponent implements OnInit{
       this.Form = fb.group({
         'libelle': [''],
         'code': [''],
-        'id': ['']
+        'id': [''],
       })
   }
 
@@ -42,6 +42,7 @@ export class CategoryModalComponent implements OnInit{
     const category = this.Form.value
     this.formData.append('categoryDto', JSON.stringify(category))
     this.formData.append('file', this.file)
+    this.formData.forEach(x=>{console.log(x)})
   if (this.categoryService.update) {
     this.categoryService.updateCategory(this.formData).subscribe()
   } else {

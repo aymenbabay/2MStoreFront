@@ -21,6 +21,7 @@ export class AddCompanyModalComponent implements OnInit {
    public fb : FormBuilder, private companyService : CompanyService,
               private router : Router, private loginService : LoginService){
     this.companyForm = fb.group({
+      'id' : [],
       'name':[''],
       'code':[''],
        'matfisc':[''],
@@ -41,6 +42,7 @@ ngOnInit(): void {
   let update = this.companyService.update
   if(this.data.type === "update"){
     this.companyForm.setValue({
+      id : this.data.entity.id,
       name : this.data.entity.name,
       code : this.data.entity.code,
       matfisc : this.data.entity.matfisc,
@@ -72,17 +74,17 @@ ngOnInit(): void {
         this.loginService.refreshToken().subscribe(data =>{
           let token = data['token'];
           localStorage.setItem('jwt',token)
-          this.close()
           this.router.navigate(["/my-company"])
         })
       })
     }
     else{
       this.companyService.updateCompany(formData).subscribe(data =>{
-        this.close()
+        
         //  this.router.navigate(["/my-company"])
       })
     }
+        this.close()
   }
 
   upload($event:any) {

@@ -7,6 +7,7 @@ import { companyIdSelector } from '../../../store/reducer/state.reducer';
 import { CompanyId } from '../../../store/actions/state.action';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
+import jwt_decode from 'jwt-decode';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,8 +31,15 @@ getMe(id : number):Observable<Company>{
   return this.http.get<Company>(`${this.baseUrl}mycompany/${id}`)
 }
 
-checkCompany() :Observable<any>{
-  return this.http.get(`${this.baseUrl}hascompany`)
+checkCompany() :boolean{
+  
+  let token = localStorage.getItem('jwt') ?? ''
+  if(token){
+    if(jwt_decode<any>(token).Authorization[0].authority === "ADMIN" || jwt_decode<any>(token).Authorization[0].authority === "WORKER" ){
+      return true;
+    }
+  }
+  return false
 }
 
 getAllCompany():Observable<any> {

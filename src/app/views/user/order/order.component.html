@@ -11,7 +11,7 @@
             <th>order N°</th>
           </tr>
         </thead>
-        <tbody *ngFor="let order of order |async">
+        <tbody *ngFor="let order of order$ |async">
           <tr>
             <td>{{order.purchaseorder.company.name}}</td>
             <td *ngIf="order.purchaseorder.client">{{order.purchaseorder.client.name}}</td>

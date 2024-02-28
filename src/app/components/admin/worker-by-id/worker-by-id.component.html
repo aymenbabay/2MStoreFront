@@ -25,6 +25,12 @@
                 <td>{{history.enddate |date:'dd/MM/yyyy'}}</td>
             </tr>
         </tbody>
+        <tbody *ngIf="history.length ===0">
+          <tr class="noHistory">
+            he has no history yet
+          </tr>
+        </tbody>
       </table>
     </div>
 </div>
+

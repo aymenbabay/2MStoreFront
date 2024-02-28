@@ -7,6 +7,7 @@ import { SubCategory } from '../../../../models/admin/sub-category';
 import { parentIdSelector } from '../../../../store/reducer/state.reducer';
 import { Store } from '@ngrx/store';
 import { LoginService } from '../../../../services/guest/login/login.service';
+import { SubCategoryModalComponent } from '../../../../modal/admin/sub-category-modal/sub-category-modal.component';
 
 @Component({
   selector: 'app-sous-category',
@@ -33,7 +34,7 @@ export class SousCategoryComponent implements OnInit {
 
   openSousCategoryModal(entity : SubCategory|null){
     let type = 'sous-category'
-    const dialogRef = this.dialog.open(AdminComponent,
+    const dialogRef = this.dialog.open(SubCategoryModalComponent,
       {
         data: { entity, type },
         enterAnimationDuration:'1000ms',

@@ -15,7 +15,7 @@ import { WorkerModalComponent } from '../../../modal/admin/worker-modal/worker-m
 })
 export class WorkerByIdComponent implements OnInit {
 
-  history$ : Observable<Vacation[]> = EMPTY
+  history$! : Observable<Vacation[]>
   id! : number|0
   constructor(private dialog : MatDialog,private activatedRoute : ActivatedRoute, private workerService: WorkerService){}
 

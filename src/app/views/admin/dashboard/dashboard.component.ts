@@ -27,8 +27,8 @@ providerId = 0
   constructor(private loginService : LoginService, private companyService : CompanyService,public dialog: MatDialog, private store : Store){}
 
   ngOnInit(): void {
-    this.admin()
     this.getMyCompany()
+    this.admin()
   
   }
 

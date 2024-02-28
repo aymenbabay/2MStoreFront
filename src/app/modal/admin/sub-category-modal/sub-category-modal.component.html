@@ -1,1 +1,34 @@
-<p>sub-category-modal works!</p>
+<div class="container">
+    <div class="title">
+        <h1>{{Add}} category</h1>
+      </div>
+    <!-- -------------------------------------------------  sous category  ----------------------------------------------------- -->
+    <form [formGroup]="Form" (keydown.enter)="submit()" class="form">
+    <label for="libelle">libelle</label>
+    <input type="text" formControlName="libelle" id="libelle" name="libelle">
+
+    <label for="code">code</label>
+    <input type="text" formControlName="code" id="code" name="code">
+    
+    <label for="category">category</label>
+    
+    <select type="text" formControlName="category" id="category" name="category">
+      <option value="">choose a category</option>
+      <option *ngFor="let i of categories$|async" value="{{i.id}}">{{i.libelle}}
+    </option>
+</select>
+<input type="number" formControlName="id" hidden id="id" name="id">
+
+</form>
+
+<div>
+    
+    <input type="file" (change)="upload($event)" accept="image/*" />
+    <img *ngIf="imageUrl" height="100px" [src]="imageUrl" alt="Uploaded Image">
+</div>
+<div class="button" mat-dialog-actions>
+    <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" class="submit">OK</button>
+  </div>
+  
+</div>

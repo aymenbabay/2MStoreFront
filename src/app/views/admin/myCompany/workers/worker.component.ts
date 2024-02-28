@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, catchError, combineLatest, map, of, take } from 'rxjs';
+import { EMPTY, Observable, catchError, combineLatest, map, of, take } from 'rxjs';
 import { WorkerService } from '../../../../services/admin/worker.service';
 import { Worker } from '../../../../models/admin/worker';
 import { LoginService } from '../../../../services/guest/login/login.service';
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 export class WorkerComponent implements OnInit {
 
   workers!:Observable<Worker[]>
-  worker$!:Worker[];
+  worker$!:Observable<Worker[]>;
   user$ !:Observable<SignUp[]>
   type = "worker"
   entity = ""
@@ -43,9 +43,7 @@ export class WorkerComponent implements OnInit {
     switch(type){
       case 'worker':
         this.type = "worker"
-        this.workerService.searchWorker(this.entity).subscribe(x => {
-          this.worker$ = x
-        })
+        this.worker$ = this.workerService.searchWorker(this.entity)
         break;
       
       case 'user' :
@@ -56,17 +54,11 @@ export class WorkerComponent implements OnInit {
     
   }
 
-  
-
-  addWorker(){
-    this.workerService.addWorker(this.worker$[0]).subscribe()
-  }
-
-  openWorkerModal(type : string, user : SignUp|null){
+  openWorkerModal(type : string, user : SignUp|null, entity : Worker|null){
     console.log(user)
     const dialogRef = this.dialog.open(WorkerModalComponent,
       {
-        data: { type, user },
+        data: { type, user ,entity},
         enterAnimationDuration:'1000ms',
          exitAnimationDuration:'1000ms'
       });
@@ -79,7 +71,7 @@ export class WorkerComponent implements OnInit {
 
   UpdateWorkerServer(worker : Worker){
     this.workerService.update = true
-   // this.openWorkerModal(worker,"worker")
+   this.openWorkerModal("new",null,worker)
   }
 
   addVacation(entity:Worker,type : string){
@@ -108,6 +100,11 @@ export class WorkerComponent implements OnInit {
       })
     }
 
+  }
+
+  backToMyWorkers(){
+    this.worker$ = EMPTY
+    this.type = 'worker'
   }
 
   isAdmin():Observable<boolean>{

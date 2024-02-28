@@ -21,3 +21,8 @@ table{
     width: 100%;
     border-collapse: collapse;
 }
+
+.noHistory{
+    text-align: center;
+    color: red;
+}

@@ -35,9 +35,12 @@ export class HomeComponent implements OnDestroy, OnInit{
     this.check()
     this.getRandomArticleWithRandomCompany()
     this.getAllCompany()
-   // this.providerService.getMyProviderid()
-   // this.clientService.getMyClientId()
-   // this.companyService.getMyCompanyId()
+    if(this.companyService.checkCompany()){
+
+      this.providerService.getMyProviderid()
+      this.clientService.getMyClientId()
+      this.companyService.getMyCompanyId()
+    }
   }
 
  
@@ -72,13 +75,7 @@ export class HomeComponent implements OnDestroy, OnInit{
     this.article$.subscribe(x =>console.log(x))
   }
   check(){
-    this.s= this.companyService.checkCompany().subscribe(x =>{
-      
-
-        this.has_company = x
-        localStorage.setItem('has_company',x)
-      
-    })
+    this.has_company = this.companyService.checkCompany()
   }
 
   getCompanyById(){
@@ -89,6 +86,7 @@ export class HomeComponent implements OnDestroy, OnInit{
    this.company$ =  this.companyService.getAllCompany()
    this.company$.subscribe(x =>console.log(x))
   }
+
 
 
   ngOnDestroy(): void {

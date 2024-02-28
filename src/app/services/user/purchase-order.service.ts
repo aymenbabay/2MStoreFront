@@ -24,10 +24,16 @@ export class PurchaseOrderService {
     return this.http.post(`${this.baseUrl}`,this.orderList)
   }
 
-  getOrder():Observable<any>{
+  getOrder():Observable<PurchaseOrder[]>{
     return this.getCompanyId().pipe(
-      switchMap(id => this.http.get(`${this.baseUrl}get_order/${id}`)))
+      switchMap(id => this.http.get<PurchaseOrder[]>(`${this.baseUrl}get_order/${id}`)))
   }
+
+  getAllMyPurchaseOrdersLines():Observable<PurchaseOrderLine[]>{
+    return this.getCompanyId().pipe(
+      switchMap( companyId => this.http.get<PurchaseOrderLine[]>(`${this.baseUrl}get_all_my_lines/${companyId}`))
+    )
+    }
 
   getPurchaseOrderLinesByPurchaseOrderId(id: number): Observable<PurchaseOrderLine[]> {
     return this.http.get<PurchaseOrderLine[]>(`${this.baseUrl}get_lines/${id}`)
@@ -51,7 +57,11 @@ export class PurchaseOrderService {
 
   getCompanyId():Observable<number>{
     return this.store.select(companyIdSelector).pipe(
-      map(companyId => companyId as number)
+      map(companyId => {
+        console.log(companyId);
+       return companyId as number
+      })
+     
     )
   }
 

@@ -4,6 +4,9 @@
         </div>
         <h1 >Register</h1>
     </div>
+    <div *ngIf="noAuthorize">
+        To fully utilize our app's features, please grant location access as it is essential for its functionality
+    </div>
     <form class="form" [formGroup]="registerForm">
         <input formControlName="username" type="text" name="user" autofocus [class]="usernam" (blur)="checkUserName()"
             placeholder="type your user name">

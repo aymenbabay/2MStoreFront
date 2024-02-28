@@ -31,7 +31,7 @@ export class WorkerModalComponent implements OnInit {
           'id': [''],
           'jobtitle': [''],
           'department': [''],
-          'totdayvacation': [''],
+          'totdayvacation': [false],
           'statusvacation': [''],
           'user': ['']
         })
@@ -46,9 +46,9 @@ export class WorkerModalComponent implements OnInit {
             'id': [''],
             'jobtitle': [''],
             'department': [''],
-            'totdayvacation': [''],
+            'totdayvacation': [false],
             'statusvacation': [''],
-            'user': ['']
+            
           })
           break;
         case 'vacation':
@@ -84,6 +84,26 @@ export class WorkerModalComponent implements OnInit {
       })
     }
     break;
+    case 'new':
+      if(this.workerService.update){
+        if(this.data.entity.user !== null){
+          this.type = 'exist'
+        }
+        this.Form.setValue({
+        name : this.data.entity.name,
+        address : this.data.entity.address,
+        email : this.data.entity.email,
+        phone : this.data.entity.phone,
+        salary : this.data.entity.salary,
+        jobtitle : this.data.entity.jobtitle,
+        department : this.data.entity.department,
+        totdayvacation : this.data.entity.totdayvacation,
+        statusvacation: this.data.entity.statusvacation,
+        id : this.data.entity.id,
+        //user : this.data.user
+      })
+    }
+    break;
       case 'vacation':
                   console.log(this.data.entity)
       const today = new Date();
@@ -101,6 +121,7 @@ export class WorkerModalComponent implements OnInit {
   }
   }
   submit(){
+  
       switch(this.type){
         case 'new':
         if (this.workerService.update) {
@@ -125,7 +146,6 @@ export class WorkerModalComponent implements OnInit {
       this.workerService.addVacation(this.Form.value).subscribe()
       break;
     }
-    
     this.close("successfully")
   }
 

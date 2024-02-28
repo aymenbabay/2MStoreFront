@@ -16,7 +16,7 @@
             <th>phone</th>
             <th>bank account number</th>
             <th>email</th>
-            <th *ngIf="search && (companies | async)?.length !== 1">add</th>
+            <th *ngIf="search && (companies | async)?.length !== 1 && (companies | async)?.length !==0">action</th>
           </tr>
         </thead>
         <tbody *ngFor="let company of companies|async">
@@ -28,7 +28,7 @@
             <td> {{company.phone}}</td>
             <td>{{company.bankaccountnumber}}</td>
             <td>{{company.email}}</td>
-            <td *ngIf="company === myParent">
+            <td *ngIf="company.id !== myParent.id">
                 <mat-icon (click)="addParent(company.id)">add</mat-icon>
             </td>
           </tr>

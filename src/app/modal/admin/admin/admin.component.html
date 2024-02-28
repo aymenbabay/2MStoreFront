@@ -19,37 +19,6 @@
     </div>
   </form>
 
-
- 
-  
-  <!-- -------------------------------------------------  sous category  ----------------------------------------------------- -->
-  <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='sous-category'">
-    <label for="libelle">libelle</label>
-    <input type="text" formControlName="libelle" id="libelle" name="libelle">
-
-    <label for="code">code</label>
-    <input type="text" formControlName="code" id="code" name="code">
-
-    <label for="category">category</label>
-
-    <select type="text" formControlName="category" id="category" name="category">
-      <option value="">choose a category</option>
-      <option *ngFor="let i of categories$|async" value="{{i.id}}">{{i.libelle}}
-      </option>
-    </select>
-    <input type="number" formControlName="id" hidden id="id" name="id">
-
-  </form>
- 
-
-  <!-- -------------------------------------------------  vacation  ----------------------------------------------------- -->
-
- 
-
-
-
-  
-
   
 
   <div *ngIf="type !== 'invoice' && type !== 'command' && type !== 'Quantity' && type !== 'articleFromExistProvider'">

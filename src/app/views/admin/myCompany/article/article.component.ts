@@ -9,6 +9,8 @@ import { ProviderService } from '../../../../services/admin/provider.service';
 import { ArticleModalComponent } from '../../../../modal/admin/article-modal/article-modal.component';
 import { Store } from '@ngrx/store';
 import { companyIdSelector, parentIdSelector } from '../../../../store/reducer/state.reducer';
+import { ZXingScannerComponent } from '@zxing/ngx-scanner';
+import { Result, BarcodeFormat, Exception  } from '@zxing/library';
 
 
 @Component({
@@ -17,7 +19,12 @@ import { companyIdSelector, parentIdSelector } from '../../../../store/reducer/s
   styleUrls: ['./article.component.css']
 })
 export class ArticleComponent implements OnInit{
-
+  allowedFormats = [ BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.DATA_MATRIX /*, ...*/ ];
+  //allowedFormats = ['QR_CODE', 'EAN_13', 'CODE_128'];
+  scannerEnabled = true;
+  scanSuccess = false;
+  scanFailure = false;
+  scanResult!: Result| undefined;
   articles!:Observable<Article[]>
   table= false
   companyId! : number
@@ -29,6 +36,15 @@ export class ArticleComponent implements OnInit{
   sendMessage(): void {
   
   }
+
+
+  resetScanner() {
+    this.scanSuccess = false;
+    this.scanFailure = false;
+    this.scanResult = undefined;
+    this.scannerEnabled = true;
+  }
+
   ngOnInit(): void {
     this.providerService.getMyProviderid()
     this.getAllArticles()

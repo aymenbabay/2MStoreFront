@@ -1,12 +1,13 @@
 
-<button mat-raised-button color="primary" *ngIf="!entity && (isAdmin$|async)" (click)="openWorkerModal('new',null)">add worker</button>
+<button mat-raised-button color="primary" *ngIf="!entity && (isAdmin$|async)" (click)="openWorkerModal('new',null, null)">add worker</button>
 <button mat-raised-button color="primary" *ngIf="entity && (isAdmin$|async)" (click)="searchWorker('user')">search new worker</button>
+<button mat-raised-button color="primary" *ngIf="entity" (click)="backToMyWorkers()">back to my workers</button>
 
 <input type="search" [(ngModel)]="entity" placeholder="type worker name">
 <button mat-raised-button color="primary" (click)="searchWorker('worker')">search</button>
 <div *ngIf="type == 'worker'">
   
-<div *ngIf="worker$ || (workers | async) as workers">
+<div *ngIf="(worker$|async) || (workers | async) as workers">
     <table>
       <thead>
         <tr>
@@ -64,7 +65,7 @@
             <td>{{user.email}}</td>
             <td>{{user.phone}}</td>
             <td> 
-               <mat-icon color="warn" style="font-size: 24px;" (click)="openWorkerModal('exist',user)">add</mat-icon>  
+               <mat-icon color="warn" style="font-size: 24px;" (click)="openWorkerModal('exist',user,null)">add</mat-icon>  
             </td>
            
           </tr>
