@@ -26,7 +26,7 @@
             <td>{{invoice.lastModifiedDate |date:'dd/MM/yyyy' }}</td>
             <td > 
               <mat-icon color="accent" style="font-size: 24px;"  (click)="updateInvoiceServer(invoice)">update</mat-icon>
-              <mat-icon color="accent" style="font-size: 24px;"  (click)="paymentInvoice(invoice)" *ngIf="!invoice.paid && !provider && (isadmin|async)">payment</mat-icon>
+              <mat-icon color="accent" style="font-size: 24px;"  (click)="paymentInvoice(invoice)" *ngIf="invoice.paid !=paymentStatus.PAID && invoice.status === status.ACCEPTED && (isadmin|async)">payment</mat-icon>
   
               
             </td>

@@ -10,12 +10,13 @@
 <br>
 <div>
 
-    <table>
+    <table  *ngIf="[(clients$ | async) || (MyClients | async)] as client">
       <thead>
         <tr>
           <th>name</th>
           <th> code </th>
           <th>nature</th>
+          <th>advance</th>
           <th>credit</th>
           <th>mouvement</th>
           <th>phone</th>
@@ -33,6 +34,7 @@
             <td>{{client.client.name}}</td>
             <td>{{client.client.code}}</td>
             <td>{{client.client.nature}}</td>
+            <td>{{client.advance}}</td>
             <td>{{client.credit}}</td>
             <td>{{client.mvt}}</td>
             <td>{{client.client.phone}}</td>
@@ -57,6 +59,7 @@
             <td>{{client.client.name}}</td>
              <td>{{client.client.code}}</td>
              <td>{{client.client.nature}}</td>
+             <td>{{client.advance}}</td>
              <td>{{client.credit}}</td>
              <td>{{client.mvt}}</td>
              <td>{{client.client.phone}}</td>

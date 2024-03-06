@@ -16,7 +16,14 @@
        </p>
       </div>
       </div>
-
+      
+      <mat-icon (click)="openPayment()" *ngIf="hasCompany">payment</mat-icon>
+      <div class="notificationMenu" [class.opened]="openedPayment">
+        <div class="menuContainer" *ngFor="let payment of  payment$ | async">
+          <p *ngIf="payment.invoice.company.id === companyId" routerLink="my-company/payment/{{payment.id}}">{{payment.invoice.client.name}} said that he is paid invoice N°: {{payment.invoice.code}}</p>
+          <p *ngIf="payment.invoice.company.id !== companyId"  routerLink="my-company/payment/{{payment.id}}">you paid invoice N°: {{payment.invoice.code}} form company : {{payment.invoice.company.name}}</p>
+        </div>
+      </div>
       <mat-icon (click)="openShopping()">shopping_cart</mat-icon>
       <div class="notificationMenu" [class.opened]="openedShopping">
         <div class="menuContainer" *ngFor="let shopping of shopping$ |async">  

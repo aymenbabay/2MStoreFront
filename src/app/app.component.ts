@@ -23,6 +23,8 @@ import { Company } from './models/user/company';
 import { ProviderService } from './services/admin/provider.service';
 import { OrderDelivery } from './models/user/OrderDelivery';
 import { OrderDeliveryService } from './services/shared/order-delivery.service';
+import { Payment } from './models/admin/Payment';
+import { PaymentService } from './services/admin/payment.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -35,6 +37,7 @@ export class AppComponent implements OnInit{
   openedConversation = false
   openedShopping = false
   openedCompanies = false
+  openedPayment = false
   invoice$! : Observable<Invoice[]>
   invetation$! : Observable<Invetation[]>
   shopping$! : Observable<PurchaseOrder[]>
@@ -47,9 +50,12 @@ export class AppComponent implements OnInit{
   logedIn = false
   type = Type
   hasCompany = false
+  payment$! :Observable<Payment[]>
+
 constructor(private invoiceService : InvoiceService, private store : Store, private companyService : CompanyService, private orderDeliveryService : OrderDeliveryService,
   private clientService : ClientService, private router: Router, private commandService : CommandLineService,private providerService : ProviderService,
-   private invetationService: InvetationService, public messageService : MessageService, private loginService : LoginService, private purchaseOrderService : PurchaseOrderService
+   private invetationService: InvetationService, public messageService : MessageService, private loginService : LoginService, private purchaseOrderService : PurchaseOrderService,
+   private paymentService : PaymentService
   ){
     
    
@@ -66,6 +72,7 @@ ngOnInit(): void {
         this.companyService.getMyCompanyId()
         this.clientService.getMyClientId()
         this.providerService.getMyProviderid()
+        this.payment$ = this.paymentService.getAllMyPayment()
         this.invoiceService.invoices$ = this.invoice$ = this.invoiceService.getAllInvoiceNotAccepted()
         this.store.select(companyIdSelector).subscribe(x => {
         this.companyId = x
@@ -105,6 +112,15 @@ getBranches(){
 
 openCompanies(){
   this.openedCompanies = !this.openedCompanies;
+  this.openedPayment = false
+  this.openedNotification = false
+  this.openedInvetation = false
+  this.openedShopping = false
+}
+
+openPayment(){
+  this.openedPayment = !this.openedPayment
+  this.openedCompanies = false;
   this.openedNotification = false
   this.openedInvetation = false
   this.openedShopping = false
@@ -112,6 +128,7 @@ openCompanies(){
 
 openShopping(){
   this.openedShopping = !this.openedShopping
+  this.openedPayment = false
   this.openedNotification = false
   this.openedInvetation = false
   this.openedCompanies = false
@@ -119,6 +136,7 @@ openShopping(){
 
 openNotification(){
   this.openedNotification = !this.openedNotification
+  this.openedPayment = false
   this.openedShopping = false
   this.openedInvetation = false
   this.openedCompanies = false
@@ -126,6 +144,7 @@ openNotification(){
 
 openInvetation(){
   this.openedInvetation = !this.openedInvetation
+  this.openedPayment = false
   this.openedNotification = false
   this.openedShopping = false
   this.openedCompanies = false

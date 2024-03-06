@@ -5,7 +5,7 @@ export class BankTransferPayment{
     invoice             !:Invoice
     agency              !:string
     transactionId       !:string
-    bankaccount         !:string
+    bankAccount         !:string
 
 
 }

@@ -5,12 +5,14 @@ import { CashPayment } from '../../models/admin/CashPayment';
 import { CheckPayment } from '../../models/admin/CheckPayment';
 import { BillPayment } from '../../models/admin/BillPayment';
 import { BankTransferPayment } from '../../models/admin/BankTransferPayment';
+import { Payment } from '../../models/admin/Payment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
-  
+ 
+   
   baseUrl = 'werehouse/payment/'
   constructor(private http : HttpClient) { }
   
@@ -28,6 +30,18 @@ export class PaymentService {
   
   paymentBank(bank: BankTransferPayment):Observable<any> {
     return this.http.post(`${this.baseUrl}bank`,bank)
+  }
+
+  getAllMyPayment() :Observable<Payment[]>{
+    return this.http.get<Payment[]>(`${this.baseUrl}get_all_my`)
+  }
+
+  getMyById(id: number): Observable<Payment> {
+    return this.http.get<Payment>(`${this.baseUrl}${id}`)
+  }
+
+  paymentResponse(response: string, id: number) {
+    return this.http.get(`${this.baseUrl}${response}/${id}`)
   }
 
 }

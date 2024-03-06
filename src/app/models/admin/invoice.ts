@@ -1,3 +1,5 @@
+import { PaymentMode } from "../../enums/PaymentMode"
+import { PaymentStatus } from "../../enums/PaymentStatus"
 import { Company } from "../user/company"
 import { Client } from "./client"
 
@@ -12,5 +14,6 @@ export class Invoice{
     company! : Company
     lastModifiedDate! : Date
     discount        ! :number
-    paid                !:boolean;
+    paid             !:PaymentStatus;
+    rest                !: number
 }

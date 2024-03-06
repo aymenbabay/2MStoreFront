@@ -1,7 +1,7 @@
 
-<div class="content">
+<div class="container">
 
-  <form [formGroup]="Form" class="form" *ngIf="type =='choise'">
+  <form [formGroup]="Form" class="choise" *ngIf="type =='choise'">
     
     <label for="cash">cash</label>
     <input type="radio" formControlName="cash" id="cash" name="cash" (click)="submitChoise('cash')">
@@ -34,7 +34,7 @@
 
   <form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type =='check'||type =='bill'">
     
-    <label for="number">N° check</label>
+    <label for="number">N° {{type}}</label>
     <input type="text" formControlName="number" id="number" name="number" >
     
     <label for="amount">amount</label>
@@ -56,8 +56,8 @@
     <input type="text" formControlName="clientname" id="clientname" name="clientname" readonly>
     
     
-    <label for="bankaccount">bank account</label>
-    <input type="text" formControlName="bankaccount" id="bankaccount" name="bankaccount" >
+    <label for="bankAccount">bank account</label>
+    <input type="text" formControlName="bankAccount" id="bankAccount" name="bankAccount" >
     
   </form>
 
@@ -71,6 +71,9 @@
     
     <label for="agency">agency</label>
     <input type="text" formControlName="agency" id="agency" name="agency">
+
+    <label for="bankAccount">bank account</label>
+    <input type="text" formControlName="bankAccount" id="bankAccount" name="bankAccount" >
     
     <label for="invoicecode">invoice code</label>
     <input type="text" formControlName="invoicecode" id="invoicecode" name="invoicecode" readonly>

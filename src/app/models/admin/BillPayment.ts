@@ -6,4 +6,5 @@ export class BillPayment{
     delay               !:Date
     number              !:string
     agency              !:string
+    bankAccount         !:string
 }

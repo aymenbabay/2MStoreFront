@@ -1,0 +1,46 @@
+
+
+<div *ngIf=" (payment$ | async) as payment">
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>invoice</th>
+            <th>client</th>
+            <th>amount</th>
+            <th>tot invoice</th>
+            <th *ngIf="payment.invoice.paid === paymentStatus.INCOMPLETE">rest</th>
+            <th *ngIf="payment.type === paymentType.CHECK || payment.type === paymentType.BILL">delay</th>
+            <th *ngIf="payment.type !== paymentType.CASH">agency</th>
+            <th *ngIf="payment.type !== paymentType.CASH">bank account</th>
+            <th *ngIf="payment.type === paymentType.BILL">bill number</th>
+            <th *ngIf="payment.type === paymentType.BANKTRANSFER">transaction id</th>
+            <th *ngIf="payment.status === status.INWAITING">payment status</th>
+            <th>invoice status</th>
+            <th>type</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{payment.invoice.code}}</td>
+                <td>{{payment.invoice.client.name}}</td>
+                <td>{{payment.amount}}</td>
+                <td>{{payment.invoice.prix_invoice_tot}}</td>
+                <td *ngIf="payment.invoice.paid === paymentStatus.INCOMPLETE">{{payment.invoice.rest}}</td>
+                <td *ngIf="payment.type === paymentType.CHECK || payment.type === paymentType.BILL">{{payment.delay|date:'dd/MM/yyyy'}}</td>
+                <td *ngIf="payment.type !== paymentType.CASH">{{payment.agency}}</td>
+                <td *ngIf="payment.type !== paymentType.CASH">{{payment.bankAccount}}</td>
+                <td *ngIf="payment.type === paymentType.BILL">{{payment.number}}</td>
+                <td *ngIf="payment.type === paymentType.BANKTRANSFER">{{payment.transactionId}}</td>
+                <td *ngIf="payment.status === status.INWAITING">
+                  <button (click)="paymentResponse(status.ACCEPTED,payment.id)">accept</button>
+                  <button (click)="paymentResponse(status.REFUSED,payment.id)">refuse</button>
+                </td>
+                <td>{{payment.invoice.paid}}</td>
+                <td>{{payment.type}}</td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+

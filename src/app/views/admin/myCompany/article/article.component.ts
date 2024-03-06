@@ -1,9 +1,9 @@
-import {  Component, OnInit } from '@angular/core';
+import {  Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { ArticleService } from '../../../../services/admin/article.service';
 import { Article } from '../../../../models/admin/Article';
-import { Observable, catchError, combineLatest, map, of, switchMap, take } from 'rxjs';
+import { Observable, Subscription, catchError, combineLatest, map, of, switchMap, take } from 'rxjs';
 import { LoginService } from '../../../../services/guest/login/login.service';
 import { ProviderService } from '../../../../services/admin/provider.service';
 import { ArticleModalComponent } from '../../../../modal/admin/article-modal/article-modal.component';
@@ -18,7 +18,9 @@ import { Result, BarcodeFormat, Exception  } from '@zxing/library';
   templateUrl: './article.component.html',
   styleUrls: ['./article.component.css']
 })
-export class ArticleComponent implements OnInit{
+export class ArticleComponent implements OnInit, OnDestroy{
+
+  unsubscribe! : Subscription
   allowedFormats = [ BarcodeFormat.QR_CODE, BarcodeFormat.EAN_13, BarcodeFormat.CODE_128, BarcodeFormat.DATA_MATRIX /*, ...*/ ];
   //allowedFormats = ['QR_CODE', 'EAN_13', 'CODE_128'];
   scannerEnabled = true;
@@ -49,7 +51,7 @@ export class ArticleComponent implements OnInit{
     this.providerService.getMyProviderid()
     this.getAllArticles()
     this.isAdmin$ = this.isAdmin()
-    this.providerService.getMyProviderId().subscribe()
+    this.unsubscribe = this.providerService.getMyProviderId().subscribe()
 
    
   }
@@ -61,10 +63,9 @@ export class ArticleComponent implements OnInit{
   
 
   getAllArticles(){
-    this.store.select(companyIdSelector).subscribe(x =>{
+    this.unsubscribe = this.store.select(companyIdSelector).subscribe(x =>{
 
       this.articles = this.articleService.getAllArticles(x)
-      this.articles.subscribe(x =>console.log(x))
     })
   }
 
@@ -78,7 +79,7 @@ export class ArticleComponent implements OnInit{
         enterAnimationDuration:'1000ms',
          exitAnimationDuration:'1000ms'
       });
-     dialogRef.afterClosed().subscribe(result => {
+      this.unsubscribe = dialogRef.afterClosed().subscribe(result => {
       this.articleService.update = false
       if (result !== "undefined") {
         this.getAllArticles()
@@ -92,8 +93,7 @@ export class ArticleComponent implements OnInit{
 
   updateArticleServer(article : Article){
     this.articleService.update = true
-    this.providerService.getMeProviderId().subscribe(x =>{
-      console.log(x)
+    this.unsubscribe = this.providerService.getMeProviderId().subscribe(x =>{
       this.openArticleModal(article,"article")
       
     })
@@ -103,14 +103,17 @@ export class ArticleComponent implements OnInit{
     console.log(id)
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
-      this.articleService.deleteArticle(id).subscribe(x =>{
+      this.unsubscribe = this.articleService.deleteArticle(id).subscribe(x =>{
         this.getAllArticles()
       })
      
     }
 
   }
-
+  
+  ngOnDestroy(): void {
+    this.unsubscribe.unsubscribe()
+  }
  
   
 }

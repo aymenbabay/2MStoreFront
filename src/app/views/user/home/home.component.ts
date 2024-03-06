@@ -18,7 +18,7 @@ import { PurchaseOrderModalComponent } from '../../../modal/user/bon-decommand-m
 })
 export class HomeComponent implements OnDestroy, OnInit{
 
-  s! :Subscription
+  unsubscribe! :Subscription
   has_company = false
   article$ : Observable<Article[]> = EMPTY
   company$ : Observable<Company[]> = EMPTY
@@ -31,7 +31,6 @@ export class HomeComponent implements OnDestroy, OnInit{
 
   ngOnInit(): void {
     this.sig.update(value => value+2)
-    console.log(this.sig())
     this.check()
     this.getRandomArticleWithRandomCompany()
     this.getAllCompany()
@@ -58,7 +57,7 @@ export class HomeComponent implements OnDestroy, OnInit{
   openMessanger(userName : string){
     this.messageService.receiver = userName;
     this.messageService.show = true
-    this.messageService.getAllMyMessage().subscribe(x =>this.messageService.messages=x)
+    this.unsubscribe = this.messageService.getAllMyMessage().subscribe(x =>this.messageService.messages=x)
   }
 
   addToCart(company : Company, article : Article){
@@ -72,26 +71,24 @@ export class HomeComponent implements OnDestroy, OnInit{
   }
   getRandomArticleWithRandomCompany(){
     this.article$ = this.articleService.getRandomArticleWithRandomCompany()
-    this.article$.subscribe(x =>console.log(x))
   }
   check(){
     this.has_company = this.companyService.checkCompany()
   }
 
   getCompanyById(){
-    this.companyService.getCompanyById(1).subscribe(data=>console.log(data))
+    this.unsubscribe = this.companyService.getCompanyById(1).subscribe()
   }
 
   getAllCompany(){
    this.company$ =  this.companyService.getAllCompany()
-   this.company$.subscribe(x =>console.log(x))
   }
 
 
 
   ngOnDestroy(): void {
-    if(this.s){
-      this.s.unsubscribe()
+    if(this.unsubscribe){
+      this.unsubscribe.unsubscribe()
     }
   }
 }

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { AdminGuard } from '../../../guards/adminGuard';
 import { OrderByIdComponent } from '../../../components/shared/order-by-id/order-by-id.component';
+import { PaymentByIdComponent } from '../../../components/admin/payment-by-id/payment-by-id.component';
 
 const routes: Routes = [
   {path:'', component:DashboardComponent},
@@ -20,7 +21,8 @@ canActivate:[AdminGuard]},
   {path:'client', loadChildren:()=>import('../../admin/myCompany/client/client.module').then(m=>m.ClientModule)},
   {path:'article', loadChildren:()=>import('../../admin/myCompany/article/article.module').then(m=>m.ArticleModule)},
    {path:'parents', loadChildren:()=>import('../myCompany/parents/parents.module').then(m=>m.ParentsModule)},
-  {path:'order/:id', component:OrderByIdComponent}
+  {path:'order/:id', component:OrderByIdComponent},
+  {path:'payment/:id', component:PaymentByIdComponent}
 ];
 
 @NgModule({

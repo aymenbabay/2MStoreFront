@@ -6,5 +6,5 @@ export class CheckPayment{
     delay               !:Date
     number              !:string
     agency              !:string
-    bankaccount              !:string
+    bankAccount         !:string
 }

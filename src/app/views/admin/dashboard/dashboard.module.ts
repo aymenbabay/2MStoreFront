@@ -6,11 +6,20 @@ import { DashboardComponent } from './dashboard.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { PaymentModalComponent } from '../../../modal/admin/payment-modal/payment-modal.component';
+import { WorkerModalComponent } from '../../../modal/admin/worker-modal/worker-modal.component';
+import { OrderByIdComponent } from '../../../components/shared/order-by-id/order-by-id.component';
+import { PaymentByIdComponent } from '../../../components/admin/payment-by-id/payment-by-id.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    PaymentModalComponent,
+    WorkerModalComponent,
+    OrderByIdComponent,
+    PaymentByIdComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +27,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatIconModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule,
   ]
 })
 export class DashboardModule { }

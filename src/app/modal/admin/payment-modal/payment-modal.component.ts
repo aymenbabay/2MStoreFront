@@ -56,7 +56,7 @@ export class PaymentModalComponent implements OnInit {
               'number' :[],
               'delay' :[],
               'agency' : [],
-              'bankaccount': this.data.invoice.client.bankaccountnumber,
+              'bankAccount': this.data.invoice.client.bankaccountnumber,
               'invoicecode' : this.data.invoice.code,
               'clientname' : this.data.invoice.client.name,
               'solde' : this.data.invoice.prix_invoice_tot,
@@ -69,7 +69,7 @@ export class PaymentModalComponent implements OnInit {
                 'number' :[],
                 'delay' :[],
                 'agency' : [],
-                'bankaccount': this.data.invoice.client.bankaccountnumber,
+                'bankAccount': this.data.invoice.client.bankaccountnumber,
                 'invoicecode' : this.data.invoice.code,
                 'clientname' : this.data.invoice.client.name,
                 'solde' : this.data.invoice.prix_invoice_tot,
@@ -82,7 +82,7 @@ export class PaymentModalComponent implements OnInit {
             'transaction' :[],
             'delay' :[],
             'agency' : [],
-            'bankaccount': this.data.invoice.client.bankaccountnumber,
+            'bankAccount': this.data.invoice.client.bankaccountnumber,
             'invoicecode' : this.data.invoice.code,
             'clientname' : this.data.invoice.client.name,
             'solde' : this.data.invoice.prix_invoice_tot,
@@ -110,7 +110,7 @@ switch(this.type){
     check.number = this.Form.value.number
     check.delay = this.Form.value.delay
     check.agency = this.Form.value.agency
-    check.bankaccount = this.Form.value.bankaccount
+    check.bankAccount = this.Form.value.bankAccount
 
   this.paymentService.paymentCheck(check).subscribe()
   break;
@@ -122,6 +122,7 @@ switch(this.type){
     bill.number = this.Form.value.number
     bill.delay = this.Form.value.delay
     bill.agency = this.Form.value.agency
+    bill.bankAccount = this.Form.value.bankAccount
   this.paymentService.paymentBill(bill).subscribe()
   break;
 
@@ -132,7 +133,7 @@ switch(this.type){
     bank.amount = this.Form.value.amount
     bank.transactionId = this.Form.value.transaction
     bank.agency = this.Form.value.agency
-    bank.bankaccount = this.Form.value.bankaccount
+    bank.bankAccount = this.Form.value.bankAccount
     console.log(bank)
     console.log(this.Form.value.transaction)
   this.paymentService.paymentBank(bank).subscribe()

@@ -12,6 +12,8 @@ import { InvoiceModalComponent } from '../../../../modal/admin/invoice-modal/inv
 import { PaymentModalComponent } from '../../../../modal/admin/payment-modal/payment-modal.component';
 import { InvetationService } from '../../../../services/admin/invetation.service';
 import { LoginService } from '../../../../services/guest/login/login.service';
+import { PaymentStatus } from '../../../../enums/PaymentStatus';
+import { Status } from '../../../../enums/status';
 
 @Component({
   selector: 'app-invoice',
@@ -24,6 +26,8 @@ export class InvoiceComponent implements OnInit {
   
   provider = true
   isadmin : Observable<boolean> = of(false)
+  paymentStatus = PaymentStatus
+  status = Status
   constructor(private dialog : MatDialog, private invoiceService: InvoiceService, private store : Store,private invetationService : InvetationService,
     private router : Router, private commandLineService : CommandLineService, public loginService : LoginService){
    
