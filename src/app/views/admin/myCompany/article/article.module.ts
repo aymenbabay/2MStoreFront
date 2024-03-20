@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
     MatSelectModule,
     MatMenuModule,
     MatIconModule,
-    ZXingScannerModule
+    ZXingScannerModule,
+    NgxPaginationModule
   ]
 })
 export class ArticleModule { }

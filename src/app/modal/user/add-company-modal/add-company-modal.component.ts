@@ -39,7 +39,6 @@ export class AddCompanyModalComponent implements OnInit {
   }
 ngOnInit(): void {
   console.log(this.data.entity)
-  let update = this.companyService.update
   if(this.data.type === "update"){
     this.companyForm.setValue({
       id : this.data.entity.id,
@@ -63,8 +62,6 @@ ngOnInit(): void {
 }
 
   submit(){
-    console.log(this.companyForm.value)
-
     const formData = new FormData()
     const company = this.companyForm.value
     formData.append('company',JSON.stringify(company))
@@ -80,8 +77,8 @@ ngOnInit(): void {
     }
     else{
       this.companyService.updateCompany(formData).subscribe(data =>{
-        
-        //  this.router.navigate(["/my-company"])
+        //must ask for syncronize client and provider informations
+          this.router.navigate(["/my-company"])
       })
     }
         this.close()

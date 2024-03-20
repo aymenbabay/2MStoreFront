@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard.component';
 import { AdminGuard } from '../../../guards/adminGuard';
 import { OrderByIdComponent } from '../../../components/shared/order-by-id/order-by-id.component';
 import { PaymentByIdComponent } from '../../../components/admin/payment-by-id/payment-by-id.component';
+import { ArticleByIdComponent } from '../../../components/admin/article-by-id/article-by-id.component';
 
 const routes: Routes = [
   {path:'', component:DashboardComponent},
@@ -21,8 +22,10 @@ canActivate:[AdminGuard]},
   {path:'client', loadChildren:()=>import('../../admin/myCompany/client/client.module').then(m=>m.ClientModule)},
   {path:'article', loadChildren:()=>import('../../admin/myCompany/article/article.module').then(m=>m.ArticleModule)},
    {path:'parents', loadChildren:()=>import('../myCompany/parents/parents.module').then(m=>m.ParentsModule)},
+   {path:'payment', loadChildren:()=>import('../myCompany/payment/payment.module').then(m=>m.PaymentModule)},
   {path:'order/:id', component:OrderByIdComponent},
-  {path:'payment/:id', component:PaymentByIdComponent}
+  {path:'payment/:id', component:PaymentByIdComponent},
+  {path:'article/:id', component:ArticleByIdComponent}
 ];
 
 @NgModule({

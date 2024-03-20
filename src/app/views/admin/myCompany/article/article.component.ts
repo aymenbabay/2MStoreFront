@@ -1,14 +1,11 @@
 import {  Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { ArticleService } from '../../../../services/admin/article.service';
 import { Article } from '../../../../models/admin/Article';
-import { Observable, Subscription, catchError, combineLatest, map, of, switchMap, take } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { LoginService } from '../../../../services/guest/login/login.service';
 import { ProviderService } from '../../../../services/admin/provider.service';
 import { ArticleModalComponent } from '../../../../modal/admin/article-modal/article-modal.component';
-import { Store } from '@ngrx/store';
-import { companyIdSelector, parentIdSelector } from '../../../../store/reducer/state.reducer';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { Result, BarcodeFormat, Exception  } from '@zxing/library';
 
@@ -31,8 +28,14 @@ export class ArticleComponent implements OnInit, OnDestroy{
   table= false
   companyId! : number
   isAdmin$: Observable<boolean> = of(false);
+
+  page : number = 1;
+  count : number = 0;
+  tableSize : number = 1;
+  tableSizes =  [5,10];
+
   constructor(private dialog : MatDialog, private articleService: ArticleService, public loginService : LoginService,
-    private providerService : ProviderService, private store : Store){
+    private providerService : ProviderService){
   
   }
   sendMessage(): void {
@@ -49,7 +52,7 @@ export class ArticleComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.providerService.getMyProviderid()
-    this.getAllArticles()
+    this.getAllArticles(this.page, this.tableSize)
     this.isAdmin$ = this.isAdmin()
     this.unsubscribe = this.providerService.getMyProviderId().subscribe()
 
@@ -62,11 +65,10 @@ export class ArticleComponent implements OnInit, OnDestroy{
   
   
 
-  getAllArticles(){
-    this.unsubscribe = this.store.select(companyIdSelector).subscribe(x =>{
-
-      this.articles = this.articleService.getAllArticles(x)
-    })
+  getAllArticles(page: number, pageSize: number){
+      this.articles = this.articleService.getAllArticles(page,pageSize)
+      this.articles.subscribe(x => console.log(x))
+    
   }
 
   vuSwitch(){
@@ -82,7 +84,7 @@ export class ArticleComponent implements OnInit, OnDestroy{
       this.unsubscribe = dialogRef.afterClosed().subscribe(result => {
       this.articleService.update = false
       if (result !== "undefined") {
-        this.getAllArticles()
+        this.getAllArticles(this.page, this.tableSize)
       }
      });
   }
@@ -104,13 +106,24 @@ export class ArticleComponent implements OnInit, OnDestroy{
     const conf = window.confirm(`are you sure to delete ${name} !!`)
     if(conf){
       this.unsubscribe = this.articleService.deleteArticle(id).subscribe(x =>{
-        this.getAllArticles()
+        this.getAllArticles(this.page, this.tableSize)
       })
      
     }
 
   }
+
+  onTableDataChange(event : any){
+    this.page = event;
+    console.log(event)
+    this.getAllArticles(event.target.value.page,event.target.value.tableSize)
+  }
   
+  onTableSizeChange(event : any){
+    this.tableSize = event.target.value;
+    this.page = 1;
+    this.getAllArticles(this.page, this.tableSize)
+  }
   ngOnDestroy(): void {
     this.unsubscribe.unsubscribe()
   }

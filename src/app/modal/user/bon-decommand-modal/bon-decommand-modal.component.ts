@@ -5,7 +5,6 @@ import { Company } from '../../../models/user/company';
 import { Article } from '../../../models/admin/Article';
 import { PurchaseOrderService } from '../../../services/user/purchase-order.service';
 import { PurchaseOrderLine } from '../../../models/user/purchaseOrderLine';
-import { Client } from '../../../models/admin/client';
 
 @Component({
   selector: 'app-bon-decommand-modal',

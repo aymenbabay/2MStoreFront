@@ -36,6 +36,14 @@ export class PaymentService {
     return this.http.get<Payment[]>(`${this.baseUrl}get_all_my`)
   }
 
+  getAllMyPaymentAsCompany():Observable<Payment[]>{
+    return this.http.get<Payment[]>(`${this.baseUrl}get_all_my_as_company`)
+  }
+
+  getAllMyPaymentAsClient():Observable<Payment[]>{
+    return this.http.get<Payment[]>(`${this.baseUrl}get_all_my_as_client`)
+  }
+
   getMyById(id: number): Observable<Payment> {
     return this.http.get<Payment>(`${this.baseUrl}${id}`)
   }

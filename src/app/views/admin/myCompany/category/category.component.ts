@@ -1,12 +1,10 @@
 import { Component , OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, catchError, combineLatest, map, of, take } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { Category } from '../../../../models/admin/category';
 import { CategoryService } from '../../../../services/admin/category.service';
-import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { CategoryModalComponent } from '../../../../modal/admin/category-modal/category-modal.component';
 import { Store } from '@ngrx/store';
-import { parentIdSelector } from '../../../../store/reducer/state.reducer';
 import { LoginService } from '../../../../services/guest/login/login.service';
 
 @Component({

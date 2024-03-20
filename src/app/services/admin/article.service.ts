@@ -6,6 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { LoginService } from '../guest/login/login.service';
 import { Store } from '@ngrx/store';
 import { companyIdSelector } from '../../store/reducer/state.reducer';
+import { SubArticle } from '../../models/admin/SubArticle';
 
 
 
@@ -15,25 +16,19 @@ import { companyIdSelector } from '../../store/reducer/state.reducer';
 export class ArticleService {
  
  
+ 
   update = false
   baseUrl="werehouse/article/"
 
-  
-
-  constructor(private http: HttpClient, private store : Store) {
-   
-   
-   }
-
-   
+  constructor(private http: HttpClient, private store : Store) {}
 
   deleteArticle(id: number):Observable<any>{
     return  this.http.delete(`${this.baseUrl}delete/${id}`)
   }
 
-  getAllArticles(id:number):Observable<Article[]>{
+  getAllArticles(offset:number, pageSize: number):Observable<Article[]>{
     return this.getCompanyId().pipe(
-      switchMap(companyId => this.http.get<Article[]>(`${this.baseUrl}getAllMyArticle/${companyId}`)))
+      switchMap(companyId => this.http.get<Article[]>(`${this.baseUrl}getAllMyArticle/${companyId}/${offset}/${pageSize}`)))
   }
 
   addArticle(article : FormData):Observable<any>{
@@ -60,7 +55,7 @@ export class ArticleService {
   }
 
   getAllArticlesByCompanyId(id: number):Observable<Article[]>{
-    return this.http.get<Article[]>(`${this.baseUrl}get_all_articles/${id}`)
+    return this.http.get<Article[]>(`${this.baseUrl}get_all_articles/${id}/0/1`)
   }
 
 
@@ -73,6 +68,10 @@ export class ArticleService {
   }
   UpdateCompanyArticle(form: Article) :Observable<any>{
     return this.http.put(`${this.baseUrl}updatecompanyarticle`,form)
+  }
+
+  addChildToParent(id: number, relations : SubArticle):Observable<any> {
+    return this.http.post(`${this.baseUrl}child/${id}`,relations)
   }
 
   getCompanyId():Observable<number>{

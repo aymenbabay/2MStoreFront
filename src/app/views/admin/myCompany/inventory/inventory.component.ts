@@ -1,8 +1,6 @@
 import { Component ,OnInit} from '@angular/core';
 import { Inventory } from '../../../../models/admin/inventory';
-import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { InventoryService } from '../../../../services/admin/inventory.service';
-import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 
 @Component({

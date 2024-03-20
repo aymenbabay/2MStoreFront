@@ -11,6 +11,7 @@ import { WorkerModalComponent } from '../../../modal/admin/worker-modal/worker-m
 import { OrderByIdComponent } from '../../../components/shared/order-by-id/order-by-id.component';
 import { PaymentByIdComponent } from '../../../components/admin/payment-by-id/payment-by-id.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ArticleByIdComponent } from '../../../components/admin/article-by-id/article-by-id.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     PaymentModalComponent,
     WorkerModalComponent,
     OrderByIdComponent,
-    PaymentByIdComponent
+    PaymentByIdComponent,
+    ArticleByIdComponent
   ],
   imports: [
     CommonModule,

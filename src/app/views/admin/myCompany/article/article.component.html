@@ -4,6 +4,8 @@
     <button mat-raised-button color="primary" (click)="vuSwitch()">vuSwitch</button>
     <button *ngIf="(isAdmin$ | async) !== false" mat-raised-button color="primary" (click)="openArticleModal(null,'article')">add new article</button>
     </div>
+    <!-- il faut ajouter search bar for articles -->
+     <!-- must add filter by category and subCategory and sorting  -->
   <div *ngIf=" (articles | async) as articles">
     <div *ngIf="table">
       <table>
@@ -17,6 +19,7 @@
             <th>discription</th>
             <th>minQuantity</th>
             <th>barcode</th>
+            <th>child</th>
             <th>tva</th>
             <th>category</th>
           <th>sous category</th>
@@ -25,7 +28,11 @@
           </tr>
         </thead>
         <tbody *ngIf="articles.length > 0 ">
-          <tr *ngFor="let article of articles; index as i">
+          <tr *ngFor="let article of articles | paginate:{
+                itemsPerPage:tableSize,
+                currentPage : page,
+                totalItems : count
+          }; let i = index ">
             <td>{{article.libelle}}</td>
             <td>{{article.code}}</td>
             <td>{{article.cost}}</td>
@@ -34,6 +41,7 @@
             <td>{{article.discription}}</td>
             <td>{{article.minQuantity}}</td>
             <td>{{article.barcode}}</td>
+            <td>{{article.subArticle[0].quantity}}</td>
             <td>{{article.tva/100|percent}}</td>
             <td *ngIf="article.category">{{article.category.libelle}}</td>
             <td *ngIf="!article.category">without category</td>
@@ -51,6 +59,14 @@
           </tr>
         </tbody>
       </table>
+      <div>
+        <pagination-controls
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)">
+       
+        </pagination-controls>
+      </div>
     </div>
     <div class="card" *ngIf="!table"  >
       <div *ngFor="let article of articles" class="article popup" [attr.data-libelle]="'libelle: '+article.libelle"
@@ -65,7 +81,7 @@
                                   >
         <div class="articlei" >
           <div class="image">
-             <img *ngIf="article.image" class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.sharedPoint}}" alt="download">
+             <img *ngIf="article.image" class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.sharedPoint}}" alt="download" routerLink="/my-company/article/{{article.id}}">
              <p *ngIf="!article.image">without image</p>
           </div>
           <div class="information">

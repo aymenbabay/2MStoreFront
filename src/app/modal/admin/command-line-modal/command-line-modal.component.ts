@@ -44,7 +44,7 @@ export class CommandLineModalComponent  implements OnInit, OnDestroy{
      }
 
      getAllArticle(){
-      this.article$ = this.articleService.getAllArticles(0)
+      this.article$ = this.articleService.getAllArticles(0,1)
     }
 
     submit(){

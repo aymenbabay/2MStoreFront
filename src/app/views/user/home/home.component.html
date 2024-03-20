@@ -17,8 +17,9 @@
             src="http://localhost:8080/werehouse/image/{{article.provider.company.logo}}/company/{{article.provider.company.user.username}}"
           alt="download"
           routerLink="company/{{article.provider.company.id}}">
-
-        {{article.provider.company.name}}  {{article.provider.company.indestrySector}}
+          ({{article.company.rate}})
+          <mat-icon id="star">star</mat-icon>
+          {{article.provider.company.name}}  {{article.provider.company.indestrySector}}
       </div>
         <div class="image"> <img class="img" src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.sharedPoint}}"
           alt="download">

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, filter, map ,combineLatest, of} from 'rxjs';
-import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { Invoice } from '../../../../models/admin/invoice';
 import { InvoiceService } from '../../../../services/admin/invoice.service';
 import { Store } from '@ngrx/store';

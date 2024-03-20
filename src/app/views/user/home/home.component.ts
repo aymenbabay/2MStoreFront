@@ -23,6 +23,7 @@ export class HomeComponent implements OnDestroy, OnInit{
   article$ : Observable<Article[]> = EMPTY
   company$ : Observable<Company[]> = EMPTY
   sig = signal(1)
+  stars = [1,2,3,4,5]
   constructor(public dialog: MatDialog, private companyService : CompanyService, private articleService : ArticleService,
      private router : Router, private providerService : ProviderService, private clientService : ClientService,
       private messageService : MessageService ){
@@ -84,7 +85,10 @@ export class HomeComponent implements OnDestroy, OnInit{
    this.company$ =  this.companyService.getAllCompany()
   }
 
-
+  star(x : number, id:number){
+    console.log(x)
+      this.companyService.rate(x,id).subscribe()
+     }
 
   ngOnDestroy(): void {
     if(this.unsubscribe){

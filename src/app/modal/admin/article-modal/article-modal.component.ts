@@ -157,7 +157,8 @@ export class ArticleModalComponent implements OnInit{
         category: this.Form.value.category,
         provider: this.Form.value.provider,
         subCategory: this.Form.value.subCategory,
-        isVisible: this.Form.value.isVisible
+        isVisible: this.Form.value.isVisible,
+      
       }
        
           if(this.Form.value.provider ===""){

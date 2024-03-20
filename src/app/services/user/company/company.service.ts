@@ -5,7 +5,6 @@ import { Company } from '../../../models/user/company';
 import { Store } from '@ngrx/store';
 import { companyIdSelector } from '../../../store/reducer/state.reducer';
 import { CompanyId } from '../../../store/actions/state.action';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 import jwt_decode from 'jwt-decode';
 @Injectable({

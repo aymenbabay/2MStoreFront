@@ -1,0 +1,35 @@
+<div class="container">
+    
+<button mat-raised-button color="primary" (click)="changePayment()" *ngIf="asCompany">get As client</button>
+<button mat-raised-button color="primary" (click)="changePayment()" *ngIf="!asCompany">get As company</button>
+    <table >
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>invoice code </th>
+            <th>invoice date</th>
+            <th>invoice tot</th>
+            <th>rest</th>
+            <th>status</th>
+            <th>mode</th>
+            <th>invoice status</th>
+            <th>Actions</th>  
+          </tr>
+        </thead>
+        <tbody  >
+           <tr *ngFor="let payment of payments$|async; index as i" routerLink="/my-company/payment/{{payment.id}}"> 
+             <td *ngIf="asCompany">{{payment.invoice.client.name}}</td>
+             <td *ngIf="!asCompany">{{payment.invoice.company.name}}</td>
+              <td>{{payment.invoice.code}}</td>
+              <td>{{payment.invoice.createdDate|date:'dd/MM/yyyy'}}</td>
+              <td>{{payment.invoice.prix_invoice_tot}}</td>
+              <td>{{payment.invoice.rest}}</td>
+              <td>{{payment.status}}</td>
+              <td>{{payment.type}}</td>
+              <td>{{payment.invoice.paid}}</td>
+              
+             
+            </tr>
+        </tbody>
+      </table>
+</div>

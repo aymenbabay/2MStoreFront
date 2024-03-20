@@ -11,7 +11,6 @@ import { httpInterceptorProviders } from './interceptors/httpInterceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layoutes/layout.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AdminComponent } from './modal/admin/admin/admin.component';
 import { MatButtonModule } from '@angular/material/button';
 import { CloudinaryModule } from '@cloudinary/ng';
 import {  MatIconModule } from '@angular/material/icon';
@@ -27,11 +26,11 @@ import { CommandLineModalComponent } from './modal/admin/command-line-modal/comm
 import { CategoryModalComponent } from './modal/admin/category-modal/category-modal.component';
 import { SubCategoryModalComponent } from './modal/admin/sub-category-modal/sub-category-modal.component';
 import { PurchaseOrderModalComponent } from './modal/user/bon-decommand-modal/bon-decommand-modal.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent,
     InfoComponent,
     ArticleModalComponent,
     ProviderModalComponent,
@@ -40,7 +39,7 @@ import { PurchaseOrderModalComponent } from './modal/user/bon-decommand-modal/bo
     CommandLineModalComponent,
     CategoryModalComponent,
     SubCategoryModalComponent,
-    PurchaseOrderModalComponent
+    PurchaseOrderModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +54,8 @@ import { PurchaseOrderModalComponent } from './modal/user/bon-decommand-modal/bo
     MatButtonModule,
     MatIconModule,
     CloudinaryModule,
-    StoreModule.forRoot(reducers)
+    StoreModule.forRoot(reducers),
+    NgxPaginationModule
   ],
   providers: [httpInterceptorProviders ],
   bootstrap: [AppComponent]

@@ -1,5 +1,7 @@
 
+import { PrivacySetting } from "../../enums/PrivacySetting"
 import { Company } from "../user/company"
+import { SubArticle } from "./SubArticle"
 import { Category } from "./category"
 import { Provider } from "./provider"
 import { SubCategory } from "./sub-category"
@@ -22,4 +24,6 @@ export class Article{
      image        !:string
      company      !:Company
      sharedPoint  !:string
+     isVisible    !:PrivacySetting
+     subArticle    !:SubArticle[]
 }

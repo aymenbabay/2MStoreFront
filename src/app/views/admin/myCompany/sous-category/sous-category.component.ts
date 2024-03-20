@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { SousCategoryService } from '../../../../services/admin/sous-category.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EMPTY, Observable, catchError, combineLatest, map, of, take } from 'rxjs';
-import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { SubCategory } from '../../../../models/admin/sub-category';
 import { parentIdSelector } from '../../../../store/reducer/state.reducer';
 import { Store } from '@ngrx/store';

@@ -18,7 +18,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 isAdmin = false
 role = ""
 company$! : Company
-rating =0
 stars = [1,2,3,4,5]
 image = "../assets/349640050_1953693264993335_7294341398407994137_n.jpg"
 lambologo ="../assets/lambologo.jpg"
@@ -64,7 +63,6 @@ unsubscribe! : Subscription
 
  star(x : number, id:number){
 console.log(x)
-this.rating = x
   this.companyService.rate(x,id).subscribe()
  }
 

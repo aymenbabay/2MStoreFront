@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WorkerService } from '../../../services/admin/worker.service';
 import { Vacation } from '../../../models/admin/vacation';
-import { EMPTY, Observable } from 'rxjs';
-import { AdminComponent } from '../../../modal/admin/admin/admin.component';
+import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { Worker } from '../../../models/admin/worker';
 import { WorkerModalComponent } from '../../../modal/admin/worker-modal/worker-modal.component';
 
 @Component({

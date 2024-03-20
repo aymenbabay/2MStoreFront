@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EMPTY, Observable, catchError, combineLatest, forkJoin, map, of, switchMap, take } from 'rxjs';
-import { AdminComponent } from '../../../../modal/admin/admin/admin.component';
 import { ProviderService } from '../../../../services/admin/provider.service';
 import { Provider } from '../../../../models/admin/provider';
 import { LoginService } from '../../../../services/guest/login/login.service';
-import { ClientService } from '../../../../services/admin/client.service';
 import { Store } from '@ngrx/store';
-import { parentIdSelector, providerIdSelector } from '../../../../store/reducer/state.reducer';
+import { providerIdSelector } from '../../../../store/reducer/state.reducer';
 import { ProviderModalComponent } from '../../../../modal/admin/provider-modal/provider-modal.component';
 import { Router } from '@angular/router';
 import { ProviderCompany } from '../../../../models/admin/ProviderCompany';

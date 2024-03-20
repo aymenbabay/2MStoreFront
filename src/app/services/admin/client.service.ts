@@ -66,7 +66,7 @@ export class ClientService {
 
   getCompanyId():Observable<number>{
     return this.store.select(companyIdSelector).pipe(
-      map(companyId => companyId as number) // Assuming clientIdSelector returns a number
+      map(companyId => companyId as number) 
       
     );
   }
