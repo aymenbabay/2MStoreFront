@@ -1,1 +1,95 @@
-<p>article-by-id works!</p>
+
+<div class="container">
+    <div *ngIf=" (article$ | async) as article">
+        <div class="button">
+            <button (click)="addSubArticle(article)">add sub article</button>
+        </div>
+        <div>
+        <table>
+            <thead>
+              <tr>
+                <th>libelle</th>
+                <th> code </th>
+                <th>cost</th>
+                <th>margin</th>
+                <th>quantity</th>
+                <th>sellingPrice</th>
+                <th>discription</th>
+                <th>minQuantity</th>
+                <th>barcode</th>
+                <th>tva</th>
+                <th>category</th>
+              <th>sous category</th>
+              <th>img</th>
+            </tr>
+            </thead>
+            <tbody >
+              <tr >
+                <td>{{article.libelle}}</td>
+                <td>{{article.code}}</td>
+                <td>{{article.cost}}</td>
+                <td>{{article.margin}}</td>
+                <td>{{article.quantity}}</td>
+                <td>{{article.cost*article.margin}}</td>
+                <td>{{article.discription}}</td>
+                <td>{{article.minQuantity}}</td>
+                <td>{{article.barcode}}</td>
+                <td>{{article.tva/100|percent}}</td>
+                <td *ngIf="article.category">{{article.category.libelle}}</td>
+                <td *ngIf="!article.category">without category</td>
+                <td *ngIf="article.subCategory">{{article.subCategory.libelle}}</td>
+                <td *ngIf="!article.subCategory">without sous category</td>
+                <img src="http://localhost:8080/werehouse/image/{{article.image}}/article/{{article.sharedPoint}}" alt="download">
+            </tr>
+        </tbody>
+        </table>
+        <table>
+          <thead>
+            <tr>
+              <th>libelle</th>
+              <th> code </th>
+              <th> qoef </th>
+              <th>cost</th>
+              <th>margin</th>
+              <th>quantity</th>
+              <th>sellingPrice</th>
+              <th>discription</th>
+              <th>minQuantity</th>
+              <th>barcode</th>
+              <th>tva</th>
+              <th>category</th>
+            <th>sous category</th>
+            <th>img</th>
+            <th>action</th>
+          </tr>
+          </thead>
+            <tbody >
+                <tr *ngFor="let article of article.subArticle">
+                  <td>{{article.childArticle.libelle}}</td>
+                  <td>{{article.childArticle.code}}</td>
+                  <td>{{article.quantity}}</td>
+                  <td>{{article.childArticle.cost}}</td>
+                  <td>{{article.childArticle.margin}}</td>
+                  <td>{{article.childArticle.quantity}}</td>
+                  <td>{{article.childArticle.cost*article.childArticle.margin}}</td>
+                  <td>{{article.childArticle.discription}}</td>
+                  <td>{{article.childArticle.minQuantity}}</td>
+                  <td>{{article.childArticle.barcode}}</td>
+                  <td>{{article.childArticle.tva/100|percent}}</td>
+                  <td *ngIf="article.childArticle.category">{{article.childArticle.category.libelle}}</td>
+                  <td *ngIf="!article.childArticle.category">without category</td>
+                  <td *ngIf="article.childArticle.subCategory">{{article.childArticle.subCategory.libelle}}</td>
+                  <td *ngIf="!article.childArticle.subCategory">without sous category</td>
+                  <img src="http://localhost:8080/werehouse/image/{{article.childArticle.image}}/article/{{article.childArticle.sharedPoint}}" alt="download">
+                  <td>
+                    <mat-icon (click)="deleteSubArticle(article.id)">delete</mat-icon>
+                    <mat-icon>update</mat-icon>
+                  </td>
+                </tr>
+              </tbody>
+          </table>
+          
+        </div>
+</div>
+</div>
+

@@ -9,6 +9,7 @@ import { clientIdSelector, parentIdSelector } from '../../../../store/reducer/st
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { ClientCompany } from '../../../../models/admin/ClientCompnay';
+import { client } from 'stompjs';
 
 @Component({
   selector: 'app-client',
@@ -17,8 +18,8 @@ import { ClientCompany } from '../../../../models/admin/ClientCompnay';
 })
 export class ClientComponent implements OnInit {
 
-  MyClients!:Observable<ClientCompany[]>
-  clients$:Observable<ClientCompany[]> = EMPTY
+  MyClients$!:Observable<ClientCompany[]>
+  clients$!:Observable<Client[]>
   isAdmin$: Observable<boolean> = of(false);
   search = false
   isClientResult = false
@@ -40,14 +41,21 @@ export class ClientComponent implements OnInit {
   }
 
   getAllMyClients(){
-    this.MyClients = this.clientService.getAllMyClients()
+    this.MyClients$ = this.clientService.getAllMyClients()
   }
 
-  getAllClientContaining(value : string ){
+  getAllMyClientContaining(value : string ){
     this.search = true;
-    this.clients$ = this.clientService.getAllClientContaining(value)
+    this.clients$ = EMPTY
+    this.MyClients$ = this.clientService.getAllClientContaining(value)
   }
   
+  getAllClientContaining(value : string){
+    this.search = true
+    this.MyClients$ = EMPTY
+    this.clients$ = this.clientService.getAllClientContaininga(value)
+    this.clients$.subscribe(x => console.log(x))
+  }
     
   addAsClient(id : number){
     this.clientService.addAsClient(id).subscribe();
@@ -57,6 +65,7 @@ export class ClientComponent implements OnInit {
 
   backToMyClients(){
     this.search = false
+    this.getAllMyClients()
   }
 
 

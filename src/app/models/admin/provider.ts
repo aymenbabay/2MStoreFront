@@ -1,4 +1,5 @@
 import { Company } from "../user/company"
+import { ProviderCompany } from "./ProviderCompany"
 
 export class Provider{
     id!: number
@@ -14,5 +15,5 @@ export class Provider{
     virtual ! : boolean
     email!: string
     myProvider!: boolean
-
+    providercompany !:ProviderCompany
 }

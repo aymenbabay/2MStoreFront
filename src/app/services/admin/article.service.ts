@@ -15,7 +15,7 @@ import { SubArticle } from '../../models/admin/SubArticle';
 })
 export class ArticleService {
  
- 
+
  
   update = false
   baseUrl="werehouse/article/"
@@ -70,8 +70,16 @@ export class ArticleService {
     return this.http.put(`${this.baseUrl}updatecompanyarticle`,form)
   }
 
-  addChildToParent(id: number, relations : SubArticle):Observable<any> {
-    return this.http.post(`${this.baseUrl}child/${id}`,relations)
+  getMyArticleById(id: number): Observable<Article> {
+    return this.http.get<Article>(`${this.baseUrl}my_article/${id}`)
+  }
+
+  addChildToParent(parentId: number, childId: number,quantity: number):Observable<any> {
+    return this.http.get(`${this.baseUrl}child/${parentId}/${childId}/${quantity}`)
+  }
+
+  deleteSubArticle(id: number) :Observable<any>{
+    return this.http.get(`${this.baseUrl}delete_sub/${id}`)
   }
 
   getCompanyId():Observable<number>{

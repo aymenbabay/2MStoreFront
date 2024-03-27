@@ -1,4 +1,5 @@
 import { Company } from "../user/company"
+import { ClientCompany } from "./ClientCompnay"
 import { Provider } from "./provider"
 
 export class Client{
@@ -16,4 +17,5 @@ export class Client{
     providers! : Provider[];
     virtual! : boolean
     myClient! : boolean
+    clientcompany!: ClientCompany
 }

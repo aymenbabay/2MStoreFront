@@ -12,7 +12,7 @@ import { ProviderCompany } from '../../models/admin/ProviderCompany';
   providedIn: 'root'
 })
 export class ProviderService {
- 
+
     
   update = false
   baseUrl="werehouse/provider/"
@@ -51,11 +51,16 @@ export class ProviderService {
     return this.http.get(`${this.baseUrl}add_as_provider/${id}`)
   }
 
-  findAllProviderContaining(searchInput: String): Observable<ProviderCompany[]> {
+  findAllMyProviderContaining(searchInput: String): Observable<ProviderCompany[]> {
     return this.getCompanyId().pipe(
-      switchMap(companyId =>this.http.get<ProviderCompany[]>(`${this.baseUrl}get_all_provider_containing/${searchInput}/${companyId}`))
+      switchMap(companyId =>this.http.get<ProviderCompany[]>(`${this.baseUrl}get_all_my_provider_containing/${searchInput}/${companyId}`))
     )
   }
+
+  getAllProviderContaining(arg: string) :Observable<any>{
+    return this.http.get(`${this.baseUrl}get_all_provider_containing/${arg}`)
+  }
+ 
 
   checkProvider(id: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.baseUrl}check_provider/${id}`)

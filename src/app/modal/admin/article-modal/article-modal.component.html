@@ -84,6 +84,23 @@
   <input type="number" formControlName="id" hidden id="id" name="id">
 </form>
 
+<!-- --------------------------------------------------------- add sub article --------------------------------------------------- -->
+<form [formGroup]="Form" (keydown.enter)="submit()" class="form" *ngIf="type ==='subArticle'">
+  <label for="parent_article">parent article</label>
+  <input type="text" formControlName="parent_article" id="parent_article" name="parent_article" readonly>
+  <label for="child_article">child article</label>
+  <select *ngIf="articles$" type="number" formControlName="child_article" id="child_article" name="child_article">
+    <option value="">choose an article</option>
+    <option *ngFor="let i of articles$|async" value="{{i.id}}">{{i.libelle}}
+    </option>
+  </select>
+  <label for="quantity">quantity</label>
+  <input type="text" formControlName="quantity" id="quantity" name="quantity" autofocus>
+
+</form>
+
+
+
 
   <div class="button" mat-dialog-actions>
     <button mat-raised-button color="warn" class="cancel" (click)="close('undefined')">Cancel</button>

@@ -12,6 +12,9 @@ import { ClientCompany } from '../../models/admin/ClientCompnay';
   providedIn: 'root'
 })
 export class ClientService {
+  getAllClientContaininga(arg0:string) :Observable<any>{
+    return this.http.get(`${this.baseUrl}${arg0}`)
+  }
  
  
   update = false

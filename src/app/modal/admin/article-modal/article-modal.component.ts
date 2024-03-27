@@ -10,6 +10,7 @@ import { SousCategoryService } from '../../../services/admin/sous-category.servi
 import { ProviderService } from '../../../services/admin/provider.service';
 import { CategoryService } from '../../../services/admin/category.service';
 import { Router } from '@angular/router';
+import { Article } from '../../../models/admin/Article';
 @Component({
   selector: 'app-article-modal',
   templateUrl: './article-modal.component.html',
@@ -28,13 +29,13 @@ export class ArticleModalComponent implements OnInit{
   formData = new FormData()
   categoryId! : number
   subCategoryId! : number
+  articles$ !: Observable<Article[]>
   constructor(private ref: MatDialogRef<ArticleModalComponent>, public fb: FormBuilder,
     private articleService: ArticleService, @Inject(MAT_DIALOG_DATA) public data: { entity: any, type: string},
     private sousCategoryService : SousCategoryService, private providerService :ProviderService,
      private categoryService : CategoryService
     ){
       this.type = this.data.type
-      console.log(this.type)
       switch (this.data.type){
                   case 'article':
                     this.Form = this.fb.group({
@@ -55,15 +56,22 @@ export class ArticleModalComponent implements OnInit{
                       'image':[],
                       'isVisible' :[]
                     })
-      break;
-                     
-      case 'Quantity':
-        this.Form = fb.group({
-         'libelle': [''],
-         'quantity': [''],
-         'id': ['']
-        })
-       break;
+                    break;
+                                  
+                    case 'Quantity':
+                      this.Form = fb.group({
+                      'libelle': [''],
+                      'quantity': [''],
+                      'id': ['']
+                      })
+                    break;
+                    case 'subArticle':
+                      this.Form = fb.group({
+                        'parent_article': [''],
+                        'child_article': [''],
+                        'quantity': [''],
+                      })
+                    break;
     }
     }
 
@@ -78,6 +86,16 @@ export class ArticleModalComponent implements OnInit{
       quantity:0,
       id: this.data.entity.id
     })
+    break;
+    
+    case 'subArticle':
+      this.type = this.data.type
+      this.getAllMyArticle(this.data.entity.id)
+      this.Form.setValue({
+        parent_article : this.data.entity.libelle,
+        child_article : '',
+        quantity : 0
+      })
     break;
     default :
         this.getAllCategory()
@@ -113,6 +131,10 @@ export class ArticleModalComponent implements OnInit{
       }
   }
 
+  getAllMyArticle(id : number){
+   this.articles$ = this.articleService.getAllArticles(1,1)
+  }
+
   getAllCategory(){
     this.categories$ = this.categoryService.getAllCategories(0)
     this.categories$.subscribe(data =>console.log(data))
@@ -138,6 +160,9 @@ export class ArticleModalComponent implements OnInit{
         case 'Quantity':
           this.articleService.addQuantity(this.Form.value.quantity,this.Form.value.id).subscribe()
           break;
+          case 'subArticle':
+            this.articleService.addChildToParent(this.data.entity.id, this.Form.value.child_article,this.Form.value.quantity).subscribe()
+            break;
           default :
           console.log(this.data.entity)
 

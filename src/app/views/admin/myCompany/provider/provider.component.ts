@@ -17,7 +17,7 @@ import { ProviderCompany } from '../../../../models/admin/ProviderCompany';
 })
 export class ProviderComponent implements OnInit {
 
-  providers$!:Observable<ProviderCompany[]>
+  providers$!:Observable<Provider[]>
   allproviders$!: Observable<ProviderCompany[]>
   isAdmin$: Observable<boolean> = of(false);
   myProviderId!: number
@@ -30,7 +30,7 @@ export class ProviderComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCompanyId()
-    this.getAllProviders()
+    this.getAllMyProviders()
     this.providerService.getMyProviderid()
     this.store.select(providerIdSelector).subscribe(x =>{
       this.myProviderId = x
@@ -40,17 +40,24 @@ export class ProviderComponent implements OnInit {
   this.isAdmin$ = this.isAdmin()
   }
  
-  getAllProviders(){
-    this.providers$ = this.providerService.getAllMyProviders()
-    this.providers$.subscribe(x =>{
-      console.log(x[0])
-    })
+  getAllMyProviders(){
+    this.allproviders$ = this.providerService.getAllMyProviders()
+    this.allproviders$.subscribe(x => console.log(x))
+  
   }
 
-  getAllProviderContaining(searchInput : String){
+  getAllMyProviderContaining(searchInput : String){
     this.search = true;
-   this.allproviders$ = this.providerService.findAllProviderContaining(searchInput)
+    this.providers$ = EMPTY
+   this.allproviders$ = this.providerService.findAllMyProviderContaining(searchInput)
     this.allproviders$.subscribe(x => console.log(x))  
+  }
+
+  getAllProviderContaining(searchInput : string){
+    this.search = true
+    this.allproviders$ = EMPTY
+   this.providers$ = this.providerService.getAllProviderContaining(searchInput)
+    this.providers$.subscribe(x => console.log(x))
   }
 
   addAsProvider(id : number){
@@ -60,6 +67,7 @@ export class ProviderComponent implements OnInit {
 
   backToMyProviders(){
     this.search = false
+    this.getAllMyProviders()
   }
 
   remove(){

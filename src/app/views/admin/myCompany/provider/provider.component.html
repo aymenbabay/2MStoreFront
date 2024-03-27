@@ -5,6 +5,7 @@
   <br>
 <div class="search-container">
   <input type="search" name="searchQuery" id="searchQuery"  (keydown)="remove()" #searchInput placeholder="Search...">
+  <i class="fas fa-search" id="searchIcon" (click)="getAllMyProviderContaining(searchInput.value)"></i>
   <i class="fas fa-search" id="searchIcon" (click)="getAllProviderContaining(searchInput.value)"></i>
 </div>
 <br>
@@ -27,30 +28,34 @@
           <th>Actions</th> 
         </tr>
       </thead>
-      <tbody *ngIf="!search && (providers$ | async) as providers" >
+      <tbody *ngIf="search && (providers$ | async) as providers" >
         <tr *ngFor="let provider of providers; index as i"> 
-          <td>{{provider.provider.name}}</td>
-          <td>{{provider.provider.code}}</td>
-          <td>{{provider.provider.nature}}</td>
-          <td>{{provider.provider.indestrySector}}</td>
-          <td>{{provider.advance}}</td>
-          <td>{{provider.credit}}</td>
-          <td>{{provider.mvt}}</td>
-          <td>{{provider.provider.phone}}</td>
-          <td>{{provider.provider.email}}</td>
-          <td>{{provider.provider.address}}</td>
-          <td>{{provider.provider.matfisc}}</td>
-          <td>{{provider.provider.bankaccountnumber}}</td>
-           <td> 
-             <mat-icon color="warn" style="font-size: 24px;" *ngIf="provider.company.id !== companyId && (isAdmin$|async) " (click)="deleteProvider( provider.provider.name,provider.provider.id)">delete</mat-icon> 
-             <mat-icon color="warn" style="font-size: 24px;" (click) = "updateProvider(provider.provider)" *ngIf="(provider.provider.virtual || provider.provider.id == myProviderId) && (isAdmin$|async)">update</mat-icon> 
-             <mat-icon color="accent" style="font-size: 24px;" *ngIf="!provider.provider.virtual" (click)="visitProvider(provider.provider)">person</mat-icon>
-            
-            </td>
+          <td>{{provider.name}}</td>
+          <td>{{provider.code}}</td>
+          <td>{{provider.nature}}</td>
+          <td>{{provider.indestrySector}}</td>
+          <td *ngIf="provider.providercompany != null">{{provider.providercompany.advance}}</td>
+          <td *ngIf="provider.providercompany != null">{{provider.providercompany.credit}}</td>
+          <td *ngIf="provider.providercompany != null">{{provider.providercompany.mvt}}</td>
+          <td *ngIf="provider.providercompany === null">0</td>
+          <td *ngIf="provider.providercompany === null">0</td>
+          <td *ngIf="provider.providercompany === null">0</td>
+          <td>{{provider.phone}}</td>
+          <td>{{provider.email}}</td>
+          <td>{{provider.address}}</td>
+          <td>{{provider.matfisc}}</td>
+          <td>{{provider.bankaccountnumber}}</td>
           
+           <td> 
+            <mat-icon color="warn" style="font-size: 24px;" *ngIf=" provider.virtual || (provider.company.id !== companyId && provider.providercompany !== null) && (isAdmin$|async) " (click)="deleteProvider( provider.name,provider.id)">delete</mat-icon> 
+            <mat-icon color="warn" style="font-size: 24px;" (click) = "updateProvider(provider)" *ngIf="(provider.virtual || provider.id === myProviderId) && (isAdmin$|async)">update</mat-icon> 
+            <mat-icon color="accent" style="font-size: 24px;" *ngIf="!provider.virtual" (click)="visitProvider(provider)">person</mat-icon>
+            <mat-icon mat-raised-button color="primary" *ngIf="provider.company.id !== companyId && provider.providercompany === null && (isAdmin$ | async) !== false" (click)="addAsProvider(provider.id)">add</mat-icon>
+           
+           </td>
          </tr>
      </tbody>
-     <tbody *ngIf="search && (allproviders$ | async) as providers" >
+     <tbody *ngIf=" (allproviders$ | async) as providers" >
       <tr *ngFor="let provider of providers; index as i"> 
         <td>{{provider.provider.name}}</td>
         <td>{{provider.provider.code}}</td>
@@ -64,11 +69,13 @@
         <td>{{provider.provider.address}}</td>
         <td>{{provider.provider.matfisc}}</td>
         <td>{{provider.provider.bankaccountnumber}}</td>
-       <td>
-        <button *ngIf="!provider.provider.virtual" >view profil</button>
-        <mat-icon color="primary" *ngIf="provider.company.id !== companyId && (isAdmin$|async)" (click)="addAsProvider(provider.provider.id)">add as prvider</mat-icon>
-       </td>
-        
+        <td>
+          <mat-icon color="warn" style="font-size: 24px;" *ngIf="(provider.provider.company === null || provider.provider.company.id !== companyId) && (isAdmin$|async) " (click)="deleteProvider( provider.provider.name,provider.provider.id)">delete</mat-icon> 
+          <mat-icon color="warn" style="font-size: 24px;" (click) = "updateProvider(provider.provider)" *ngIf="(provider.provider.virtual || provider.provider.id == myProviderId) && (isAdmin$|async)">update</mat-icon> 
+          <mat-icon color="accent" style="font-size: 24px;" *ngIf="!provider.provider.virtual" (click)="visitProvider(provider.provider)">person</mat-icon>
+          <mat-icon color="primary" *ngIf="(provider.company.id !== companyId || provider.deleted === true) && (isAdmin$|async)" (click)="addAsProvider(provider.provider.id)">add as prvider</mat-icon>
+         </td>
+      
        </tr>
    </tbody>
    
