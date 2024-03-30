@@ -110,6 +110,7 @@ p {
         attr(data-selling)'\A'
         attr(data-cost)'\A'
         attr(data-qte)'\A'
+        attr(data-unit)'\A'
         attr(data-tva)'\A'
         attr(data-minqte)'\A'
         attr(data-barcode)'\A'

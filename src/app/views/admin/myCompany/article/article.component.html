@@ -15,11 +15,11 @@
             <th> code </th>
             <th>cost</th>
             <th>quantity</th>
+            <th>unit</th>
             <th>sellingPrice</th>
             <th>discription</th>
             <th>minQuantity</th>
             <th>barcode</th>
-            <th>child</th>
             <th>tva</th>
             <th>category</th>
           <th>sous category</th>
@@ -37,11 +37,11 @@
             <td>{{article.code}}</td>
             <td>{{article.cost}}</td>
             <td>{{article.quantity}}</td>
+            <td>{{article.unit}}</td>
             <td>{{article.cost*article.margin}}</td>
             <td>{{article.discription}}</td>
             <td>{{article.minQuantity}}</td>
             <td>{{article.barcode}}</td>
-            <td>{{article.subArticle[0].quantity}}</td>
             <td>{{article.tva/100|percent}}</td>
             <td *ngIf="article.category">{{article.category.libelle}}</td>
             <td *ngIf="!article.category">without category</td>
@@ -73,6 +73,7 @@
                                  [attr.data-code]="'code: '+article.code"
                                  [attr.data-cost]="'cost: '+article.cost"
                                  [attr.data-qte]="'quantity: '+article.quantity"
+                                 [attr.data-unit]="'unit : '+article.unit"
                                  [attr.data-selling]="'price: '+(article.cost*(article.tva + article.margin)/100+article.cost)"
                                  [attr.data-tva]="'tva: '+article.tva+'%'"
                                  [attr.data-minqte]="'min quantity: '+article.minQuantity"

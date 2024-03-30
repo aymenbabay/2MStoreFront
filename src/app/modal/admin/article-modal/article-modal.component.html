@@ -26,8 +26,12 @@
             <label for="margin">margin:</label>
       <input type="number" formControlName="margin" id="margin" name="margin">
 
-      <label for="unit">unit:</label>
-      <input type="text" formControlName="unit" id="unit" name="unit">
+      <select type = "string" formControlName = "unit" >
+        <option value="">Unit</option>
+        <option value="{{units.U}}">{{units.U}}</option>
+        <option value="{{units.KG}}">{{units.KG}}</option>
+        <option value="{{units.M}}">{{units.M}}</option>
+      </select>
       
       <label for="barcode">barcode:</label>
       <input type="text" formControlName="barcode" id="barcode" name="barcode">

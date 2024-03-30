@@ -1,5 +1,6 @@
 
 import { PrivacySetting } from "../../enums/PrivacySetting"
+import { Unit } from "../../enums/Unit"
 import { Company } from "../user/company"
 import { SubArticle } from "./SubArticle"
 import { Category } from "./category"
@@ -10,7 +11,7 @@ export class Article{
     id            !:number
     libelle       !:string
     code          !:string
-    unit          !:string
+    unit          !:Unit
     discription   !:string
     cost          !:number
     quantity      !:number

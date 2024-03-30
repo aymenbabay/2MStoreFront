@@ -11,6 +11,7 @@ import { ProviderService } from '../../../services/admin/provider.service';
 import { CategoryService } from '../../../services/admin/category.service';
 import { Router } from '@angular/router';
 import { Article } from '../../../models/admin/Article';
+import { Unit } from '../../../enums/Unit';
 @Component({
   selector: 'app-article-modal',
   templateUrl: './article-modal.component.html',
@@ -30,6 +31,7 @@ export class ArticleModalComponent implements OnInit{
   categoryId! : number
   subCategoryId! : number
   articles$ !: Observable<Article[]>
+  units = Unit
   constructor(private ref: MatDialogRef<ArticleModalComponent>, public fb: FormBuilder,
     private articleService: ArticleService, @Inject(MAT_DIALOG_DATA) public data: { entity: any, type: string},
     private sousCategoryService : SousCategoryService, private providerService :ProviderService,
